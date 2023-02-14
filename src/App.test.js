@@ -3,13 +3,16 @@ import { screen, render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 
-test('renders learn react link', () => {
+test('renders sign up page title', () => {
   render(
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   );
-
-  expect(screen.getByText(/learn/i)).toBeInTheDocument();
+  const titleElement = screen.getByText(/Welcome home, duckie/i);
+  expect(titleElement).toBeInTheDocument();
 });
