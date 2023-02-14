@@ -3,9 +3,9 @@ import { Counter } from './features/counter/Counter';
 import { Routes, Route } from 'react-router-dom';
 // import { ThemeProvider } from 'styled-components';
 // import theme from './styles/theme';
-import Home from './pages/Home';
-import SignUp from './pages/SignUp';
-import Goals from './pages/Goals';
+import Home from './screens/Home';
+import SignUp from './screens/SignUp';
+import Goals from './screens/Goals';
 import Navigation from './components/Navigation';
 import Div from './core-components/Div';
 
