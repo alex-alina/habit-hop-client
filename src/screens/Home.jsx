@@ -1,88 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-// import Heading from '../core-components/Heading';
+import { ReactComponent as PlantOne } from '../assets/illustrations/Humaaans - Plant 1.svg';
+import { ReactComponent as PlantTwo } from '../assets/illustrations/Humaaans - Plant 2.svg';
+import { ReactComponent as Human } from '../assets/illustrations/standing-23.svg';
+import Button from '../core-components/Button';
 import Div from '../core-components/Div';
+import Heading from '../core-components/Heading';
+import { homeScreen } from '../text/text';
 
 const Home = () => {
-  const [data, setData] = useState(null);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetch('https://randomuser.me/api')
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        setData(data.results[0]);
-      });
-  }, []);
-
   return (
-    <>
-      <Div
-        my={2}
-        width={[200, 250, 450, 600, 950]}
-        bg="warning"
-        border="1px solid transparent"
-        borderRadius={[1, 1, 2, 2]}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
+    <Div
+      height="auto"
+      minHeight="100vh"
+      bg="white"
+      display="flex"
+      justifyContent="center"
+      flexDirection="column"
+      alignItems="center"
+      p={[2, 2, 5, 0, 0]}
+    >
+      <Heading
+        color="heading"
+        as="h1"
+        fontWeight={1}
+        fontSize={[7, 7, 8, 8, 8]}
+        fontFamily="heading"
+        mb={[0, 0, 0, 5, 5]}
       >
-        {data ? (
-          <Div
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            my={2}
-          >
-            <Div>{data.name.first}</Div>
-            <Div>{data.name.last} </Div>
-          </Div>
-        ) : (
-          'no data here'
-        )}
-        {/* <Heading
-          my={4}
-          mr={2}
-          color="danger"
-          as="h4"
-          fontWeight={1}
-          fontSize={[1, 1, 6, 6]}
-          fontFamily="heading"
-        >
-          Hello yellow
-        </Heading>
-        <Heading
-          my={4}
-          color="white"
-          as="h4"
-          fontWeight={1}
-          fontSize={[1, 1, 6, 6]}
-          fontFamily="body"
-        >
-          Hello white
-        </Heading> */}
-      </Div>
+        {homeScreen.intro}
+      </Heading>
       <Div
         display="flex"
-        alignItems="center"
-        flexDirection="column"
-        width={[250, 650, 650, 950]}
+        justifyContent="space-around"
+        alignItems="flex-end"
+        width={[250, 250, 350, 450, 450]}
       >
-        <Div my={2} color="danger" fontSize={8}>
-          Welcome home, duckie
+        <Div display={['none', 'none', 'none', 'none', 'block']}>
+          <PlantOne width={300} height={400} />
         </Div>
         <Div>
-          <Link to="/signup">
-            <button>Go to signup page</button>
-          </Link>
+          <Human />
+        </Div>
+        <Div display={['none', 'none', 'none', 'none', 'block']}>
+          <PlantTwo width={300} height={500} />
         </Div>
       </Div>
-    </>
+
+      <Div
+        display="flex"
+        alignItems="center"
+        flexDirection={['column', 'column', 'row', 'row', 'row']}
+        mt={5}
+      >
+        <Link to="/signup">
+          <Button
+            variant="primaryLg"
+            width={[200]}
+            mr={[0, 0, 5, 5, 5]}
+            mb={[5, 5, 0, 0, 0]}
+          >
+            {homeScreen.signupBtn}
+          </Button>
+        </Link>
+
+        <Link to="/login">
+          <Button variant="secondaryLg" width={200}>
+            {homeScreen.loginBtn}
+          </Button>
+        </Link>
+      </Div>
+    </Div>
   );
 };
 

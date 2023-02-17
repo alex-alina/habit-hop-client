@@ -3,8 +3,8 @@ import baseColors from './colors';
 const colors = {
   ...baseColors,
   background: '',
-  heading: '',
-  text: '',
+  heading: baseColors.blue[9],
+  text: baseColors.blue[9],
   lightText: '',
   divider: '',
   placeholder: '',
@@ -22,7 +22,7 @@ const colors = {
 };
 
 const baseSize = 16;
-const breakpointsPx = ['360', '425', '768', '1280', '1440'];
+const breakpointsPx = ['360', '425', '768', '1240', '1440'];
 export const breakpoints = breakpointsPx.map((px) => `${px / baseSize}em`);
 //360 375 768 1024 1440 1920
 export const fonts = {
