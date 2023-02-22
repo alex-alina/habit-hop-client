@@ -22,7 +22,7 @@ const colors = {
 };
 
 const baseSize = 16;
-const breakpointsPx = ['360', '425', '768', '1240', '1440'];
+const breakpointsPx = ['360', '425', '768', '1040', '1400'];
 export const breakpoints = breakpointsPx.map((px) => `${px / baseSize}em`);
 //360 375 768 1024 1440 1920
 export const fonts = {

@@ -13,10 +13,22 @@ export const baseButton = {
   },
 };
 
+export const roundButton = {
+  ...baseButton,
+  borderRadius: '100%',
+  borderWidth: '2px',
+  borderStyle: 'solid',
+  borderColor: '#3949AB',
+  bg: 'white',
+  py: 2,
+  px: 2,
+};
+
 export const buttonSizes = {
   large: {
     fontSize: 4,
     lineHeight: 1,
+    width: [200, 200, 200, 250, 250],
   },
   medium: {
     fontSize: 3,
@@ -38,6 +50,7 @@ export const primary = {
   ...baseButton,
   color: '#ffffff',
   bg: '#1A237E',
+  border: '2px solid #1A237E',
   '&:hover': {
     bg: '#303F9F',
   },
@@ -109,4 +122,5 @@ export const buttons = {
     ...tertiary,
     ...buttonSizes.small,
   },
+  roundButton,
 };

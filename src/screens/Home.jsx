@@ -54,20 +54,13 @@ const Home = () => {
         mt={5}
       >
         <Link to="/signup">
-          <Button
-            variant="primaryLg"
-            width={[200]}
-            mr={[0, 0, 5, 5, 5]}
-            mb={[5, 5, 0, 0, 0]}
-          >
+          <Button variant="primaryLg" mr={[0, 0, 5, 5, 5]} mb={[5, 5, 0, 0, 0]}>
             {homeScreen.signupBtn}
           </Button>
         </Link>
 
         <Link to="/login">
-          <Button variant="secondaryLg" width={200}>
-            {homeScreen.loginBtn}
-          </Button>
+          <Button variant="secondaryLg">{homeScreen.loginBtn}</Button>
         </Link>
       </Div>
     </Div>
