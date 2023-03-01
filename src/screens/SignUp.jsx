@@ -80,7 +80,7 @@ const SignUp = () => {
           ml={[2, 2, 2, 2, 5]}
         >
           <Link to="/">
-            <SvgIcon name="add-one" />
+            <SvgIcon name="arrow-left" />
           </Link>
         </Button>
 
