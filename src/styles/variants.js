@@ -20,6 +20,14 @@ export const roundButton = {
   borderStyle: 'solid',
   borderColor: '#3949AB',
   bg: 'white',
+  py: 1,
+  px: 1,
+};
+
+export const roundButtonLg = {
+  ...roundButton,
+  width: 50,
+  height: 50,
   py: 2,
   px: 2,
 };
@@ -123,4 +131,5 @@ export const buttons = {
     ...buttonSizes.small,
   },
   roundButton,
+  roundButtonLg,
 };

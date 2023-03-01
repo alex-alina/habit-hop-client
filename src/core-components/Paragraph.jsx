@@ -13,7 +13,7 @@ import {
   typography,
 } from 'styled-system';
 
-const Paragraph = styled('p')(
+const CoreParagraph = styled('p')(
   background,
   border,
   color,
@@ -26,5 +26,13 @@ const Paragraph = styled('p')(
   textAlign,
   typography
 );
+
+const Paragraph = ({ children, ...props }) => {
+  return (
+    <CoreParagraph fontFamily="body" m={0} fontSize={2} {...props}>
+      {children}
+    </CoreParagraph>
+  );
+};
 
 export default Paragraph;
