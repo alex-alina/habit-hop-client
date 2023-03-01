@@ -1,40 +1,14 @@
-import { Form, Formik, useField } from 'formik';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createUser } from '../actions-reducers/users';
 import { ReactComponent as WelcomeSVG } from '../assets/illustrations/welcome.svg';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Heading from '../core-components/Heading';
-import { TextInput } from '../core-components/Input';
-import Label from '../core-components/Label';
-import Paragraph from '../core-components/Paragraph';
 import { signupScreen } from '../text/text';
-import { validateSignupForm } from '../utils/validation';
 import SvgIcon from '../components/SvgIcon';
-
-const TextField = ({ label, ...props }) => {
-  const [field, meta /*helpers*/] = useField(props);
-
-  return (
-    <Div display="flex" flexDirection="column" mb={2}>
-      <Label>{label}</Label>
-      <TextInput {...field} {...props} />
-      <Div>
-        {meta.touched && meta.error ? (
-          <Paragraph mb={2} color="error">
-            {meta.error}
-          </Paragraph>
-        ) : null}
-      </Div>
-    </Div>
-  );
-};
+import SignUpForm from '../forms/SignUpForm';
 
 const SignUp = () => {
-  const dispatch = useDispatch();
-
   return (
     <Div
       display="flex"
@@ -114,72 +88,7 @@ const SignUp = () => {
           >
             {signupScreen.intro}
           </Heading>
-          <Formik
-            initialValues={{
-              email: '',
-              firstName: '',
-              lastName: '',
-              password: '',
-              confirmPassword: '',
-            }}
-            validate={(values) => validateSignupForm(values)}
-            onSubmit={(values, actions) => {
-              dispatch(createUser(values));
-              actions.setSubmitting(false);
-            }}
-          >
-            {({ isSubmitting, submitForm }) => {
-              return (
-                <Form
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <TextField
-                    name="firstName"
-                    type="text"
-                    label="First Name"
-                    placeholder="First Name"
-                  />
-                  <TextField
-                    name="lastName"
-                    type="text"
-                    label="Last Name"
-                    placeholder="Last Name"
-                  />
-                  <TextField
-                    name="email"
-                    type="email"
-                    label="Email"
-                    placeholder="janedoe@example.com"
-                  />
-
-                  <TextField name="password" type="password" label="Password" />
-                  <TextField
-                    name="confirmPassword"
-                    type="password"
-                    label="Confirm Password"
-                  />
-
-                  <Button
-                    variant="primaryLg"
-                    my={[3, 3, 3, 5, 5]}
-                    mx="auto"
-                    disabled={isSubmitting}
-                    type="submit"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      submitForm();
-                    }}
-                  >
-                    {signupScreen.signupBtn}
-                  </Button>
-                </Form>
-              );
-            }}
-          </Formik>
+          <SignUpForm />
         </Div>
       </Div>
     </Div>
