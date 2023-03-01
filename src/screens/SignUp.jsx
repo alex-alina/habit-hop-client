@@ -3,7 +3,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createUser } from '../actions-reducers/users';
-import { ReactComponent as BackIcon } from '../assets/blue_icons/arrow-left.svg';
 import { ReactComponent as WelcomeSVG } from '../assets/illustrations/welcome.svg';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
@@ -13,6 +12,7 @@ import Label from '../core-components/Label';
 import Paragraph from '../core-components/Paragraph';
 import { signupScreen } from '../text/text';
 import { validateSignupForm } from '../utils/validation';
+import SvgIcon from '../components/SvgIcon';
 
 const TextField = ({ label, ...props }) => {
   const [field, meta /*helpers*/] = useField(props);
@@ -50,7 +50,7 @@ const SignUp = () => {
         bg="blue.8"
         px={9}
       >
-        <WelcomeSVG width="100%" height="auto" />
+        <WelcomeSVG width="100%" height="100%" />
       </Div>
 
       <Div
@@ -80,7 +80,7 @@ const SignUp = () => {
           ml={[2, 2, 2, 2, 5]}
         >
           <Link to="/">
-            <BackIcon width={26} height={26} />
+            <SvgIcon name="add-one" />
           </Link>
         </Button>
 
@@ -94,7 +94,7 @@ const SignUp = () => {
           ml={[2, 2, 2, 2, 9]}
         >
           <Link to="/">
-            <BackIcon width={26} height={26} />
+            <SvgIcon name="arrow-left" />
           </Link>
         </Button>
 
