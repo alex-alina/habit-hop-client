@@ -39,6 +39,7 @@ const validateConfirmPassword = (password, confirmPassword) => {
 };
 
 export const validateSignupForm = (values) => {
+  console.log('values', values);
   const { email, firstName, lastName, password, confirmPassword } = values;
 
   const errors = {};
@@ -48,5 +49,13 @@ export const validateSignupForm = (values) => {
   errors.password = validatePassword(password);
   errors.confirmPassword = validateConfirmPassword(password, confirmPassword);
 
-  return errors;
+  //workaround isValid bug in Formik
+  const cleanErrors = Object.keys(errors)
+    .filter((key) => errors[key] !== undefined)
+    .reduce((res, key) => {
+      res[key] = errors[key];
+      return res;
+    }, {});
+
+  return cleanErrors;
 };

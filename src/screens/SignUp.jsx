@@ -122,18 +122,20 @@ const SignUp = () => {
               password: '',
               confirmPassword: '',
             }}
+            validate={(values) => validateSignupForm(values)}
             onSubmit={(values, actions) => {
               dispatch(createUser(values));
               actions.setSubmitting(false);
             }}
-            validate={validateSignupForm}
           >
-            {() => (
-              <Form>
-                <Div
-                  display="flex"
-                  justifyContent="center"
-                  flexDirection="column"
+            {({ isSubmitting, submitForm }) => {
+              return (
+                <Form
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                  }}
                 >
                   <TextField
                     name="firstName"
@@ -165,14 +167,18 @@ const SignUp = () => {
                     variant="primaryLg"
                     my={[3, 3, 3, 5, 5]}
                     mx="auto"
-                    disabled={false}
+                    disabled={isSubmitting}
                     type="submit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      submitForm();
+                    }}
                   >
                     {signupScreen.signupBtn}
                   </Button>
-                </Div>
-              </Form>
-            )}
+                </Form>
+              );
+            }}
           </Formik>
         </Div>
       </Div>
