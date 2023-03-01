@@ -12,7 +12,7 @@ import { TextInput } from '../core-components/Input';
 import Label from '../core-components/Label';
 import Paragraph from '../core-components/Paragraph';
 import { signupScreen } from '../text/text';
-import { validate } from '../utils/validation';
+import { validateSignupForm } from '../utils/validation';
 
 const TextField = ({ label, ...props }) => {
   const [field, meta /*helpers*/] = useField(props);
@@ -126,7 +126,7 @@ const SignUp = () => {
               dispatch(createUser(values));
               actions.setSubmitting(false);
             }}
-            validate={validate}
+            validate={validateSignupForm}
           >
             {() => (
               <Form>
