@@ -13,7 +13,7 @@ import {
   typography,
 } from 'styled-system';
 
-const Heading = styled('h1')(
+const CoreHeading = styled('h1')(
   background,
   border,
   color,
@@ -26,5 +26,19 @@ const Heading = styled('h1')(
   textAlign,
   typography
 );
+
+const Heading = ({ children, ...props }) => {
+  return (
+    <CoreHeading
+      color="heading"
+      fontFamily="heading"
+      fontWeight={1}
+      m={0}
+      {...props}
+    >
+      {children}
+    </CoreHeading>
+  );
+};
 
 export default Heading;
