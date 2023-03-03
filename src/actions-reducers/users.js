@@ -1,21 +1,21 @@
-import {
-  // createAction,
-  createReducer,
-  createAsyncThunk,
-} from '@reduxjs/toolkit';
+import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import * as superagent from 'superagent';
+import { baseUrl } from '../utils/constants';
+let existingUserErrMsg;
 
-// const userSignup = createAction('user/signup');
-
-export const createUser = createAsyncThunk('user/signup', async (userData) => {
+export const createUser = createAsyncThunk('user/signup', async (user) => {
   try {
-    const response = await superagent
-      .post('http://localhost:3002/users')
-      .send(userData);
-    console.log('response', response.body.data.rest);
-    return response.body.data.rest;
+    const response = await superagent.post(`${baseUrl}/users`).send(user);
+
+    existingUserErrMsg = '';
+    const { userData, jwt } = response.body.data;
+
+    return { userData, userJwt: jwt };
   } catch (err) {
-    throw new Error(err.message, err);
+    if (err.status === 409) {
+      existingUserErrMsg = 'A user with this email already exists';
+    }
+    throw new Error(err);
   }
 });
 
@@ -29,14 +29,16 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(createUser.fulfilled, (state, action) => {
       const status = 'success';
-      return { ...state, ...action.payload, status };
+      return { ...state, ...action.payload, status, existingUserErrMsg };
     })
     .addCase(createUser.rejected, (state, action) => {
-      console.log('action.rejected', action.error);
+      const error = action.error;
       const status = 'failed';
-      return { ...state, status };
+      return { ...state, error, status, existingUserErrMsg };
+    })
+    .addDefaultCase((state) => {
+      state;
     });
-  // .addDefaultCase((state, action) => {state});
 });
 
 export default userReducer;
