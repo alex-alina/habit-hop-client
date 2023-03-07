@@ -13,9 +13,7 @@ const SignUpForm = () => {
   const [user, setUser] = useState({});
 
   const dispatch = useDispatch();
-  const existingUserErrMsg = useSelector(
-    (state) => state.user.existingUserErrMsg
-  );
+  const createUserError = useSelector((state) => state.user.error);
 
   return (
     <Formik
@@ -46,9 +44,9 @@ const SignUpForm = () => {
               flexDirection: 'column',
             }}
           >
-            {existingUserErrMsg ? (
+            {createUserError && createUserError.message ? (
               <Paragraph mb={4} color="error" fontSize={4}>
-                {existingUserErrMsg}
+                {createUserError.message}
               </Paragraph>
             ) : null}
             <TextField

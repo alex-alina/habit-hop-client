@@ -1,14 +1,18 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
-// import { useDispatch } from 'react-redux';
-// import { createUser } from '../actions-reducers/users';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../actions-reducers/login';
 import Button from '../core-components/Button';
 import { loginScreen } from '../text/text';
 // import { validateSignupForm } from '../utils/validation';
 import { TextField } from './Fields';
+import { Navigate } from 'react-router-dom';
+import Paragraph from '../core-components/Paragraph';
 
 const LoginForm = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const loginStatus = useSelector((state) => state.login.status);
+  const loginError = useSelector((state) => state.login.error);
 
   return (
     <Formik
@@ -18,7 +22,7 @@ const LoginForm = () => {
       }}
       // validate={(values) => validateSignupForm(values)}
       onSubmit={(values, actions) => {
-        // dispatch(createUser(values));
+        dispatch(loginUser(values));
         actions.setSubmitting(false);
       }}
     >
@@ -31,6 +35,11 @@ const LoginForm = () => {
               flexDirection: 'column',
             }}
           >
+            {loginError && loginError.message ? (
+              <Paragraph mb={4} color="error" fontSize={4}>
+                {loginError.message}
+              </Paragraph>
+            ) : null}
             <TextField
               name="email"
               type="email"
@@ -51,6 +60,9 @@ const LoginForm = () => {
             >
               {loginScreen.loginBtn}
             </Button>
+            {loginStatus === 'success' ? (
+              <Navigate replace to="/goals" />
+            ) : null}
           </Form>
         );
       }}
