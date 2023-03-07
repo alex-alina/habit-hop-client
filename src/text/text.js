@@ -42,4 +42,15 @@ const loginScreen = {
   },
   loginBtn: 'Login',
 };
-export { homeScreen, signupScreen, loginScreen };
+
+const goalsScreen = {
+  greeting: 'Hi ',
+  noGoalsIntro: 'Ready for a change? Add your first goal.',
+  goalsIntro: 'Goals Overview',
+  loadingText: 'Loading...',
+  addGoalBtn: 'Add goal',
+  addHabitBtn: 'Add habit',
+  logoutBtn: 'Logout',
+};
+
+export { homeScreen, signupScreen, loginScreen, goalsScreen };
