@@ -39,7 +39,6 @@ const validateConfirmPassword = (password, confirmPassword) => {
 };
 
 export const validateSignupForm = (values) => {
-  console.log('values', values);
   const { email, firstName, lastName, password, confirmPassword } = values;
 
   const errors = {};

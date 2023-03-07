@@ -29,4 +29,17 @@ const signupScreen = {
   signupBtn: 'Sign up',
 };
 
-export { homeScreen, signupScreen };
+const loginScreen = {
+  intro: 'Welcome back hopper!',
+  introMobile: 'Welcome back!',
+  emailField: {
+    label: 'Email address',
+    placeholder: 'Email',
+  },
+  passwordField: {
+    label: 'Password',
+    placeholder: 'Password',
+  },
+  loginBtn: 'Login',
+};
+export { homeScreen, signupScreen, loginScreen };

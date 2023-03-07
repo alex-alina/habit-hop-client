@@ -19,7 +19,7 @@ const SignUp = () => {
         display={['none', 'none', 'none', 'none', 'flex']}
         alignItems="center"
         justify-content="space-around"
-        width="50%"
+        width="40%"
         height="100vh"
         bg="blue.8"
         px={9}
@@ -74,17 +74,18 @@ const SignUp = () => {
 
         <Div
           mx="auto"
-          mt={3}
+          mt={4}
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          width={[300, 300, 350, 350, 350]}
+          width={['90%', '90%', '100%', '100%', '100%']}
+          maxWidth={[360, 360, 400, 400, 400]}
         >
           <Heading
             as="h1"
-            fontSize={[7, 7, 8, 8, 8]}
+            fontSize={[6, 6, 7, 7, 7]}
             mb={[2, 2, 2, 3, 3]}
-            mt={2}
+            mt={(2, 2, 4, 4, 4)}
           >
             {signupScreen.intro}
           </Heading>

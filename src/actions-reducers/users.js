@@ -1,23 +1,42 @@
-import {
-  // createAction,
-  createReducer,
-  createAsyncThunk,
-} from '@reduxjs/toolkit';
+import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import * as superagent from 'superagent';
+import { baseUrl } from '../utils/constants';
 
-// const userSignup = createAction('user/signup');
-
-export const createUser = createAsyncThunk('user/signup', async (userData) => {
+export const createUser = createAsyncThunk('user/signup', async (user) => {
   try {
-    const response = await superagent
-      .post('http://localhost:3002/users')
-      .send(userData);
-    console.log('response', response.body.data.rest);
-    return response.body.data.rest;
+    const response = await superagent.post(`${baseUrl}/users`).send(user);
+    const { userData, jwt } = response.body.data;
+
+    return { ...userData, userJwt: jwt };
   } catch (err) {
-    throw new Error(err.message, err);
+    if (err.response) {
+      const errorWrapper = JSON.parse(err.response.text);
+      throw `${errorWrapper.error.message}`;
+    }
+    throw new Error(err);
   }
 });
+
+export const getCurrentUser = createAsyncThunk(
+  'user/currentUser',
+  async ({ userId, userToken }) => {
+    try {
+      const response = await superagent
+        .get(`${baseUrl}/users/${userId}`)
+        .set('Authorization', `Bearer ${userToken}`);
+
+      const { user } = response.body.data;
+
+      return { ...user };
+    } catch (err) {
+      if (err.response) {
+        const errorWrapper = JSON.parse(err.response.text);
+        throw `${errorWrapper.error.message}`;
+      }
+      throw new Error(err);
+    }
+  }
+);
 
 const initialState = {};
 
@@ -29,14 +48,29 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(createUser.fulfilled, (state, action) => {
       const status = 'success';
-      return { ...state, ...action.payload, status };
+      return { ...state, ...action.payload, status, error: {} };
     })
     .addCase(createUser.rejected, (state, action) => {
-      console.log('action.rejected', action.error);
+      const error = action.error;
       const status = 'failed';
-      return { ...state, status };
+      return { ...state, error, status };
+    })
+    .addCase(getCurrentUser.pending, (state) => {
+      const status = 'loading';
+      return { status, ...state };
+    })
+    .addCase(getCurrentUser.fulfilled, (state, action) => {
+      const status = 'success';
+      return { ...state, ...action.payload, status, error: {} };
+    })
+    .addCase(getCurrentUser.rejected, (state, action) => {
+      const error = action.error;
+      const status = 'failed';
+      return { ...state, error, status };
+    })
+    .addDefaultCase((state) => {
+      state;
     });
-  // .addDefaultCase((state, action) => {state});
 });
 
 export default userReducer;

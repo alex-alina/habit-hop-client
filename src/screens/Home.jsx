@@ -24,23 +24,18 @@ const Home = () => {
         color="heading"
         as="h1"
         fontWeight={1}
-        fontSize={[7, 7, 8, 8, 8]}
+        fontSize={[6, 6, 7, 7, 7]}
         fontFamily="heading"
-        mb={[0, 0, 0, 5, 5]}
+        mb={[0, 0, 3, 4, 4]}
       >
         {homeScreen.intro}
       </Heading>
-      <Div
-        display="flex"
-        justifyContent="space-around"
-        alignItems="flex-end"
-        width={[250, 250, 350, 450, 450]}
-      >
+      <Div display="flex" justifyContent="space-around" alignItems="flex-end">
         <Div display={['none', 'none', 'none', 'none', 'block']}>
           <PlantOne width={300} height={400} />
         </Div>
         <Div>
-          <Human />
+          <Human style={{ width: 'auto', maxWidth: 300, maxHeight: 400 }} />
         </Div>
         <Div display={['none', 'none', 'none', 'none', 'block']}>
           <PlantTwo width={300} height={500} />
@@ -51,10 +46,10 @@ const Home = () => {
         display="flex"
         alignItems="center"
         flexDirection={['column', 'column', 'row', 'row', 'row']}
-        mt={5}
+        mt={[7]}
       >
         <Link to="/signup">
-          <Button variant="primaryLg" mr={[0, 0, 5, 5, 5]} mb={[5, 5, 0, 0, 0]}>
+          <Button variant="primaryLg" mr={[0, 0, 5, 5, 5]} mb={[4, 4, 0, 0, 0]}>
             {homeScreen.signupBtn}
           </Button>
         </Link>

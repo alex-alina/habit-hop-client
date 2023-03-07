@@ -1,14 +1,19 @@
 import { Form, Formik } from 'formik';
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { createUser } from '../actions-reducers/users';
 import Button from '../core-components/Button';
+import Paragraph from '../core-components/Paragraph';
 import { signupScreen } from '../text/text';
 import { validateSignupForm } from '../utils/validation';
 import { TextField } from './Fields';
 
 const SignUpForm = () => {
+  const [user, setUser] = useState({});
+
   const dispatch = useDispatch();
+  const createUserError = useSelector((state) => state.user.error);
 
   return (
     <Formik
@@ -21,7 +26,12 @@ const SignUpForm = () => {
       }}
       validate={(values) => validateSignupForm(values)}
       onSubmit={(values, actions) => {
-        dispatch(createUser(values));
+        dispatch(createUser(values))
+          .unwrap()
+          .then((result) => {
+            setUser(result);
+          })
+          .catch((rejectedWithValueAction) => rejectedWithValueAction);
         actions.setSubmitting(false);
       }}
     >
@@ -34,6 +44,11 @@ const SignUpForm = () => {
               flexDirection: 'column',
             }}
           >
+            {createUserError && createUserError.message ? (
+              <Paragraph mb={4} color="error" fontSize={4}>
+                {createUserError.message}
+              </Paragraph>
+            ) : null}
             <TextField
               name="firstName"
               type="text"
@@ -62,7 +77,8 @@ const SignUpForm = () => {
 
             <Button
               variant="primaryLg"
-              my={[3, 3, 3, 5, 5]}
+              mt={[3, 3, 3, 5, 5]}
+              mb={6}
               mx="auto"
               disabled={isSubmitting}
               type="submit"
@@ -73,6 +89,8 @@ const SignUpForm = () => {
             >
               {signupScreen.signupBtn}
             </Button>
+
+            {user.userJwt ? <Navigate replace to="/goals" /> : null}
           </Form>
         );
       }}
