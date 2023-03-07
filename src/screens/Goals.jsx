@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +11,7 @@ import Paragraph from '../core-components/Paragraph';
 import { parseDateToDDMonthYYYY } from '../utils/date';
 import { capitalizeWord } from '../utils/format';
 import Span from '../core-components/Span';
+import SvgIcon from '../components/SvgIcon';
 
 const { greeting, logoutBtn, goalsIntro, noGoalsIntro } = goalsScreen;
 
@@ -42,18 +42,20 @@ const Goals = () => {
         width="100%"
         display="flex"
         justifyContent="space-between"
+        alignItems="center"
         mb={6}
         bg="blue.0"
         fontStyle="italic"
       >
-        <Header as="h2" fontSize={6} my={2} mx={8}>
+        <Header as="h2" fontSize={6} my={2} mx={[2, 2, 2, 2, 8]}>
           {greeting}
           {user.firstName}
         </Header>
         <Button
           variant="secondaryMd"
+          mt={4}
           my={2}
-          mx={8}
+          mx={[2, 2, 2, 2, 8]}
           onClick={(e) => {
             e.preventDefault();
             //  dispatch(logout action)
@@ -64,19 +66,12 @@ const Goals = () => {
 
         {/* {logoutStatus === 'success' ? <Navigate replace to="/login" /> : null} */}
       </Div>
-      <Div
-        display="flex"
-        // flexDirection="column"
-        justifyContent="flex-start"
-        width="100%"
-      >
+      <Div display="flex" justifyContent="flex-start" width="100%">
         <Div
           display={['none', 'none', 'none', 'none', 'flex']}
           alignItems="center"
           justify-content="space-around"
           width="30%"
-          // height="100vh"
-          // bg="blue.8"
           px={9}
         >
           <GoalsOverviewImg width="100%" height="100%" />
@@ -86,8 +81,9 @@ const Goals = () => {
           flexDirection="column"
           justifyContent="flex-start"
           alignItems="center"
-          pl={6}
-          width="60%"
+          pl={[0, 0, 0, 0, 6]}
+          mx="auto"
+          width={['90%', '90%', '80%', '80%', '60%']}
         >
           {goals && goals.length === 0 ? (
             <Header>{noGoalsIntro}</Header>
@@ -100,37 +96,57 @@ const Goals = () => {
                 return (
                   <Div
                     key={i}
-                    width={'80%'}
+                    width={['90%', '90%', '90%', '80%', '80%']}
                     display="flex"
                     flexDirection="column"
                     justifyContent="flex-start"
-                    // alignItems="center"
                     mb={4}
                     borderRadius={1}
                     borderWidth="2px"
                     borderStyle="solid"
                     borderColor="blue.1"
-                    p={4}
+                    px={4}
+                    pt={4}
+                    pb={2}
                   >
-                    <Header as="h3" fontSize={5} mb={2}>
-                      {goalPriority}
-                    </Header>
-                    <Paragraph>{goal.goalDefinition}</Paragraph>
+                    <Div display="flex" justifyContent="space-between">
+                      <Span display="flex">
+                        {/* <Header as="h3" fontSize={5} mt={1}>
+                          {goalPriority}
+                        </Header> */}
+                        <Div display="flex" alignItems="center">
+                          <Header as="h3" fontSize={4} mr={2}>
+                            {goalPriority}
+                          </Header>
+                          <SvgIcon name="write" width={22} height={22} />
+                        </Div>
+                      </Span>
+                      <Button variant="iconButton">
+                        <SvgIcon name="delete" stroke="#922B21" />
+                      </Button>
+                    </Div>
+
+                    <Paragraph ml={2}>{goal.goalDefinition}</Paragraph>
                     <Div>
                       <Header as="h4" fontSize={4} mt={2} mb={1}>
                         Timeframe
                       </Header>
                       <Paragraph mb={1} ml={2}>
-                        <Span color="heading">Start Date: </Span>
+                        <Span color="heading">Starts on: </Span>
                         {parseDateToDDMonthYYYY(goal.startDate)}
                       </Paragraph>
                       <Paragraph ml={2}>
-                        <Span color="heading">End Date: </Span>
+                        <Span color="heading">Ends on: </Span>
                         {parseDateToDDMonthYYYY(goal.endDate)}
                       </Paragraph>
                     </Div>
 
-                    <Button variant="secondarySm" mx="auto" maxWidth={150}>
+                    <Button
+                      variant="secondarySm"
+                      mx="auto"
+                      mt={4}
+                      maxWidth={150}
+                    >
                       Show Habits
                     </Button>
                   </Div>
@@ -139,9 +155,6 @@ const Goals = () => {
             : null}
         </Div>
       </Div>
-      <Link to="/login">
-        <button>back</button>
-      </Link>
     </Div>
   );
 };

@@ -12,6 +12,16 @@ export const baseButton = {
     transform: 'scale(0.99)',
   },
 };
+export const iconButton = {
+  ...baseButton,
+  borderRadius: '100%',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: 'transparent',
+  bg: 'white',
+  py: 1,
+  px: 1,
+};
 
 export const roundButton = {
   ...baseButton,
@@ -45,6 +55,8 @@ export const buttonSizes = {
   small: {
     fontSize: 2,
     lineHeight: 0,
+    py: 1,
+    borderWidth: '1px',
   },
 };
 
@@ -132,4 +144,5 @@ export const buttons = {
   },
   roundButton,
   roundButtonLg,
+  iconButton,
 };
