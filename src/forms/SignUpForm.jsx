@@ -1,5 +1,5 @@
 import { Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { createUser } from '../actions-reducers/users';
@@ -8,11 +8,13 @@ import Paragraph from '../core-components/Paragraph';
 import { signupScreen } from '../text/text';
 import { validateSignupForm } from '../utils/validation';
 import { TextField } from './Fields';
+import { extractUserId } from '../utils/jwt';
+import { localStorageJwtKey } from '../utils/constants';
 
 const SignUpForm = () => {
-  const [user, setUser] = useState({});
-
   const dispatch = useDispatch();
+  const userToken = localStorage.getItem(localStorageJwtKey);
+  const userId = userToken && extractUserId(userToken);
   const createUserError = useSelector((state) => state.user.error);
 
   return (
@@ -26,12 +28,8 @@ const SignUpForm = () => {
       }}
       validate={(values) => validateSignupForm(values)}
       onSubmit={(values, actions) => {
-        dispatch(createUser(values))
-          .unwrap()
-          .then((result) => {
-            setUser(result);
-          })
-          .catch((rejectedWithValueAction) => rejectedWithValueAction);
+        localStorage.removeItem(localStorageJwtKey);
+        dispatch(createUser(values));
         actions.setSubmitting(false);
       }}
     >
@@ -90,7 +88,7 @@ const SignUpForm = () => {
               {signupScreen.signupBtn}
             </Button>
 
-            {user.userJwt ? <Navigate replace to="/goals" /> : null}
+            {userId ? <Navigate replace to="/goals" /> : null}
           </Form>
         );
       }}

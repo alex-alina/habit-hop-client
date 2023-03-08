@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as LoginHumanSVG } from '../assets/illustrations/login-humaaan.svg';
+import SvgIcon from '../components/SvgIcon';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Heading from '../core-components/Heading';
-import { loginScreen } from '../text/text';
-import SvgIcon from '../components/SvgIcon';
 import LoginForm from '../forms/LoginForm';
+import { loginScreen } from '../text/text';
 
 const Login = () => {
   return (

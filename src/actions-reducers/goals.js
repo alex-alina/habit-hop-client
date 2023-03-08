@@ -1,6 +1,7 @@
-import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import * as superagent from 'superagent';
 import { baseUrl } from '../utils/constants';
+import { logout } from './logout';
 
 export const getGoals = createAsyncThunk(
   'goals',
@@ -34,13 +35,16 @@ const goalsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getGoals.fulfilled, (state, action) => {
       const status = 'success';
-      console.log('goals', action.payload);
+
       return { ...state, ...action.payload, status, error: {} };
     })
     .addCase(getGoals.rejected, (state, action) => {
       const error = action.error;
       const status = 'failed';
-      return { ...state, error, status };
+      return { ...state, status, error };
+    })
+    .addCase(logout, () => {
+      return initialState;
     })
     .addDefaultCase((state) => {
       state;

@@ -1,34 +1,45 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
+import { getGoals } from '../actions-reducers/goals';
+import { logout } from '../actions-reducers/logout';
+import { getCurrentUser } from '../actions-reducers/users';
+import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/GoalsOverview.svg';
+import SvgIcon from '../components/SvgIcon';
+import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentUser } from '../actions-reducers/users';
-import { getGoals } from '../actions-reducers/goals';
-import { goalsScreen } from '../text/text';
-import Button from '../core-components/Button';
-import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/GoalsOverview.svg';
 import Paragraph from '../core-components/Paragraph';
+import Span from '../core-components/Span';
+import { goalsScreen } from '../text/text';
+import { localStorageJwtKey } from '../utils/constants';
 import { parseDateToDDMonthYYYY } from '../utils/date';
 import { capitalizeWord } from '../utils/format';
-import Span from '../core-components/Span';
-import SvgIcon from '../components/SvgIcon';
+import { extractUserId, isExpired } from '../utils/jwt';
 
 const { greeting, logoutBtn, goalsIntro, noGoalsIntro } = goalsScreen;
 
 const Goals = () => {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.login.userId);
-  const userToken = useSelector((state) => state.login.userJwt);
+  const userToken = localStorage.getItem(localStorageJwtKey);
+  const userId = userToken && extractUserId(userToken);
+  const login = useSelector((state) => state.login);
   const user = useSelector((state) => state.user);
   const goals = useSelector((state) => state.goals.items);
-  console.log(goals);
 
   useEffect(() => {
     if (userId && userToken) {
       dispatch(getCurrentUser({ userId, userToken }));
       dispatch(getGoals({ userId, userToken }));
     }
-  }, [userId, userToken]);
+  }, [userToken]);
+  if (login.status !== 'success') {
+    return <Navigate replace to="/login" />;
+  }
+  if (isExpired(userToken)) {
+    dispatch(logout());
+    return <Navigate replace to="/login" />;
+  }
 
   return (
     <Div
@@ -58,13 +69,11 @@ const Goals = () => {
           mx={[2, 2, 2, 2, 8]}
           onClick={(e) => {
             e.preventDefault();
-            //  dispatch(logout action)
+            dispatch(logout());
           }}
         >
           {logoutBtn}
         </Button>
-
-        {/* {logoutStatus === 'success' ? <Navigate replace to="/login" /> : null} */}
       </Div>
       <Div display="flex" justifyContent="flex-start" width="100%">
         <Div
@@ -111,9 +120,6 @@ const Goals = () => {
                   >
                     <Div display="flex" justifyContent="space-between">
                       <Span display="flex">
-                        {/* <Header as="h3" fontSize={5} mt={1}>
-                          {goalPriority}
-                        </Header> */}
                         <Div display="flex" alignItems="center">
                           <Header as="h3" fontSize={4} mr={2}>
                             {goalPriority}

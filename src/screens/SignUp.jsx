@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as WelcomeSVG } from '../assets/illustrations/welcome.svg';
+import SvgIcon from '../components/SvgIcon';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Heading from '../core-components/Heading';
-import { signupScreen } from '../text/text';
-import SvgIcon from '../components/SvgIcon';
 import SignUpForm from '../forms/SignUpForm';
+import { signupScreen } from '../text/text';
 
 const SignUp = () => {
   return (

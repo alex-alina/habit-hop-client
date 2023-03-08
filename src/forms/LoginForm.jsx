@@ -1,13 +1,12 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { loginUser } from '../actions-reducers/login';
 import Button from '../core-components/Button';
-import { loginScreen } from '../text/text';
-// import { validateSignupForm } from '../utils/validation';
-import { TextField } from './Fields';
-import { Navigate } from 'react-router-dom';
 import Paragraph from '../core-components/Paragraph';
+import { loginScreen } from '../text/text';
+import { TextField } from './Fields';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -20,7 +19,6 @@ const LoginForm = () => {
         email: '',
         password: '',
       }}
-      // validate={(values) => validateSignupForm(values)}
       onSubmit={(values, actions) => {
         dispatch(loginUser(values));
         actions.setSubmitting(false);
