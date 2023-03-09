@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { getGoals } from '../actions-reducers/goals';
@@ -16,6 +16,7 @@ import { localStorageJwtKey } from '../utils/constants';
 import { parseDateToDDMonthYYYY } from '../utils/date';
 import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
+import GoalForm from '../forms/GoalForm';
 
 const { greeting, logoutBtn, goalsIntro, noGoalsHeader, noGoalsText } =
   goalsScreen;
@@ -27,6 +28,7 @@ const Goals = () => {
   const login = useSelector((state) => state.login);
   const user = useSelector((state) => state.user);
   const goals = useSelector((state) => state.goals.items);
+  const [addGoalisVisible, setAddGoalVisibility] = useState(false);
 
   useEffect(() => {
     if (userId && userToken) {
@@ -41,15 +43,15 @@ const Goals = () => {
     dispatch(logout());
     return <Navigate replace to="/login" />;
   }
-
+  // const AddGoalForm = () => {
+  //   return (
+  //     <Div>
+  //       `${MAX_GOALS_NUMBER - goals.length} out of ${MAX_GOALS_NUMBER} goals`
+  //     </Div>
+  //   );
+  // };
   return (
-    <Div
-      // alignItems="center"
-      // display="flex"
-      // flexDirection="column"
-      // justifyContent="space-between"
-      width="100%"
-    >
+    <Div width="100%">
       <Div
         zIndex={0}
         width="100%"
@@ -61,29 +63,18 @@ const Goals = () => {
       <Div
         display="flex"
         flexDirection="column"
-        // justifyContent="center"
         alignItems="center"
         alignContent="center"
         width="100%"
         position="absolute"
         top="0"
       >
-        {/* <Div
-          display={['none', 'none', 'none', 'none', 'flex']}
-          alignItems="center"
-          justify-content="space-around"
-          width="35%"
-          pr={9}
-        >
-          <GoalsOverviewImg width="100%" height="100%" />
-        </Div> */}
         <Div
           width="100%"
           display="flex"
           justifyContent="flex-end"
           alignItems="center"
           mb={2}
-          // bg="blue.0"
         >
           <Button
             variant="secondaryMd"
@@ -102,7 +93,6 @@ const Goals = () => {
           flexDirection="column"
           justifyContent="flex-start"
           alignItems="center"
-          // pl={[0, 0, 0, 0, 6]}
           mx="auto"
           width={['90%', '90%', '80%', '80%', '65%']}
         >
@@ -115,12 +105,35 @@ const Goals = () => {
               <Header as="h2" mt={3}>
                 {noGoalsText}
               </Header>
+              <Button
+                variant="secondarySm"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                mt={6}
+                onClick={() => {
+                  setAddGoalVisibility(!addGoalisVisible);
+                }}
+              >
+                Add goal{' '}
+                <SvgIcon
+                  width={20}
+                  height={20}
+                  name="add-one"
+                  style={{ marginLeft: 8 }}
+                />
+              </Button>
             </>
           ) : (
             <Header mb={4} mt={2}>
               {user.firstName}'s {goalsIntro}
             </Header>
           )}
+
+          {addGoalisVisible && (
+            <GoalForm handleSubmit={() => console.log('hello')} />
+          )}
+
           {goals && goals.length > 0
             ? goals.map((goal, i) => {
                 const goalPriority = capitalizeWord(goal.priority);
