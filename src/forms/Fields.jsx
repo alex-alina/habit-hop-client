@@ -5,6 +5,7 @@ import { TextInput } from '../core-components/Input';
 import Label from '../core-components/Label';
 import Paragraph from '../core-components/Paragraph';
 import Textarea from '../core-components/Textarea';
+import Select from '../core-components/Select';
 
 const TextField = ({ label, ...props }) => {
   const [field, meta /*helpers*/] = useField(props);
@@ -25,7 +26,7 @@ const TextField = ({ label, ...props }) => {
 };
 
 const TextArea = ({ label, ...props }) => {
-  const [field, meta /*helpers*/] = useField(props);
+  const [field, meta] = useField(props);
 
   return (
     <Div display="flex" flexDirection="column" mb={2}>
@@ -42,4 +43,21 @@ const TextArea = ({ label, ...props }) => {
   );
 };
 
-export { TextField, TextArea };
+const SelectField = ({ label, options, placeholder, ...props }) => {
+  const [field] = useField(props);
+
+  return (
+    <Div display="flex" flexDirection="column" mb={2}>
+      <Label htmlFor={field.name}>{label}</Label>
+      <Select
+        options={options}
+        placeholder={placeholder}
+        id={field.name}
+        {...field}
+        {...props}
+      />
+    </Div>
+  );
+};
+
+export { TextField, TextArea, SelectField };

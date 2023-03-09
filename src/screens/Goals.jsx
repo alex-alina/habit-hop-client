@@ -18,8 +18,7 @@ import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
 import GoalForm from '../forms/GoalForm';
 
-const { greeting, logoutBtn, goalsIntro, noGoalsHeader, noGoalsText } =
-  goalsScreen;
+const { greeting, logoutBtn, goalsIntro, noGoalsHeader } = goalsScreen;
 
 const Goals = () => {
   const dispatch = useDispatch();
@@ -28,7 +27,8 @@ const Goals = () => {
   const login = useSelector((state) => state.login);
   const user = useSelector((state) => state.user);
   const goals = useSelector((state) => state.goals.items);
-  const [addGoalisVisible, setAddGoalVisibility] = useState(false);
+  const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
+  const showAddGoalBtn = goals && goals.length > 1 && goals.length < 4;
 
   useEffect(() => {
     if (userId && userToken) {
@@ -43,19 +43,14 @@ const Goals = () => {
     dispatch(logout());
     return <Navigate replace to="/login" />;
   }
-  // const AddGoalForm = () => {
-  //   return (
-  //     <Div>
-  //       `${MAX_GOALS_NUMBER - goals.length} out of ${MAX_GOALS_NUMBER} goals`
-  //     </Div>
-  //   );
-  // };
+
   return (
     <Div width="100%">
       <Div
         zIndex={0}
         width="100%"
-        display={['none', 'none', 'none', 'none', 'flex']}
+        height="100vh"
+        display={['none', 'none', 'none', 'flex', 'flex']}
       >
         <GoalsOverviewImg width="100%" height="100%" />
       </Div>
@@ -98,31 +93,16 @@ const Goals = () => {
         >
           {goals && goals.length === 0 ? (
             <>
-              <Header>
+              <Header
+                mt={2}
+                mb={4}
+                textAlign={['center', 'center', 'center', 'left', 'left']}
+              >
                 {greeting}
                 {user.firstName},{noGoalsHeader}
               </Header>
-              <Header as="h2" mt={3}>
-                {noGoalsText}
-              </Header>
-              <Button
-                variant="secondarySm"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                mt={6}
-                onClick={() => {
-                  setAddGoalVisibility(!addGoalisVisible);
-                }}
-              >
-                Add goal{' '}
-                <SvgIcon
-                  width={20}
-                  height={20}
-                  name="add-one"
-                  style={{ marginLeft: 8 }}
-                />
-              </Button>
+
+              <GoalForm handleSubmit={() => console.log('hello')} />
             </>
           ) : (
             <Header mb={4} mt={2}>
@@ -130,9 +110,9 @@ const Goals = () => {
             </Header>
           )}
 
-          {addGoalisVisible && (
+          {/* {addGoalisVisible && (
             <GoalForm handleSubmit={() => console.log('hello')} />
-          )}
+          )} */}
 
           {goals && goals.length > 0
             ? goals.map((goal, i) => {
@@ -195,6 +175,26 @@ const Goals = () => {
                 );
               })
             : null}
+          {showAddGoalBtn && (
+            <Button
+              variant="secondarySm"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              mt={6}
+              onClick={() => {
+                goalFormIsVisible(!setGoalFormVisibility);
+              }}
+            >
+              Add goal{' '}
+              <SvgIcon
+                width={20}
+                height={20}
+                name="add-one"
+                style={{ marginLeft: 8 }}
+              />
+            </Button>
+          )}
         </Div>
       </Div>
     </Div>

@@ -1,27 +1,25 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { useSelector } from 'react-redux';
-// import { Navigate } from 'react-router-dom';
 import Button from '../core-components/Button';
-// import Paragraph from '../core-components/Paragraph';
-// import { loginScreen } from '../text/text';
-import { TextField, TextArea } from './Fields';
-// import Textarea from '../core-components/Textarea';
+import { TextField, TextArea, SelectField } from './Fields';
+import { goalsScreen } from '../text/text';
 
-const GoalForm = ({ goal = {}, handleSubmit }) => {
-  // const dispatch = useDispatch();
-  const goals = useSelector((state) => state.goals.items);
-  const maxGoalsNum = useSelector((state) => state.goals.maxGoalsNum);
-  const newGoalsLeft = maxGoalsNum - goals.length;
-  console.log(goal);
+const GOAL_PRIORITIES = ['main', 'secondary', 'tertiary'];
+const { goalDescription, startdateInput, endDateInput, select, button } =
+  goalsScreen.goalsForm;
+
+const GoalForm = ({ goal, handleSubmit }) => {
+  const initialValues = {
+    goalDefinition: goal ? goal.goalDefinition : '',
+    priority: goal ? goal.priority : '',
+    startDate: goal ? goal.startDate : '',
+    endDate: goal ? goal.endDate : '',
+  };
+
   return (
     <Formik
-      initialValues={{
-        email: '',
-        password: '',
-      }}
+      initialValues={initialValues}
       onSubmit={(values, actions) => {
-        // dispatch(loginUser(values));
         handleSubmit(values);
         actions.setSubmitting(false);
       }}
@@ -36,29 +34,35 @@ const GoalForm = ({ goal = {}, handleSubmit }) => {
             }}
           >
             <TextArea
-              name="goalDescription"
-              label={`You can add ${newGoalsLeft} out of ${maxGoalsNum} goals`}
-              placeholder="Go SMART"
+              name="goalDefinition"
+              label={goalDescription.label}
+              placeholder={goalDescription.placeholder}
               width={[300, 300, 300, 300, 350]}
               maxWidth={350}
               height={90}
               maxlength={300}
             />
+            <SelectField
+              name="priority"
+              label={select.label}
+              options={GOAL_PRIORITIES}
+              placeholder={select.placeholder}
+            />
             <TextField
               name="startDate"
               type="date"
-              label="Start date"
-              placeholder="YYY-MM-DD"
+              label={startdateInput.label}
+              placeholder={startdateInput.placeholder}
             />
             <TextField
               name="endDate"
               type="date"
-              label="End date"
-              placeholder="YYY-MM-DD"
+              label={endDateInput.label}
+              placeholder={endDateInput.placeholder}
             />
 
             <Button
-              variant="secondaryMd"
+              variant="primaryMd"
               my={[4, 4, 3, 5, 5]}
               mx="auto"
               disabled={isSubmitting}
@@ -68,11 +72,8 @@ const GoalForm = ({ goal = {}, handleSubmit }) => {
                 submitForm();
               }}
             >
-              Add goal
+              {button}
             </Button>
-            {/* {loginStatus === 'success' ? (
-              <Navigate replace to="/goals" />
-            ) : null} */}
           </Form>
         );
       }}

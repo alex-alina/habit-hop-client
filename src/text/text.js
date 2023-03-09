@@ -45,13 +45,31 @@ const loginScreen = {
 
 const goalsScreen = {
   greeting: 'Hi ',
-  noGoalsHeader: ' ready for a change?',
-  noGoalsText: 'Add your first goal.',
+  noGoalsHeader: ' add your first goal.',
   goalsIntro: ' goals overview',
   loadingText: 'Loading...',
   addGoalBtn: 'Add goal',
   addHabitBtn: 'Add habit',
   logoutBtn: 'Log out',
+  goalsForm: {
+    goalDescription: {
+      label: 'Goal description',
+      placeholder: 'Go SMART',
+    },
+    startdateInput: {
+      label: 'Start date',
+      placeholder: 'YYY-MM-DD',
+    },
+    endDateInput: {
+      label: 'End date',
+      placeholder: 'YYY-MM-DD',
+    },
+    select: {
+      label: 'Goal priority',
+      placeholder: 'Choose priority',
+    },
+    button: 'Set new goal',
+  },
 };
 
 export { homeScreen, signupScreen, loginScreen, goalsScreen };
