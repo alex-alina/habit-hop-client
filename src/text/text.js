@@ -40,17 +40,18 @@ const loginScreen = {
     label: 'Password',
     placeholder: 'Password',
   },
-  loginBtn: 'Login',
+  loginBtn: 'Log in',
 };
 
 const goalsScreen = {
   greeting: 'Hi ',
-  noGoalsIntro: 'Ready for a change? Add your first goal.',
-  goalsIntro: 'Goals Overview',
+  noGoalsHeader: ' ready for a change?',
+  noGoalsText: 'Add your first goal.',
+  goalsIntro: ' goals overview',
   loadingText: 'Loading...',
   addGoalBtn: 'Add goal',
   addHabitBtn: 'Add habit',
-  logoutBtn: 'Logout',
+  logoutBtn: 'Log out',
 };
 
 export { homeScreen, signupScreen, loginScreen, goalsScreen };

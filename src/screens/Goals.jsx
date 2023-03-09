@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { getGoals } from '../actions-reducers/goals';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
-import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/GoalsOverview.svg';
+import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
 import SvgIcon from '../components/SvgIcon';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
@@ -17,7 +17,8 @@ import { parseDateToDDMonthYYYY } from '../utils/date';
 import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
 
-const { greeting, logoutBtn, goalsIntro, noGoalsIntro } = goalsScreen;
+const { greeting, logoutBtn, goalsIntro, noGoalsHeader, noGoalsText } =
+  goalsScreen;
 
 const Goals = () => {
   const dispatch = useDispatch();
@@ -43,61 +44,82 @@ const Goals = () => {
 
   return (
     <Div
-      alignItems="center"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
+      // alignItems="center"
+      // display="flex"
+      // flexDirection="column"
+      // justifyContent="space-between"
       width="100%"
     >
       <Div
+        zIndex={0}
         width="100%"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={6}
-        bg="blue.0"
-        fontStyle="italic"
+        display={['none', 'none', 'none', 'none', 'flex']}
       >
-        <Header as="h2" fontSize={6} my={2} mx={[2, 2, 2, 2, 8]}>
-          {greeting}
-          {user.firstName}
-        </Header>
-        <Button
-          variant="secondaryMd"
-          mt={4}
-          my={2}
-          mx={[2, 2, 2, 2, 8]}
-          onClick={(e) => {
-            e.preventDefault();
-            dispatch(logout());
-          }}
-        >
-          {logoutBtn}
-        </Button>
+        <GoalsOverviewImg width="100%" height="100%" />
       </Div>
-      <Div display="flex" justifyContent="flex-start" width="100%">
-        <Div
+
+      <Div
+        display="flex"
+        flexDirection="column"
+        // justifyContent="center"
+        alignItems="center"
+        alignContent="center"
+        width="100%"
+        position="absolute"
+        top="0"
+      >
+        {/* <Div
           display={['none', 'none', 'none', 'none', 'flex']}
           alignItems="center"
           justify-content="space-around"
-          width="30%"
-          px={9}
+          width="35%"
+          pr={9}
         >
           <GoalsOverviewImg width="100%" height="100%" />
+        </Div> */}
+        <Div
+          width="100%"
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="center"
+          mb={2}
+          // bg="blue.0"
+        >
+          <Button
+            variant="secondaryMd"
+            my={4}
+            mx={[2, 2, 2, 2, 7]}
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(logout());
+            }}
+          >
+            {logoutBtn}
+          </Button>
         </Div>
         <Div
           display="flex"
           flexDirection="column"
           justifyContent="flex-start"
           alignItems="center"
-          pl={[0, 0, 0, 0, 6]}
+          // pl={[0, 0, 0, 0, 6]}
           mx="auto"
-          width={['90%', '90%', '80%', '80%', '60%']}
+          width={['90%', '90%', '80%', '80%', '65%']}
         >
           {goals && goals.length === 0 ? (
-            <Header>{noGoalsIntro}</Header>
+            <>
+              <Header>
+                {greeting}
+                {user.firstName},{noGoalsHeader}
+              </Header>
+              <Header as="h2" mt={3}>
+                {noGoalsText}
+              </Header>
+            </>
           ) : (
-            <Header mb={4}>{goalsIntro}</Header>
+            <Header mb={4} mt={2}>
+              {user.firstName}'s {goalsIntro}
+            </Header>
           )}
           {goals && goals.length > 0
             ? goals.map((goal, i) => {
@@ -110,10 +132,11 @@ const Goals = () => {
                     flexDirection="column"
                     justifyContent="flex-start"
                     mb={4}
+                    bg="white"
                     borderRadius={1}
                     borderWidth="2px"
                     borderStyle="solid"
-                    borderColor="blue.1"
+                    borderColor="blue.2"
                     px={4}
                     pt={4}
                     pb={2}
