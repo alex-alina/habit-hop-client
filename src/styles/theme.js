@@ -103,7 +103,7 @@ export const space = [0, 4, 8, 12, 16, 24, 32, 40, 48, 56, 112, 168].map(
 //56: 9
 //112: 10
 //168: 11
-export const zIndices = {};
+export const zIndices = [0, 10, 50, 100, 500, 1000];
 
 const defaultTheme = {
   colors,

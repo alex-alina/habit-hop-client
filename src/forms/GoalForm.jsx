@@ -31,15 +31,19 @@ const GoalForm = ({ goal, handleSubmit }) => {
               display: 'flex',
               justifyContent: 'center',
               flexDirection: 'column',
+              background: 'white',
+              maxWidth: 400,
+              width: '80%',
+              marginTop: 20,
+              padding: 30,
+              borderRadius: 10,
             }}
           >
             <TextArea
               name="goalDefinition"
               label={goalDescription.label}
               placeholder={goalDescription.placeholder}
-              width={[300, 300, 300, 300, 350]}
-              maxWidth={350}
-              height={90}
+              height={60}
               maxlength={300}
             />
             <SelectField

@@ -17,6 +17,7 @@ import { parseDateToDDMonthYYYY } from '../utils/date';
 import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
 import GoalForm from '../forms/GoalForm';
+import FormsOverlay from '../components/FormOverlay';
 
 const { greeting, logoutBtn, goalsIntro, noGoalsHeader } = goalsScreen;
 
@@ -29,6 +30,8 @@ const Goals = () => {
   const goals = useSelector((state) => state.goals.items);
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
   const showAddGoalBtn = goals && goals.length > 1 && goals.length < 4;
+
+  const closeHandler = () => setGoalFormVisibility(!goalFormIsVisible);
 
   useEffect(() => {
     if (userId && userToken) {
@@ -54,6 +57,11 @@ const Goals = () => {
       >
         <GoalsOverviewImg width="100%" height="100%" />
       </Div>
+      {goalFormIsVisible && (
+        <FormsOverlay closeHandler={closeHandler}>
+          <GoalForm handleSubmit={() => console.log('hello')} />
+        </FormsOverlay>
+      )}
 
       <Div
         display="flex"
@@ -183,7 +191,7 @@ const Goals = () => {
               alignItems="center"
               mt={6}
               onClick={() => {
-                goalFormIsVisible(!setGoalFormVisibility);
+                setGoalFormVisibility(!goalFormIsVisible);
               }}
             >
               Add goal{' '}
