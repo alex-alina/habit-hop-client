@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { getGoals, addGoal, deleteGoal } from '../actions-reducers/goals';
+import {
+  addGoal,
+  deleteGoal,
+  editGoal,
+  getGoals,
+} from '../actions-reducers/goals';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
 import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
+import Banner from '../components/Banner';
+import FormsOverlay from '../components/FormOverlay';
+import IconButton from '../components/IconButton';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
 import Paragraph from '../core-components/Paragraph';
 import Span from '../core-components/Span';
+import GoalForm from '../forms/GoalForm';
 import { goalsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
 import { parseDateToDDMonthYYYY } from '../utils/date';
 import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
-import GoalForm from '../forms/GoalForm';
-import FormsOverlay from '../components/FormOverlay';
-import IconButton from '../components/IconButton';
-import Banner from '../components/Banner';
+
 const { greeting, logoutBtn, goalsIntro, noGoalsHeader, maxNumOfGoalsInfo } =
   goalsScreen;
 
@@ -32,13 +38,20 @@ const Goals = () => {
 
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
   const [shouldRedirect, setShouldRedirect] = useState(false);
-
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedGoal, setEditedGoal] = useState(null);
   const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
   const handleCloseOverlay = () => setGoalFormVisibility(!goalFormIsVisible);
+
   const handleAddGoal = (goal) => {
     dispatch(addGoal({ userId, userToken, goal }));
   };
+
+  const handlEditGoal = (updatedGoal, goalId) => {
+    dispatch(editGoal({ userId, userToken, goalId, updatedGoal }));
+  };
+
   const handleGoalFormVisibility = () => {
     setGoalFormVisibility(!goalFormIsVisible);
   };
@@ -71,8 +84,9 @@ const Goals = () => {
       {goalFormIsVisible && (
         <FormsOverlay closeHandler={handleCloseOverlay}>
           <GoalForm
-            handleSubmit={handleAddGoal}
+            handleSubmit={isEditMode ? handlEditGoal : handleAddGoal}
             handleCloseOverlay={handleCloseOverlay}
+            goal={isEditMode ? editedGoal : null}
           />
         </FormsOverlay>
       )}
@@ -148,10 +162,19 @@ const Goals = () => {
             ? goals.map((goal, i) => {
                 const goalPriority = capitalizeWord(goal.priority);
                 const goalId = goal.id;
-                const handleDeleteBtn = (e) => {
+
+                const handleDelete = (e) => {
                   e.preventDefault();
                   dispatch(deleteGoal({ userId, userToken, goalId }));
                 };
+
+                const handleEdit = (e) => {
+                  e.preventDefault();
+                  setIsEditMode(true);
+                  setEditedGoal(goal);
+                  handleGoalFormVisibility();
+                };
+
                 return (
                   <Div
                     key={i}
@@ -170,7 +193,7 @@ const Goals = () => {
                   >
                     <Div display="flex" justifyContent="space-between" mb={4}>
                       <IconButton
-                        clickHandler={handleGoalFormVisibility}
+                        clickHandler={handleEdit}
                         iconName="write"
                         variant="secondarySm"
                         width={120}
@@ -178,7 +201,7 @@ const Goals = () => {
                         Edit
                       </IconButton>
                       <IconButton
-                        clickHandler={handleDeleteBtn}
+                        clickHandler={handleDelete}
                         iconName="delete"
                         stroke="#922B21"
                         variant="secondaryDangerSm"
@@ -246,7 +269,10 @@ const Goals = () => {
             : null}
           {showAddGoalBtn && (
             <IconButton
-              clickHandler={handleGoalFormVisibility}
+              clickHandler={() => {
+                setIsEditMode(false);
+                handleGoalFormVisibility();
+              }}
               iconName="add-one"
               variant="secondarySm"
               mt={[2, 2, 2, 4, 4]}

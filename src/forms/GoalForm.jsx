@@ -12,15 +12,15 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
   const initialValues = {
     goalDefinition: goal ? goal.goalDefinition : '',
     priority: goal ? goal.priority : '',
-    startDate: goal ? goal.startDate : '',
-    endDate: goal ? goal.endDate : '',
+    startDate: goal ? new Date(goal.startDate) : '',
+    endDate: goal ? new Date(goal.endDate) : '',
   };
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={(values, actions) => {
-        handleSubmit(values);
+        goal ? handleSubmit(values, goal.id) : handleSubmit(values);
         actions.setSubmitting(false);
       }}
     >
@@ -55,9 +55,15 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
             <TextField
               name="startDate"
               type="date"
+              format="yyyy-mm-dd"
               label={startdateInput.label}
             />
-            <TextField name="endDate" type="date" label={endDateInput.label} />
+            <TextField
+              format="yyyy-mm-dd"
+              name="endDate"
+              type="date"
+              label={endDateInput.label}
+            />
 
             <Button
               variant="primaryMd"
