@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { getGoals, addGoal } from '../actions-reducers/goals';
+import { getGoals, addGoal, deleteGoal } from '../actions-reducers/goals';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
 import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
@@ -66,7 +66,10 @@ const Goals = () => {
       </Div>
       {goalFormIsVisible && (
         <FormsOverlay closeHandler={handleCloseOverlay}>
-          <GoalForm handleSubmit={handleAddGoal} />
+          <GoalForm
+            handleSubmit={handleAddGoal}
+            handleCloseOverlay={handleCloseOverlay}
+          />
         </FormsOverlay>
       )}
 
@@ -84,7 +87,6 @@ const Goals = () => {
           display="flex"
           justifyContent="flex-end"
           alignItems="center"
-          mb={2}
         >
           <Button
             variant="secondaryMd"
@@ -110,8 +112,8 @@ const Goals = () => {
           {goals && goals.length === 0 ? (
             <>
               <Header
-                mt={2}
-                mb={4}
+                mt={1}
+                mb={3}
                 textAlign={['center', 'center', 'center', 'left', 'left']}
               >
                 {greeting}
@@ -121,18 +123,15 @@ const Goals = () => {
               <GoalForm handleSubmit={handleAddGoal} />
             </>
           ) : (
-            <Header mb={4} mt={2}>
+            <Header mb={3} mt={1}>
               {user.firstName}'s {goalsIntro}
             </Header>
           )}
-
-          {/* {addGoalisVisible && (
-            <GoalForm handleSubmit={() => console.log('hello')} />
-          )} */}
-
           {goals && goals.length > 0
             ? goals.map((goal, i) => {
                 const goalPriority = capitalizeWord(goal.priority);
+                const goalId = goal.id;
+
                 return (
                   <Div
                     key={i}
@@ -159,7 +158,13 @@ const Goals = () => {
                           <SvgIcon name="write" width={22} height={22} />
                         </Div>
                       </Span>
-                      <Button variant="iconButton">
+                      <Button
+                        variant="iconButton"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dispatch(deleteGoal({ userId, userToken, goalId }));
+                        }}
+                      >
                         <SvgIcon name="delete" stroke="#922B21" />
                       </Button>
                     </Div>

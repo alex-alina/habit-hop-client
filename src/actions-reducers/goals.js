@@ -46,6 +46,27 @@ export const addGoal = createAsyncThunk(
   }
 );
 
+export const deleteGoal = createAsyncThunk(
+  'goals/deleteGoal',
+  async ({ userId, userToken, goalId }) => {
+    try {
+      const response = await superagent
+        .delete(`${baseUrl}/users/${userId}/goals/${goalId}`)
+        .set('Authorization', `Bearer ${userToken}`);
+
+      const resStatus = response.status;
+
+      return { resStatus, goalId };
+    } catch (err) {
+      if (err.response) {
+        const errorWrapper = JSON.parse(err.response.text);
+        throw `${errorWrapper.error.message}`;
+      }
+      throw new Error(err);
+    }
+  }
+);
+
 const initialState = {};
 
 const goalsReducer = createReducer(initialState, (builder) => {
@@ -76,6 +97,22 @@ const goalsReducer = createReducer(initialState, (builder) => {
       return { ...state, items: newGoals, status, error: {} };
     })
     .addCase(addGoal.rejected, (state, action) => {
+      const error = action.error;
+      const status = 'failed';
+      return { ...state, status, error };
+    })
+    .addCase(deleteGoal.pending, (state) => {
+      const status = 'loading';
+      return { status, ...state };
+    })
+    .addCase(deleteGoal.fulfilled, (state, action) => {
+      const status = 'success';
+      const { goalId, resStatus } = action.payload;
+      const newGoals = state.items.filter((goal) => goal.id !== goalId);
+
+      return { ...state, items: newGoals, status, resStatus, error: {} };
+    })
+    .addCase(deleteGoal.rejected, (state, action) => {
       const error = action.error;
       const status = 'failed';
       return { ...state, status, error };

@@ -8,7 +8,7 @@ const GOAL_PRIORITIES = ['main', 'secondary', 'tertiary'];
 const { goalDescription, startdateInput, endDateInput, select, button } =
   goalsScreen.goalsForm;
 
-const GoalForm = ({ goal, handleSubmit }) => {
+const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
   const initialValues = {
     goalDefinition: goal ? goal.goalDefinition : '',
     priority: goal ? goal.priority : '',
@@ -68,6 +68,7 @@ const GoalForm = ({ goal, handleSubmit }) => {
               onClick={(e) => {
                 e.preventDefault();
                 submitForm();
+                handleCloseOverlay && handleCloseOverlay();
               }}
             >
               {button}
