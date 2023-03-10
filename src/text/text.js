@@ -54,7 +54,7 @@ const goalsScreen = {
   goalsForm: {
     goalDescription: {
       label: 'Goal description',
-      placeholder: 'Go SMART',
+      placeholder: 'Go S.M.A.R.T',
     },
     startdateInput: {
       label: 'Start date',

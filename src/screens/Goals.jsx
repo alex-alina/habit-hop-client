@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { getGoals } from '../actions-reducers/goals';
+import { getGoals, addGoal } from '../actions-reducers/goals';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
 import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
@@ -29,10 +29,12 @@ const Goals = () => {
   const user = useSelector((state) => state.user);
   const goals = useSelector((state) => state.goals.items);
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
-  const showAddGoalBtn = goals && goals.length > 1 && goals.length < 4;
+  const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
   const closeHandler = () => setGoalFormVisibility(!goalFormIsVisible);
-
+  const handleAddGoal = (goal) => {
+    dispatch(addGoal({ userId, userToken, goal }));
+  };
   useEffect(() => {
     if (userId && userToken) {
       dispatch(getCurrentUser({ userId, userToken }));
@@ -43,6 +45,7 @@ const Goals = () => {
     return <Navigate replace to="/login" />;
   }
   if (isExpired(userToken)) {
+    console.log(isExpired(userToken));
     dispatch(logout());
     return <Navigate replace to="/login" />;
   }
@@ -59,7 +62,7 @@ const Goals = () => {
       </Div>
       {goalFormIsVisible && (
         <FormsOverlay closeHandler={closeHandler}>
-          <GoalForm handleSubmit={() => console.log('hello')} />
+          <GoalForm handleSubmit={handleAddGoal} />
         </FormsOverlay>
       )}
 
@@ -110,7 +113,7 @@ const Goals = () => {
                 {user.firstName},{noGoalsHeader}
               </Header>
 
-              <GoalForm handleSubmit={() => console.log('hello')} />
+              <GoalForm handleSubmit={handleAddGoal} />
             </>
           ) : (
             <Header mb={4} mt={2}>
