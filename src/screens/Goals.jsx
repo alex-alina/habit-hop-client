@@ -5,7 +5,6 @@ import { getGoals, addGoal, deleteGoal } from '../actions-reducers/goals';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
 import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
-import SvgIcon from '../components/SvgIcon';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
@@ -18,8 +17,10 @@ import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
 import GoalForm from '../forms/GoalForm';
 import FormsOverlay from '../components/FormOverlay';
-
-const { greeting, logoutBtn, goalsIntro, noGoalsHeader } = goalsScreen;
+import IconButton from '../components/IconButton';
+import Banner from '../components/Banner';
+const { greeting, logoutBtn, goalsIntro, noGoalsHeader, maxNumOfGoalsInfo } =
+  goalsScreen;
 
 const Goals = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,9 @@ const Goals = () => {
   const handleCloseOverlay = () => setGoalFormVisibility(!goalFormIsVisible);
   const handleAddGoal = (goal) => {
     dispatch(addGoal({ userId, userToken, goal }));
+  };
+  const handleGoalFormVisibility = () => {
+    setGoalFormVisibility(!goalFormIsVisible);
   };
 
   useEffect(() => {
@@ -123,71 +127,115 @@ const Goals = () => {
               <GoalForm handleSubmit={handleAddGoal} />
             </>
           ) : (
-            <Header mb={3} mt={1}>
-              {user.firstName}'s {goalsIntro}
-            </Header>
+            <Div
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              mb={6}
+              mt={1}
+            >
+              <Header>
+                {user.firstName}'s {goalsIntro}
+              </Header>
+              {!showAddGoalBtn && (
+                <Banner iconName="tips" mt={4}>
+                  {maxNumOfGoalsInfo}
+                </Banner>
+              )}
+            </Div>
           )}
           {goals && goals.length > 0
             ? goals.map((goal, i) => {
                 const goalPriority = capitalizeWord(goal.priority);
                 const goalId = goal.id;
-
+                const handleDeleteBtn = (e) => {
+                  e.preventDefault();
+                  dispatch(deleteGoal({ userId, userToken, goalId }));
+                };
                 return (
                   <Div
                     key={i}
-                    width={['90%', '90%', '90%', '80%', '80%']}
+                    width={['90%', '90%', '90%', '90%', '80%']}
                     display="flex"
                     flexDirection="column"
-                    justifyContent="flex-start"
+                    justifyContent="space-between"
                     mb={4}
                     bg="white"
                     borderRadius={1}
                     borderWidth="2px"
                     borderStyle="solid"
                     borderColor="blue.2"
-                    px={4}
-                    pt={4}
-                    pb={2}
+                    px={[4, 4, 4, 6, 6]}
+                    py={4}
                   >
-                    <Div display="flex" justifyContent="space-between">
-                      <Span display="flex">
-                        <Div display="flex" alignItems="center">
-                          <Header as="h3" fontSize={4} mr={2}>
-                            {goalPriority}
-                          </Header>
-                          <SvgIcon name="write" width={22} height={22} />
-                        </Div>
-                      </Span>
-                      <Button
-                        variant="iconButton"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          dispatch(deleteGoal({ userId, userToken, goalId }));
-                        }}
+                    <Div display="flex" justifyContent="space-between" mb={4}>
+                      <IconButton
+                        clickHandler={handleGoalFormVisibility}
+                        iconName="write"
+                        variant="secondarySm"
+                        width={120}
                       >
-                        <SvgIcon name="delete" stroke="#922B21" />
-                      </Button>
+                        Edit
+                      </IconButton>
+                      <IconButton
+                        clickHandler={handleDeleteBtn}
+                        iconName="delete"
+                        stroke="#922B21"
+                        variant="secondaryDangerSm"
+                        width={120}
+                      >
+                        Delete
+                      </IconButton>
                     </Div>
+                    <Div
+                      display="flex"
+                      flexDirection={[
+                        'column',
+                        'column',
+                        'column',
+                        'row',
+                        'row',
+                      ]}
+                      justifyContent="space-between"
+                      borderTop="2px solid #C5CAE9"
+                      pt={3}
+                    >
+                      <Div
+                        display="flex"
+                        flexDirection="column"
+                        width={['90%', '90%', '90%', '40%', '40%']}
+                      >
+                        <Header as="h3" fontSize={4}>
+                          {goalPriority} goal
+                        </Header>
+                        <Paragraph mt={2} mr={6}>
+                          {goal.goalDefinition}
+                        </Paragraph>
+                      </Div>
 
-                    <Paragraph ml={2}>{goal.goalDefinition}</Paragraph>
-                    <Div>
-                      <Header as="h4" fontSize={4} mt={2} mb={1}>
-                        Timeframe
-                      </Header>
-                      <Paragraph mb={1} ml={2}>
-                        <Span color="heading">Starts on: </Span>
-                        {parseDateToDDMonthYYYY(goal.startDate)}
-                      </Paragraph>
-                      <Paragraph ml={2}>
-                        <Span color="heading">Ends on: </Span>
-                        {parseDateToDDMonthYYYY(goal.endDate)}
-                      </Paragraph>
+                      <Div
+                        display="flex"
+                        flexDirection="column"
+                        mt={[4, 4, 4, 0, 0]}
+                        width={['90%', '90%', '90%', '40%', '40%']}
+                      >
+                        <Header as="h4" fontSize={4} mb={1}>
+                          Timeframe
+                        </Header>
+                        <Paragraph mb={1}>
+                          <Span color="heading">Starts on: </Span>
+                          {parseDateToDDMonthYYYY(goal.startDate)}
+                        </Paragraph>
+                        <Paragraph>
+                          <Span color="heading">Ends on: </Span>
+                          {parseDateToDDMonthYYYY(goal.endDate)}
+                        </Paragraph>
+                      </Div>
                     </Div>
-
                     <Button
                       variant="secondarySm"
                       mx="auto"
-                      mt={4}
+                      mt={5}
                       maxWidth={150}
                     >
                       Show Habits
@@ -197,24 +245,15 @@ const Goals = () => {
               })
             : null}
           {showAddGoalBtn && (
-            <Button
+            <IconButton
+              clickHandler={handleGoalFormVisibility}
+              iconName="add-one"
               variant="secondarySm"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              mt={6}
-              onClick={() => {
-                setGoalFormVisibility(!goalFormIsVisible);
-              }}
+              mt={[2, 2, 2, 4, 4]}
+              mb={6}
             >
-              Add goal{' '}
-              <SvgIcon
-                width={20}
-                height={20}
-                name="add-one"
-                style={{ marginLeft: 8 }}
-              />
-            </Button>
+              Add goal
+            </IconButton>
           )}
         </Div>
       </Div>

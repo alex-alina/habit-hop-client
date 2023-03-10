@@ -70,6 +70,8 @@ const goalsScreen = {
     },
     button: 'Set new goal',
   },
+  maxNumOfGoalsInfo:
+    'You can add a maximum of three goals. Edit or replace your goals to fit your current needs.',
 };
 
 export { homeScreen, signupScreen, loginScreen, goalsScreen };

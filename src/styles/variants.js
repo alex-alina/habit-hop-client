@@ -14,11 +14,14 @@ export const baseButton = {
 };
 export const iconButton = {
   ...baseButton,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   borderRadius: '100%',
   borderWidth: '1px',
   borderStyle: 'solid',
   borderColor: 'transparent',
-  bg: 'white',
+  bg: 'transparent',
   py: 1,
   px: 1,
 };
@@ -92,6 +95,19 @@ export const secondary = {
   },
 };
 
+export const secondaryDanger = {
+  ...baseButton,
+  color: '#922B21',
+  bg: 'white',
+  border: '2px solid #922B21',
+  '&:hover': {
+    bg: '#F9EBEA',
+  },
+  '&:disabled': {
+    ...disabled,
+  },
+};
+
 export const tertiary = {
   ...baseButton,
   color: '#1A237E',
@@ -128,6 +144,18 @@ export const buttons = {
   },
   secondarySm: {
     ...secondary,
+    ...buttonSizes.small,
+  },
+  secondaryDangerLg: {
+    ...secondaryDanger,
+    ...buttonSizes.large,
+  },
+  secondaryDangerMd: {
+    ...secondaryDanger,
+    ...buttonSizes.medium,
+  },
+  secondaryDangerSm: {
+    ...secondaryDanger,
     ...buttonSizes.small,
   },
   tertiaryLg: {
