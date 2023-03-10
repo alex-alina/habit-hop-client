@@ -6,11 +6,13 @@ const initialState = {};
 const logoutReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(logout, (state) => {
+      const status = 'success';
       localStorage.removeItem(localStorageJwtKey);
-      return { ...state };
+      return { ...state, status };
     })
     .addDefaultCase((state) => {
-      state;
+      const status = 'idle';
+      return { ...state, status };
     });
 });
 

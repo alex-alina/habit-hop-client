@@ -56,14 +56,8 @@ const GoalForm = ({ goal, handleSubmit }) => {
               name="startDate"
               type="date"
               label={startdateInput.label}
-              placeholder={startdateInput.placeholder}
             />
-            <TextField
-              name="endDate"
-              type="date"
-              label={endDateInput.label}
-              placeholder={endDateInput.placeholder}
-            />
+            <TextField name="endDate" type="date" label={endDateInput.label} />
 
             <Button
               variant="primaryMd"

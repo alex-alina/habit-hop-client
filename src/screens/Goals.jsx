@@ -25,28 +25,32 @@ const Goals = () => {
   const dispatch = useDispatch();
   const userToken = localStorage.getItem(localStorageJwtKey);
   const userId = userToken && extractUserId(userToken);
-  const login = useSelector((state) => state.login);
+
   const user = useSelector((state) => state.user);
   const goals = useSelector((state) => state.goals.items);
+
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+
   const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
-  const closeHandler = () => setGoalFormVisibility(!goalFormIsVisible);
+  const handleCloseOverlay = () => setGoalFormVisibility(!goalFormIsVisible);
   const handleAddGoal = (goal) => {
     dispatch(addGoal({ userId, userToken, goal }));
   };
+
   useEffect(() => {
     if (userId && userToken) {
       dispatch(getCurrentUser({ userId, userToken }));
       dispatch(getGoals({ userId, userToken }));
     }
-  }, [userToken]);
-  if (login.status !== 'success') {
-    return <Navigate replace to="/login" />;
-  }
-  if (isExpired(userToken)) {
-    console.log(isExpired(userToken));
-    dispatch(logout());
+    if (!userToken || isExpired(userToken)) {
+      dispatch(logout());
+      setShouldRedirect(!shouldRedirect);
+    }
+  }, [userToken, shouldRedirect]);
+
+  if (shouldRedirect) {
     return <Navigate replace to="/login" />;
   }
 
@@ -61,7 +65,7 @@ const Goals = () => {
         <GoalsOverviewImg width="100%" height="100%" />
       </Div>
       {goalFormIsVisible && (
-        <FormsOverlay closeHandler={closeHandler}>
+        <FormsOverlay closeHandler={handleCloseOverlay}>
           <GoalForm handleSubmit={handleAddGoal} />
         </FormsOverlay>
       )}
@@ -89,6 +93,7 @@ const Goals = () => {
             onClick={(e) => {
               e.preventDefault();
               dispatch(logout());
+              setShouldRedirect(!shouldRedirect);
             }}
           >
             {logoutBtn}

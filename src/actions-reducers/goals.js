@@ -3,8 +3,6 @@ import * as superagent from 'superagent';
 import { baseUrl } from '../utils/constants';
 import { logout } from './logout';
 
-const MAX_GOALS_NUMBER = 3;
-
 export const getGoals = createAsyncThunk(
   'goals',
   async ({ userId, userToken }) => {
@@ -48,7 +46,7 @@ export const addGoal = createAsyncThunk(
   }
 );
 
-const initialState = { maxGoalsNum: MAX_GOALS_NUMBER };
+const initialState = {};
 
 const goalsReducer = createReducer(initialState, (builder) => {
   builder
