@@ -21,7 +21,6 @@ import Span from '../core-components/Span';
 import GoalForm from '../forms/GoalForm';
 import { goalsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
-import { parseDateToDDMonthYYYY } from '../utils/date';
 import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
 
@@ -63,7 +62,7 @@ const Goals = () => {
     }
     if (!userToken || isExpired(userToken)) {
       dispatch(logout());
-      setShouldRedirect(!shouldRedirect);
+      setShouldRedirect(true);
     }
   }, [userToken, shouldRedirect]);
 
@@ -247,11 +246,11 @@ const Goals = () => {
                         </Header>
                         <Paragraph mb={1}>
                           <Span color="heading">Starts on: </Span>
-                          {parseDateToDDMonthYYYY(goal.startDate)}
+                          {goal.startDate}
                         </Paragraph>
                         <Paragraph>
                           <Span color="heading">Ends on: </Span>
-                          {parseDateToDDMonthYYYY(goal.endDate)}
+                          {goal.endDate}
                         </Paragraph>
                       </Div>
                     </Div>

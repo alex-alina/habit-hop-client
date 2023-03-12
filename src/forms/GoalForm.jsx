@@ -12,8 +12,8 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
   const initialValues = {
     goalDefinition: goal ? goal.goalDefinition : '',
     priority: goal ? goal.priority : '',
-    startDate: goal ? new Date(goal.startDate) : '',
-    endDate: goal ? new Date(goal.endDate) : '',
+    startDate: goal ? goal.startDate : '',
+    endDate: goal ? goal.endDate : '',
   };
 
   return (

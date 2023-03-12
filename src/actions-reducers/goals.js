@@ -3,6 +3,19 @@ import * as superagent from 'superagent';
 import { baseUrl } from '../utils/constants';
 import { logout } from './logout';
 
+const formatGoal = (goal) => {
+  const { id, goalDefinition, priority, startDate, endDate } = goal;
+  const formattedGoal = {
+    id,
+    goalDefinition,
+    priority,
+    startDate,
+    endDate,
+  };
+
+  return formattedGoal;
+};
+
 export const getGoals = createAsyncThunk(
   'goals',
   async ({ userId, userToken }) => {
@@ -12,8 +25,9 @@ export const getGoals = createAsyncThunk(
         .set('Authorization', `Bearer ${userToken}`);
 
       const goals = response.body.data.goals;
+      const formattedGoals = goals.map((goal) => formatGoal(goal));
 
-      return { items: goals };
+      return { items: formattedGoals };
     } catch (err) {
       if (err.response) {
         const errorWrapper = JSON.parse(err.response.text);
@@ -34,8 +48,9 @@ export const addGoal = createAsyncThunk(
         .send(goal);
 
       const newGoal = response.body.data.goal;
+      const formattedGoal = formatGoal(newGoal);
 
-      return newGoal;
+      return formattedGoal;
     } catch (err) {
       if (err.response) {
         const errorWrapper = JSON.parse(err.response.text);
@@ -77,8 +92,9 @@ export const editGoal = createAsyncThunk(
         .send(updatedGoal);
 
       const newGoal = response.body.data.goal;
+      const formattedGoal = formatGoal(newGoal);
 
-      return newGoal;
+      return formattedGoal;
     } catch (err) {
       if (err.response) {
         const errorWrapper = JSON.parse(err.response.text);
