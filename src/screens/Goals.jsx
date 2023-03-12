@@ -24,8 +24,17 @@ import { localStorageJwtKey } from '../utils/constants';
 import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
 
-const { greeting, logoutBtn, goalsIntro, noGoalsHeader, maxNumOfGoalsInfo } =
-  goalsScreen;
+const {
+  logoutBtn,
+  greeting,
+  goalsIntro,
+  noGoalsIntro,
+  maxNumOfGoalsInfo,
+  goalCard,
+  addGoalBtn,
+} = goalsScreen;
+
+const { editBtn, deleteBtn, timeSection, showHabitsBtn } = goalCard;
 
 const Goals = () => {
   const dispatch = useDispatch();
@@ -134,7 +143,7 @@ const Goals = () => {
                 textAlign={['center', 'center', 'center', 'left', 'left']}
               >
                 {greeting}
-                {user.firstName},{noGoalsHeader}
+                {user.firstName},{noGoalsIntro}
               </Header>
 
               <GoalForm handleSubmit={handleAddGoal} />
@@ -197,7 +206,7 @@ const Goals = () => {
                         variant="secondarySm"
                         width={120}
                       >
-                        Edit
+                        {editBtn}
                       </IconButton>
                       <IconButton
                         clickHandler={handleDelete}
@@ -206,7 +215,7 @@ const Goals = () => {
                         variant="secondaryDangerSm"
                         width={120}
                       >
-                        Delete
+                        {deleteBtn}
                       </IconButton>
                     </Div>
                     <Div
@@ -242,14 +251,14 @@ const Goals = () => {
                         width={['90%', '90%', '90%', '40%', '40%']}
                       >
                         <Header as="h4" fontSize={4} mb={1}>
-                          Timeframe
+                          {timeSection.title}
                         </Header>
                         <Paragraph mb={1}>
-                          <Span color="heading">Starts on: </Span>
+                          <Span color="heading">{timeSection.startLabel}</Span>
                           {goal.startDate}
                         </Paragraph>
                         <Paragraph>
-                          <Span color="heading">Ends on: </Span>
+                          <Span color="heading">{timeSection.endLabel}</Span>
                           {goal.endDate}
                         </Paragraph>
                       </Div>
@@ -260,7 +269,7 @@ const Goals = () => {
                       mt={5}
                       maxWidth={150}
                     >
-                      Show Habits
+                      {showHabitsBtn}
                     </Button>
                   </Div>
                 );
@@ -277,7 +286,7 @@ const Goals = () => {
               mt={[2, 2, 2, 4, 4]}
               mb={6}
             >
-              Add goal
+              {addGoalBtn}
             </IconButton>
           )}
         </Div>
