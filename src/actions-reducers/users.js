@@ -1,13 +1,15 @@
-import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import * as superagent from 'superagent';
-import { baseUrl } from '../utils/constants';
+import { baseUrl, localStorageJwtKey } from '../utils/constants';
+import { logout } from './logout';
 
 export const createUser = createAsyncThunk('user/signup', async (user) => {
   try {
     const response = await superagent.post(`${baseUrl}/users`).send(user);
     const { userData, jwt } = response.body.data;
+    localStorage.setItem(localStorageJwtKey, jwt);
 
-    return { ...userData, userJwt: jwt };
+    return { ...userData };
   } catch (err) {
     if (err.response) {
       const errorWrapper = JSON.parse(err.response.text);
@@ -67,6 +69,9 @@ const userReducer = createReducer(initialState, (builder) => {
       const error = action.error;
       const status = 'failed';
       return { ...state, error, status };
+    })
+    .addCase(logout, () => {
+      return initialState;
     })
     .addDefaultCase((state) => {
       state;

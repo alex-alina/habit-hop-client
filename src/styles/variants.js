@@ -12,6 +12,19 @@ export const baseButton = {
     transform: 'scale(0.99)',
   },
 };
+export const iconButton = {
+  ...baseButton,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '100%',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: 'transparent',
+  bg: 'transparent',
+  py: 1,
+  px: 1,
+};
 
 export const roundButton = {
   ...baseButton,
@@ -45,6 +58,8 @@ export const buttonSizes = {
   small: {
     fontSize: 2,
     lineHeight: 0,
+    py: 1,
+    borderWidth: '1px',
   },
 };
 
@@ -74,6 +89,19 @@ export const secondary = {
   border: '2px solid #3949AB',
   '&:hover': {
     bg: '#E8EAF6',
+  },
+  '&:disabled': {
+    ...disabled,
+  },
+};
+
+export const secondaryDanger = {
+  ...baseButton,
+  color: '#922B21',
+  bg: 'white',
+  border: '2px solid #922B21',
+  '&:hover': {
+    bg: '#F9EBEA',
   },
   '&:disabled': {
     ...disabled,
@@ -118,6 +146,18 @@ export const buttons = {
     ...secondary,
     ...buttonSizes.small,
   },
+  secondaryDangerLg: {
+    ...secondaryDanger,
+    ...buttonSizes.large,
+  },
+  secondaryDangerMd: {
+    ...secondaryDanger,
+    ...buttonSizes.medium,
+  },
+  secondaryDangerSm: {
+    ...secondaryDanger,
+    ...buttonSizes.small,
+  },
   tertiaryLg: {
     ...tertiary,
     ...buttonSizes.large,
@@ -132,4 +172,5 @@ export const buttons = {
   },
   roundButton,
   roundButtonLg,
+  iconButton,
 };

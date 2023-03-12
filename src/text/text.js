@@ -40,6 +40,51 @@ const loginScreen = {
     label: 'Password',
     placeholder: 'Password',
   },
-  loginBtn: 'Login',
+  loginBtn: 'Log in',
+  signupRedirect: {
+    text: "Don't have an account yet?",
+    link: 'Sign up',
+  },
 };
-export { homeScreen, signupScreen, loginScreen };
+
+const goalsScreen = {
+  logoutBtn: 'Log out',
+  greeting: 'Hi ',
+  noGoalsIntro: ' add your first goal.',
+  goalsIntro: ' goals overview',
+  maxNumOfGoalsInfo:
+    'You can add a maximum of three goals. Edit or replace your goals to fit your current needs.',
+  loadingText: 'Loading...',
+  addGoalBtn: 'Add goal',
+  goalCard: {
+    editBtn: 'Edit',
+    deleteBtn: 'Delete',
+    timeSection: {
+      title: 'Timeframe',
+      startLabel: 'Starts on: ',
+      endLabel: 'Ends on: ',
+    },
+    showHabitsBtn: 'Show Habits',
+  },
+  goalsForm: {
+    goalDescription: {
+      label: 'Goal description',
+      placeholder: 'Go S.M.A.R.T',
+    },
+    startdateInput: {
+      label: 'Start date',
+      placeholder: 'YYY-MM-DD',
+    },
+    endDateInput: {
+      label: 'End date',
+      placeholder: 'YYY-MM-DD',
+    },
+    select: {
+      label: 'Goal priority',
+      placeholder: 'Choose priority',
+    },
+    button: 'Set new goal',
+  },
+};
+
+export { homeScreen, signupScreen, loginScreen, goalsScreen };

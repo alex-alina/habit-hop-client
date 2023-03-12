@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as LoginHumanSVG } from '../assets/illustrations/login-humaaan.svg';
+import SvgIcon from '../components/SvgIcon';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Heading from '../core-components/Heading';
-import { loginScreen } from '../text/text';
-import SvgIcon from '../components/SvgIcon';
 import LoginForm from '../forms/LoginForm';
+import { loginScreen } from '../text/text';
+
+const { intro, introMobile, signupRedirect } = loginScreen;
 
 const Login = () => {
   return (
@@ -88,7 +90,7 @@ const Login = () => {
             mb={3}
             mt={[null, null, 6, 6, 9]}
           >
-            {loginScreen.intro}
+            {intro}
           </Heading>
           <Heading
             as="h1"
@@ -97,9 +99,23 @@ const Login = () => {
             mb={4}
             mt={4}
           >
-            {loginScreen.introMobile}
+            {introMobile}
           </Heading>
           <LoginForm />
+        </Div>
+        <Div
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          color="blue.9"
+          mt={[4, 4, 4, 8, 8]}
+        >
+          <Heading as="h3" mb={2}>
+            {signupRedirect.text}
+          </Heading>
+          <Link to={'/signup'} style={{ color: 'inherit' }}>
+            <Heading as="h3">{signupRedirect.link}</Heading>
+          </Link>
         </Div>
       </Div>
     </Div>
