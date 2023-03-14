@@ -1,10 +1,14 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Button from '../core-components/Button';
-import { TextField, TextArea, SelectField } from './Fields';
+import Paragraph from '../core-components/Paragraph';
 import { goalsScreen } from '../text/text';
+import { validateGoalsForm } from '../utils/validation';
+import { SelectField, TextArea, TextField } from './Fields';
 
 const GOAL_PRIORITIES = ['main', 'secondary', 'tertiary'];
+
 const { goalDescription, startdateInput, endDateInput, select, button } =
   goalsScreen.goalsForm;
 
@@ -16,15 +20,17 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
     endDate: goal ? goal.endDate : '',
   };
 
+  const goalError = useSelector((state) => state.goals.error);
   return (
     <Formik
       initialValues={initialValues}
+      validate={(values) => validateGoalsForm(values)}
       onSubmit={(values, actions) => {
         goal ? handleSubmit(values, goal.id) : handleSubmit(values);
         actions.setSubmitting(false);
       }}
     >
-      {({ isSubmitting, submitForm }) => {
+      {({ isSubmitting, submitForm, submitCount }) => {
         return (
           <Form
             style={{
@@ -39,6 +45,11 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
               borderRadius: 10,
             }}
           >
+            {goalError && goalError.message ? (
+              <Paragraph mb={4} color="error" fontSize={4}>
+                {goalError.message}
+              </Paragraph>
+            ) : null}
             <TextArea
               name="goalDefinition"
               label={goalDescription.label}
@@ -74,7 +85,7 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
               onClick={(e) => {
                 e.preventDefault();
                 submitForm();
-                handleCloseOverlay && handleCloseOverlay();
+                submitCount > 0 && handleCloseOverlay && handleCloseOverlay();
               }}
             >
               {button}

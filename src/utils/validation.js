@@ -38,7 +38,47 @@ const validateConfirmPassword = (password, confirmPassword) => {
   return error;
 };
 
-export const validateSignupForm = (values) => {
+const validateTextBlocks = (value, minChars, maxChars) => {
+  let error;
+  if (!value) {
+    error = 'Required';
+  } else if (value.length < minChars) {
+    error = 'Goal description must have at least 20 characters';
+  } else if (value.length > maxChars) {
+    error = 'Goal description must have less than 300 characters';
+  }
+  return error;
+};
+
+const validateGoalPriority = (value) => {
+  let error;
+  if (!value) {
+    error = 'Required';
+  }
+  return error;
+};
+
+const validateDateInput = (value) => {
+  let error;
+  if (!value) {
+    error = 'Required';
+  }
+  return error;
+};
+
+//workaround for isValid bug in Formik
+const cleanUpErrors = (errors) => {
+  const definedErrors = Object.keys(errors)
+    .filter((key) => errors[key] !== undefined)
+    .reduce((res, key) => {
+      res[key] = errors[key];
+      return res;
+    }, {});
+
+  return definedErrors;
+};
+
+const validateSignupForm = (values) => {
   const { email, firstName, lastName, password, confirmPassword } = values;
 
   const errors = {};
@@ -48,13 +88,32 @@ export const validateSignupForm = (values) => {
   errors.password = validatePassword(password);
   errors.confirmPassword = validateConfirmPassword(password, confirmPassword);
 
-  //workaround isValid bug in Formik
-  const cleanErrors = Object.keys(errors)
-    .filter((key) => errors[key] !== undefined)
-    .reduce((res, key) => {
-      res[key] = errors[key];
-      return res;
-    }, {});
-
+  const cleanErrors = cleanUpErrors(errors);
   return cleanErrors;
 };
+
+const validateLoginForm = (values) => {
+  const { email, password } = values;
+
+  const errors = {};
+  errors.email = validateEmail(email);
+  errors.password = validatePassword(password);
+
+  const cleanErrors = cleanUpErrors(errors);
+  return cleanErrors;
+};
+
+const validateGoalsForm = (values) => {
+  const { goalDefinition, priority, startDate, endDate } = values;
+
+  const errors = {};
+  errors.goalDefinition = validateTextBlocks(goalDefinition, 20, 300);
+  errors.priority = validateGoalPriority(priority);
+  errors.startDate = validateDateInput(startDate);
+  errors.endDate = validateDateInput(endDate);
+
+  const cleanErrors = cleanUpErrors(errors);
+  return cleanErrors;
+};
+
+export { validateSignupForm, validateLoginForm, validateGoalsForm };
