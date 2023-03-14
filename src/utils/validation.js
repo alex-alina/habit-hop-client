@@ -1,3 +1,5 @@
+import { isPresentDate } from './date';
+
 const validateEmail = (email) => {
   let error;
   if (!email) {
@@ -63,6 +65,10 @@ const validateDateInput = (value) => {
   if (!value) {
     error = 'Required';
   }
+  if (!isPresentDate(value)) {
+    error = "You can't add a date in the past";
+  }
+
   return error;
 };
 
