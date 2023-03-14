@@ -60,12 +60,24 @@ const validateGoalPriority = (value) => {
   return error;
 };
 
-const validateDateInput = (value) => {
+const validateStartDateInput = (value = null) => {
   let error;
+
   if (!value) {
     error = 'Required';
+  } else if (!isPresentDate(value)) {
+    error = "You can't add a date in the past";
   }
-  if (!isPresentDate(value)) {
+
+  return error;
+};
+
+const validateEndDateInput = (value = null) => {
+  let error;
+
+  if (!value) {
+    error = 'Required';
+  } else if (!isPresentDate(value)) {
     error = "You can't add a date in the past";
   }
 
@@ -115,8 +127,8 @@ const validateGoalsForm = (values) => {
   const errors = {};
   errors.goalDefinition = validateTextBlocks(goalDefinition, 20, 300);
   errors.priority = validateGoalPriority(priority);
-  errors.startDate = validateDateInput(startDate);
-  errors.endDate = validateDateInput(endDate);
+  errors.startDate = validateStartDateInput(startDate);
+  errors.endDate = validateEndDateInput(endDate);
 
   const cleanErrors = cleanUpErrors(errors);
   return cleanErrors;
