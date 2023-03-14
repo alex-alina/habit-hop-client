@@ -85,7 +85,8 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
               onClick={(e) => {
                 e.preventDefault();
                 submitForm();
-                submitCount > 0 && handleCloseOverlay && handleCloseOverlay();
+                console.log(submitCount);
+                submitCount >= 0 && handleCloseOverlay && handleCloseOverlay();
               }}
             >
               {button}
