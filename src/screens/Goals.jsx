@@ -12,6 +12,7 @@ import { getCurrentUser } from '../actions-reducers/users';
 import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
 import Banner from '../components/Banner';
 import FormsOverlay from '../components/FormOverlay';
+import GoalCard from '../components/GoalCard';
 import IconButton from '../components/IconButton';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
@@ -20,7 +21,6 @@ import GoalForm from '../forms/GoalForm';
 import { goalsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
 import { extractUserId, isExpired } from '../utils/jwt';
-import GoalCard from '../components/GoalCard';
 
 const {
   logoutBtn,
