@@ -43,14 +43,14 @@ const Goals = () => {
 
   const user = useSelector((state) => state.user);
   const goals = useSelector((state) => state.goals.items);
+  const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedGoal, setEditedGoal] = useState(null);
-  const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
-  const handleCloseOverlay = () => setGoalFormVisibility(!goalFormIsVisible);
+  const handleCloseOverlay = () => setGoalFormVisibility(false);
 
   const handleAddGoal = (goal) => {
     dispatch(addGoal({ userId, userToken, goal }));
@@ -60,8 +60,16 @@ const Goals = () => {
     dispatch(editGoal({ userId, userToken, goalId, updatedGoal }));
   };
 
-  const handleGoalFormVisibility = () => {
-    setGoalFormVisibility(!goalFormIsVisible);
+  const handleDelete = (e, goalId) => {
+    e.preventDefault();
+    dispatch(deleteGoal({ userId, userToken, goalId }));
+  };
+
+  const handleEdit = (e, goal) => {
+    e.preventDefault();
+    setIsEditMode(true);
+    setEditedGoal(goal);
+    setGoalFormVisibility(true);
   };
 
   useEffect(() => {
@@ -172,18 +180,6 @@ const Goals = () => {
               const goalPriority = capitalizeWord(goal.priority);
               const goalId = goal.id;
 
-              const handleDelete = (e) => {
-                e.preventDefault();
-                dispatch(deleteGoal({ userId, userToken, goalId }));
-              };
-
-              const handleEdit = (e) => {
-                e.preventDefault();
-                setIsEditMode(true);
-                setEditedGoal(goal);
-                handleGoalFormVisibility();
-              };
-
               return (
                 <Div
                   key={i}
@@ -202,7 +198,7 @@ const Goals = () => {
                 >
                   <Div display="flex" justifyContent="space-between" mb={4}>
                     <IconButton
-                      clickHandler={handleEdit}
+                      clickHandler={(e) => handleEdit(e, goal)}
                       iconName="write"
                       variant="secondarySm"
                       width={120}
@@ -210,7 +206,7 @@ const Goals = () => {
                       {editBtn}
                     </IconButton>
                     <IconButton
-                      clickHandler={handleDelete}
+                      clickHandler={(e) => handleDelete(e, goalId)}
                       iconName="delete"
                       stroke="#922B21"
                       variant="secondaryDangerSm"
@@ -268,7 +264,7 @@ const Goals = () => {
             <IconButton
               clickHandler={() => {
                 setIsEditMode(false);
-                handleGoalFormVisibility();
+                setGoalFormVisibility(true);
               }}
               iconName="add-one"
               variant="secondarySm"

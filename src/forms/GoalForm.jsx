@@ -21,16 +21,18 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
   };
 
   const goalError = useSelector((state) => state.goals.error);
+
   return (
     <Formik
       initialValues={initialValues}
       validate={(values) => validateGoalsForm(values)}
       onSubmit={(values, actions) => {
         goal ? handleSubmit(values, goal.id) : handleSubmit(values);
+        handleCloseOverlay && handleCloseOverlay();
         actions.setSubmitting(false);
       }}
     >
-      {({ isSubmitting, submitForm, submitCount }) => {
+      {({ isSubmitting, submitForm }) => {
         return (
           <Form
             style={{
@@ -85,8 +87,6 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
               onClick={(e) => {
                 e.preventDefault();
                 submitForm();
-                console.log(submitCount);
-                submitCount >= 0 && handleCloseOverlay && handleCloseOverlay();
               }}
             >
               {button}
