@@ -1,4 +1,4 @@
-import { isPresentDate } from './date';
+import { isPresentDate, isOneWeekFromDate } from './date';
 
 const validateEmail = (email) => {
   let error;
@@ -72,15 +72,16 @@ const validateStartDateInput = (value = null) => {
   return error;
 };
 
-const validateEndDateInput = (value = null) => {
+const validateEndDateInput = (value, startDateValue) => {
   let error;
 
   if (!value) {
     error = 'Required';
   } else if (!isPresentDate(value)) {
     error = "You can't add a date in the past";
+  } else if (!isOneWeekFromDate(value, startDateValue)) {
+    error = 'You must alllow at least one week between the start and end dates';
   }
-
   return error;
 };
 
@@ -128,7 +129,7 @@ const validateGoalsForm = (values) => {
   errors.goalDefinition = validateTextBlocks(goalDefinition, 20, 300);
   errors.priority = validateGoalPriority(priority);
   errors.startDate = validateStartDateInput(startDate);
-  errors.endDate = validateEndDateInput(endDate);
+  errors.endDate = validateEndDateInput(endDate, startDate);
 
   const cleanErrors = cleanUpErrors(errors);
   return cleanErrors;

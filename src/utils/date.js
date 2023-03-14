@@ -1,4 +1,5 @@
 const ONE_DAY_IN_MILLISECONDS = 86400000;
+const ONE_WEEK_IN_MILLISECONDS = ONE_DAY_IN_MILLISECONDS * 7;
 
 const isPresentDate = (value) => {
   const userDate = new Date(value);
@@ -11,4 +12,16 @@ const isPresentDate = (value) => {
   return userDateTimestamp > yesterdayTimestamp;
 };
 
-export { isPresentDate };
+const isOneWeekFromDate = (offset, reference) => {
+  const offsetDate = new Date(offset);
+  const offsetDateTimestamp = Date.parse(offsetDate);
+
+  const referenceDate = new Date(reference);
+  const referenceDateTimestamp = Date.parse(referenceDate);
+  const oneWeekInFutureTimestamp =
+    referenceDateTimestamp + ONE_WEEK_IN_MILLISECONDS;
+
+  return offsetDateTimestamp > oneWeekInFutureTimestamp;
+};
+
+export { isPresentDate, isOneWeekFromDate };
