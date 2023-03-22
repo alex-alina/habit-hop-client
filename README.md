@@ -4,7 +4,7 @@ This is the client side of a responsive, full stack app where users can set goal
 
 The app has a signup and a login page and users have to make an account in order to use it.
 
-Users can add, edit and delete goals and habits. For each habit they will choose their preferred units of measurement. Stats showing progress in reducing or building the frequency of the tracked habits will be available. Users will also see the time laps from the start of the goal until the chosen deadline.
+Users can add, edit and delete goals and habits. For each habit they will choose their preferred units of measurement. Stats showing progress in reducing or building the frequency of the tracked habits will be available.
 
 Users will be able to edit their user data and change a forgotten password. They will also be able to delete their account and all their information if they want. 
 
