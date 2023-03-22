@@ -76,11 +76,9 @@ My goal is to work on this project as part of effective practice with building a
 ![Recording](./Temp_DemoAssets/mobile_view.gif)
 
 ![Mobile home screen](./Temp_DemoAssets/Screenshot1.png)
-
 ![Mobile sign up screen](./Temp_DemoAssets/Screenshot2.png)
 
 ![Mobile log in screen](./Temp_DemoAssets/Screenshot3.png)
-
 ![Mobile add goal overlay](./Temp_DemoAssets/Screenshot4.png)
 
 ![Mobile goals screen](./Temp_DemoAssets/Screenshot5.png)
