@@ -12,16 +12,14 @@ import { getCurrentUser } from '../actions-reducers/users';
 import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
 import Banner from '../components/Banner';
 import FormsOverlay from '../components/FormOverlay';
+import GoalCard from '../components/GoalCard';
 import IconButton from '../components/IconButton';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
-import Paragraph from '../core-components/Paragraph';
-import Span from '../core-components/Span';
 import GoalForm from '../forms/GoalForm';
 import { goalsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
-import { capitalizeWord } from '../utils/format';
 import { extractUserId, isExpired } from '../utils/jwt';
 
 const {
@@ -34,8 +32,6 @@ const {
   addGoalBtn,
 } = goalsScreen;
 
-const { editBtn, deleteBtn, timeSection, showHabitsBtn } = goalCard;
-
 const Goals = () => {
   const dispatch = useDispatch();
   const userToken = localStorage.getItem(localStorageJwtKey);
@@ -43,14 +39,14 @@ const Goals = () => {
 
   const user = useSelector((state) => state.user);
   const goals = useSelector((state) => state.goals.items);
+  const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedGoal, setEditedGoal] = useState(null);
-  const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
-  const handleCloseOverlay = () => setGoalFormVisibility(!goalFormIsVisible);
+  const handleCloseOverlay = () => setGoalFormVisibility(false);
 
   const handleAddGoal = (goal) => {
     dispatch(addGoal({ userId, userToken, goal }));
@@ -60,8 +56,16 @@ const Goals = () => {
     dispatch(editGoal({ userId, userToken, goalId, updatedGoal }));
   };
 
-  const handleGoalFormVisibility = () => {
-    setGoalFormVisibility(!goalFormIsVisible);
+  const handleDelete = (e, goalId) => {
+    e.preventDefault();
+    dispatch(deleteGoal({ userId, userToken, goalId }));
+  };
+
+  const handleEdit = (e, goal) => {
+    e.preventDefault();
+    setIsEditMode(true);
+    setEditedGoal(goal);
+    setGoalFormVisibility(true);
   };
 
   useEffect(() => {
@@ -166,120 +170,25 @@ const Goals = () => {
               )}
             </Div>
           )}
-          {goals && goals.length > 0
-            ? goals.map((goal, i) => {
-                const goalPriority = capitalizeWord(goal.priority);
-                const goalId = goal.id;
-
-                const handleDelete = (e) => {
-                  e.preventDefault();
-                  dispatch(deleteGoal({ userId, userToken, goalId }));
-                };
-
-                const handleEdit = (e) => {
-                  e.preventDefault();
-                  setIsEditMode(true);
-                  setEditedGoal(goal);
-                  handleGoalFormVisibility();
-                };
-
-                return (
-                  <Div
-                    key={i}
-                    width={['90%', '90%', '90%', '90%', '80%']}
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="space-between"
-                    mb={4}
-                    bg="white"
-                    borderRadius={1}
-                    borderWidth="2px"
-                    borderStyle="solid"
-                    borderColor="blue.2"
-                    px={[4, 4, 4, 6, 6]}
-                    py={4}
-                  >
-                    <Div display="flex" justifyContent="space-between" mb={4}>
-                      <IconButton
-                        clickHandler={handleEdit}
-                        iconName="write"
-                        variant="secondarySm"
-                        width={120}
-                      >
-                        {editBtn}
-                      </IconButton>
-                      <IconButton
-                        clickHandler={handleDelete}
-                        iconName="delete"
-                        stroke="#922B21"
-                        variant="secondaryDangerSm"
-                        width={120}
-                      >
-                        {deleteBtn}
-                      </IconButton>
-                    </Div>
-                    <Div
-                      display="flex"
-                      flexDirection={[
-                        'column',
-                        'column',
-                        'column',
-                        'row',
-                        'row',
-                      ]}
-                      justifyContent="space-between"
-                      borderTop="2px solid #C5CAE9"
-                      pt={3}
-                    >
-                      <Div
-                        display="flex"
-                        flexDirection="column"
-                        width={['90%', '90%', '90%', '40%', '40%']}
-                      >
-                        <Header as="h3" fontSize={4}>
-                          {goalPriority} goal
-                        </Header>
-                        <Paragraph mt={2} mr={6}>
-                          {goal.goalDefinition}
-                        </Paragraph>
-                      </Div>
-
-                      <Div
-                        display="flex"
-                        flexDirection="column"
-                        mt={[4, 4, 4, 0, 0]}
-                        width={['90%', '90%', '90%', '40%', '40%']}
-                      >
-                        <Header as="h4" fontSize={4} mb={1}>
-                          {timeSection.title}
-                        </Header>
-                        <Paragraph mb={1}>
-                          <Span color="heading">{timeSection.startLabel}</Span>
-                          {goal.startDate}
-                        </Paragraph>
-                        <Paragraph>
-                          <Span color="heading">{timeSection.endLabel}</Span>
-                          {goal.endDate}
-                        </Paragraph>
-                      </Div>
-                    </Div>
-                    <Button
-                      variant="secondarySm"
-                      mx="auto"
-                      mt={5}
-                      maxWidth={150}
-                    >
-                      {showHabitsBtn}
-                    </Button>
-                  </Div>
-                );
-              })
-            : null}
+          {goals &&
+            goals.length > 0 &&
+            goals.map((goal, i) => {
+              const goalId = goal.id;
+              return (
+                <GoalCard
+                  key={i}
+                  goal={goal}
+                  goalCardText={goalCard}
+                  handleDelete={(e) => handleDelete(e, goalId)}
+                  handleEdit={(e) => handleEdit(e, goal)}
+                />
+              );
+            })}
           {showAddGoalBtn && (
             <IconButton
               clickHandler={() => {
                 setIsEditMode(false);
-                handleGoalFormVisibility();
+                setGoalFormVisibility(true);
               }}
               iconName="add-one"
               variant="secondarySm"

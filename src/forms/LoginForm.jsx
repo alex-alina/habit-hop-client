@@ -6,6 +6,7 @@ import { loginUser } from '../actions-reducers/login';
 import Button from '../core-components/Button';
 import Paragraph from '../core-components/Paragraph';
 import { loginScreen } from '../text/text';
+import { validateLoginForm } from '../utils/validation';
 import { TextField } from './Fields';
 
 const LoginForm = () => {
@@ -19,6 +20,7 @@ const LoginForm = () => {
         email: '',
         password: '',
       }}
+      validate={(values) => validateLoginForm(values)}
       onSubmit={(values, actions) => {
         dispatch(loginUser(values));
         actions.setSubmitting(false);
