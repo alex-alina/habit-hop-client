@@ -1,46 +1,85 @@
-# Getting Started with Create React App and Redux
+## HabitHop - Description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This is the client side of a responsive, full stack app where users can set goals and add habits they want to build or drop in order to achieve their goals. 
 
-## Available Scripts
+The app has a signup and a login page and users have to make an account in order to use it.
 
-In the project directory, you can run:
+Users can add, edit and delete goals and habits. For each habit they will choose their preferred units of measurement. Stats showing progress in reducing or building the frequency of the tracked habits will be available. Users will also see the time laps from the start of the goal until the chosen deadline.
 
-### `npm start`
+Users will be able to edit their user data and change a forgotten password. They will also be able to delete their account and all their information if they want. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Navigation between pages of the application is possible, and the forms include validation. 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+[The app's server can be checked here](https://github.com/alex-alina/server-habit-hop)
 
-### `npm test`
+**Status: WIP**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Estimated deployment time: end of May.
+Demo samples can be seen in the last section.
 
-### `npm run build`
+## Tech stack
+- React (hooks)
+- Redux
+- JavaScript
+- Styled components 
+- Styled system
+- Formik
+- Superagent
+- Jest
+- React Testing Library
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Implemented Features:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Sign-up / Log-in
+- Log out 
+- Goals page (a maximum of three goals can be added)
+- Add / edit / delete goal
+- Form validation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Current work:
 
-### `npm run eject`
+- Testing existing functionality
+- Components development: Tooltip, Card, Expandable card
+- Features: user profile/settings, add a prompt to confirm user wants to delete goal
+- Show / hide password functionality
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Future development and features
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- User can add / edit / delete habits for each goal
+- Use can add habits they want to build and habits they have but want to drop
+- User can fill in data for each habit practiced based on chosen units of measurement
+- User can see stats for each habit
+- Forgotten password functionality
+- Habits screen UI
+- Users can see the time lapsed between start and end dates on each goal card
+- Components needed for the new screen and functionality
+- Refreshing JWT
+- Reload page on JWT expiration
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Setup
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- The backend server and DB of this project must be running for the app to function correctly. Check how to setup it up [here](https://github.com/alex-alina/server-habit-hop).
+- Fork / Clone the repository `https://github.com/alex-alina/habit-hop-client`
+- Install the dependencies using `npm install`
+- Start the application using `npm run start`
 
-## Learn More
+## Motivation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+My goal is to work on this project as part of effective practice with building and deploying a full stack app.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Demo - desktop view
+
+![Demo - WIP](./Temp_DemoAssets/desktop_view.gif)
+
+## Demo - mobile view
+
+![Recording](./Temp_DemoAssets/mobile_view.gif)
+![Mobile home screen](./Temp_DemoAssets/Screenshot1.png)
+![Mobile sign up screen](./Temp_DemoAssets/Screenshot2.png)
+![Mobile log in screen](./Temp_DemoAssets/Screenshot3.png)
+![Mobile add goal overlay](./Temp_DemoAssets/Screenshot4.png)
+![Mobile goals screen](./Temp_DemoAssets/Screenshot5.png)
+
+## License
+
+MIT Licence - Copyright &copy; 2023 - Alina Rusu.
