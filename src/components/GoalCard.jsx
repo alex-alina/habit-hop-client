@@ -10,8 +10,7 @@ import { capitalizeFirstLetter } from '../utils/format';
 const GoalCard = ({ goal, goalCardText, handleDelete, handleEdit }) => {
   const { editBtn, deleteBtn, timeSection, showHabitsBtn } = goalCardText;
   const goalPriority = capitalizeFirstLetter(goal.priority);
-  const empty = capitalizeFirstLetter();
-  console.log(empty);
+
   return (
     <Div
       width={['90%', '90%', '90%', '90%', '80%']}
