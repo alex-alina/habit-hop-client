@@ -5,12 +5,13 @@ import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
 import Paragraph from '../core-components/Paragraph';
 import Span from '../core-components/Span';
-import { capitalizeWord } from '../utils/format';
+import { capitalizeFirstLetter } from '../utils/format';
 
 const GoalCard = ({ goal, goalCardText, handleDelete, handleEdit }) => {
   const { editBtn, deleteBtn, timeSection, showHabitsBtn } = goalCardText;
-  const goalPriority = capitalizeWord(goal.priority);
-
+  const goalPriority = capitalizeFirstLetter(goal.priority);
+  const empty = capitalizeFirstLetter();
+  console.log(empty);
   return (
     <Div
       width={['90%', '90%', '90%', '90%', '80%']}
