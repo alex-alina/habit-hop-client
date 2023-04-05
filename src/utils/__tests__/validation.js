@@ -3,7 +3,7 @@ import {
   validateName,
   validatePassword,
   validateConfirmPassword,
-  // validateGoalPriority,
+  validateGoalPriority,
   // validateTextBlocks,
   // validateEndDateInput,
   // validateStartDateInput,
@@ -77,7 +77,7 @@ describe('Validate Password', () => {
   });
 });
 
-describe('Validate Confirm Password', () => {
+describe('Confirm Password validation', () => {
   const password = '12crownNine';
   const confirmPassword = '12crownNine';
   it(`should return undefined for valid pasword`, () => {
@@ -92,5 +92,11 @@ describe('Validate Confirm Password', () => {
 
   it('should return "Required" error message when no value is passed', () => {
     expect(validateConfirmPassword()).toBe('Required');
+  });
+});
+
+describe('Goal priority validation', () => {
+  it('should return "Required" error message when no value is passed', () => {
+    expect(validateGoalPriority()).toBe('Required');
   });
 });
