@@ -1,11 +1,13 @@
-const capitalizeFirstLetter = (str) => {
+const capitalizeFirstChar = (str) => {
   if (str === undefined) {
     throw new Error('requires one argument of type string');
   }
-  const firstLetter = str.charAt(0);
+  const trimmedStr = str.trim();
+  const firstLetter = trimmedStr.charAt(0);
   const upperCased = firstLetter.toUpperCase();
-  const remainingLetters = str.slice(1);
+  const remainingLetters = trimmedStr.slice(1);
+
   return `${upperCased}${remainingLetters}`;
 };
 
-export { capitalizeFirstLetter };
+export { capitalizeFirstChar };

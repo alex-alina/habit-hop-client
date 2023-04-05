@@ -1,27 +1,37 @@
 const ONE_DAY_IN_MILLISECONDS = 86400000;
-const ONE_WEEK_IN_MILLISECONDS = ONE_DAY_IN_MILLISECONDS * 7;
+const ONE_WEEK_IN_MILLISECONDS = ONE_DAY_IN_MILLISECONDS * 6;
+const today = new Date();
 
-const isPresentDate = (value) => {
-  const userDate = new Date(value);
-  const userDateTimestamp = Date.parse(userDate);
+//expects plainDate argument to be in "yyyy-mm-dd" format
+const dateToTimestamp = (plainDate) => {
+  const date = new Date(plainDate);
+  const timestamp = Date.parse(date);
 
-  const today = new Date();
-  const todayTimestamp = Date.parse(today);
+  return timestamp;
+};
+
+const isPresentDate = (selectedDate, currentDate = today) => {
+  if (selectedDate === undefined) {
+    throw new Error('selected date value is missing');
+  }
+  if (!selectedDate.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) {
+    throw new Error('date format should be YYYY-MM-DD');
+  }
+
+  const userDateTimestamp = dateToTimestamp(selectedDate);
+  const todayTimestamp = Date.parse(currentDate);
   const yesterdayTimestamp = todayTimestamp - ONE_DAY_IN_MILLISECONDS;
 
   return userDateTimestamp > yesterdayTimestamp;
 };
 
-const isOneWeekFromDate = (offset, reference) => {
-  const offsetDate = new Date(offset);
-  const offsetDateTimestamp = Date.parse(offsetDate);
-
-  const referenceDate = new Date(reference);
-  const referenceDateTimestamp = Date.parse(referenceDate);
+const isOneWeekFromDate = (startDate, endDate) => {
+  const endDateTimestamp = dateToTimestamp(endDate);
+  const startDateTimestamp = dateToTimestamp(startDate);
   const oneWeekInFutureTimestamp =
-    referenceDateTimestamp + ONE_WEEK_IN_MILLISECONDS;
+    startDateTimestamp + ONE_WEEK_IN_MILLISECONDS;
 
-  return offsetDateTimestamp > oneWeekInFutureTimestamp;
+  return endDateTimestamp > oneWeekInFutureTimestamp;
 };
 
-export { isPresentDate, isOneWeekFromDate };
+export { dateToTimestamp, isPresentDate, isOneWeekFromDate };

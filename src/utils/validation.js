@@ -79,7 +79,7 @@ const validateEndDateInput = (value, startDateValue) => {
     error = 'Required';
   } else if (!isPresentDate(value)) {
     error = "You can't add a date in the past";
-  } else if (!isOneWeekFromDate(value, startDateValue)) {
+  } else if (!isOneWeekFromDate(startDateValue, value)) {
     error = 'You must alllow at least one week between the start and end dates';
   }
   return error;
