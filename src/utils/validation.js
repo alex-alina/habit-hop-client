@@ -1,10 +1,12 @@
 import { isPresentDate, isOneWeekFromDate } from './date';
 
+const EMAIL_REGX = /^[A-Z0-9][A-Z0-9._%+-]*@[A-Z0-9.-]*[A-Z0-9]+\.[A-Z]{2,4}$/i;
+
 const validateEmail = (email) => {
   let error;
   if (!email) {
     error = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+  } else if (!EMAIL_REGX.test(email)) {
     error = 'Invalid email address';
   }
   return error;
@@ -135,4 +137,17 @@ const validateGoalsForm = (values) => {
   return cleanErrors;
 };
 
-export { validateSignupForm, validateLoginForm, validateGoalsForm };
+export {
+  validateEmail,
+  validateName,
+  validatePassword,
+  validateConfirmPassword,
+  validateGoalPriority,
+  validateTextBlocks,
+  validateEndDateInput,
+  validateStartDateInput,
+  cleanUpErrors,
+  validateSignupForm,
+  validateLoginForm,
+  validateGoalsForm,
+};
