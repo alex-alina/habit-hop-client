@@ -1,16 +1,13 @@
+import * as dateModule from '../date';
 import {
+  validateConfirmPassword,
   validateEmail,
+  validateEndDateInput,
+  validateGoalDescription,
+  validateGoalPriority,
   validateName,
   validatePassword,
-  validateConfirmPassword,
-  validateGoalPriority,
-  // validateTextBlocks,
-  // validateEndDateInput,
-  // validateStartDateInput,
-  // cleanUpErrors,
-  // validateSignupForm,
-  // validateLoginForm,
-  // validateGoalsForm,
+  validateStartDateInput,
 } from '../validation';
 
 const validEmails = [
@@ -36,6 +33,7 @@ describe('Validate Email', () => {
       expect(validateEmail(email)).toBe(undefined);
     });
   });
+
   invalidEmails.map((email, index) => {
     it(`should return error message for invalid email with index ${index}`, () => {
       expect(validateEmail(email)).toBe('Invalid email address');
@@ -80,6 +78,7 @@ describe('Validate Password', () => {
 describe('Confirm Password validation', () => {
   const password = '12crownNine';
   const confirmPassword = '12crownNine';
+
   it(`should return undefined for valid pasword`, () => {
     expect(validateConfirmPassword(password, confirmPassword)).toBe(undefined);
   });
@@ -98,5 +97,112 @@ describe('Confirm Password validation', () => {
 describe('Goal priority validation', () => {
   it('should return "Required" error message when no value is passed', () => {
     expect(validateGoalPriority()).toBe('Required');
+  });
+});
+
+describe('Validate Goal Description', () => {
+  let value = 'Lorem ipsum';
+  let minChars = 5;
+  let maxChars = 11;
+
+  it(`should return undefined for valid goal description value`, () => {
+    expect(validateGoalDescription(value, minChars, maxChars)).toBe(undefined);
+  });
+
+  it(`should return error message for values with less then 5 chars`, () => {
+    value = 'hi';
+    expect(validateGoalDescription(value, minChars, maxChars)).toBe(
+      `Goal description must have at least ${minChars} characters`
+    );
+  });
+
+  it(`should return error message for values with more than then 11 chars`, () => {
+    value = 'Lorem ipsum sunny';
+    expect(validateGoalDescription(value, minChars, maxChars)).toBe(
+      `Goal description must have less than ${maxChars} characters`
+    );
+  });
+
+  it('should return "Required" error message when no value is passed', () => {
+    expect(validateGoalDescription('', minChars, maxChars)).toBe('Required');
+  });
+
+  it('throws error if the minChars value is larger or equal to maxChar value', () => {
+    expect(() => validateGoalDescription(value, 14, 5)).toThrow(Error);
+    expect(() => validateGoalDescription(value, 14, 5)).toThrow(
+      "minChars argument shouldn't be larger than maxChars"
+    );
+  });
+});
+
+describe('Validate Start Date Input', () => {
+  let spy;
+  let date = '2023-03-23';
+
+  beforeEach(() => {
+    spy = jest.spyOn(dateModule, 'isPresentDate');
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it(`should return undefined for valid start date`, () => {
+    spy.mockReturnValue(true);
+    expect(validateStartDateInput(date)).toBe(undefined);
+  });
+
+  it('should return error message when the date is in the past', () => {
+    spy.mockReturnValue(false);
+    expect(validateStartDateInput(date)).toBe(
+      "You can't add a date in the past"
+    );
+  });
+
+  it('should return "Required" error message when no value is passed', () => {
+    expect(validateStartDateInput()).toBe('Required');
+  });
+});
+
+describe('Validate End Date Input', () => {
+  let startDate = '2023-03-23';
+  let endDate = '2023-06-16';
+
+  let spyIsPresentDate;
+  let spyIsOneWeekFromDate;
+
+  beforeEach(() => {
+    spyIsPresentDate = jest.spyOn(dateModule, 'isPresentDate');
+    spyIsOneWeekFromDate = jest.spyOn(dateModule, 'isOneWeekFromDate');
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it(`should return undefined for valid end date date`, () => {
+    spyIsPresentDate.mockReturnValue(true);
+    spyIsOneWeekFromDate.mockReturnValue(true);
+    expect(validateEndDateInput(startDate, endDate)).toBe(undefined);
+  });
+
+  it('should return error message when there is less than a week between start and end date', () => {
+    spyIsPresentDate.mockReturnValue(true);
+    spyIsOneWeekFromDate.mockReturnValue(false);
+    expect(validateEndDateInput(startDate, endDate)).toBe(
+      'You must alllow at least one week between the start and end dates'
+    );
+  });
+
+  it('should return error message when the end date is in the past', () => {
+    spyIsPresentDate.mockReturnValue(false);
+    spyIsOneWeekFromDate.mockReturnValue(true);
+    expect(validateEndDateInput(startDate, endDate)).toBe(
+      "You can't add a date in the past"
+    );
+  });
+
+  it('should return "Required" error message when no values are passed', () => {
+    expect(validateEndDateInput()).toBe('Required');
   });
 });

@@ -42,14 +42,19 @@ const validateConfirmPassword = (password, confirmPassword) => {
   return error;
 };
 
-const validateTextBlocks = (value, minChars, maxChars) => {
+const validateGoalDescription = (value, minChars, maxChars) => {
   let error;
+
+  if (minChars >= maxChars) {
+    throw new Error("minChars argument shouldn't be larger than maxChars");
+  }
+
   if (!value) {
     error = 'Required';
   } else if (value.length < minChars) {
-    error = 'Goal description must have at least 20 characters';
+    error = `Goal description must have at least ${minChars} characters`;
   } else if (value.length > maxChars) {
-    error = 'Goal description must have less than 300 characters';
+    error = `Goal description must have less than ${maxChars} characters`;
   }
   return error;
 };
@@ -128,7 +133,7 @@ const validateGoalsForm = (values) => {
   const { goalDefinition, priority, startDate, endDate } = values;
 
   const errors = {};
-  errors.goalDefinition = validateTextBlocks(goalDefinition, 20, 300);
+  errors.goalDefinition = validateGoalDescription(goalDefinition, 20, 300);
   errors.priority = validateGoalPriority(priority);
   errors.startDate = validateStartDateInput(startDate);
   errors.endDate = validateEndDateInput(endDate, startDate);
@@ -143,7 +148,7 @@ export {
   validatePassword,
   validateConfirmPassword,
   validateGoalPriority,
-  validateTextBlocks,
+  validateGoalDescription,
   validateEndDateInput,
   validateStartDateInput,
   cleanUpErrors,
