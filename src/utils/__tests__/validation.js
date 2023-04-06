@@ -11,7 +11,7 @@ import {
   cleanUpErrors,
   validateSignupForm,
   validateLoginForm,
-  // validateGoalsForm,
+  validateGoalsForm,
 } from '../validation';
 
 const validEmails = [
@@ -50,11 +50,11 @@ describe('Validate Email', () => {
 });
 
 describe('Validate Name', () => {
-  it(`should return undefined for valid name`, () => {
+  it('should return undefined for valid name', () => {
     expect(validateName('Mike Mo')).toBe(undefined);
   });
 
-  it(`should return error message for values with less then 2 chars`, () => {
+  it('should return error message for values with less then 2 chars', () => {
     expect(validateName('J')).toBe('Name must have at least 2 characters');
   });
 
@@ -64,11 +64,11 @@ describe('Validate Name', () => {
 });
 
 describe('Validate Password', () => {
-  it(`should return undefined for valid pasword`, () => {
+  it('should return undefined for valid pasword value', () => {
     expect(validatePassword('12crownNine')).toBe(undefined);
   });
 
-  it(`should return error message for values with less then 8 chars`, () => {
+  it('should return error message for values with less then 8 chars', () => {
     expect(validatePassword('bee4s')).toBe(
       'Pasword must have at least 8 characters'
     );
@@ -83,11 +83,11 @@ describe('Confirm Password validation', () => {
   const password = '12crownNine';
   const confirmPassword = '12crownNine';
 
-  it(`should return undefined for valid pasword`, () => {
+  it('should return undefined for valid pasword', () => {
     expect(validateConfirmPassword(password, confirmPassword)).toBe(undefined);
   });
 
-  it(`should return error message for values with less then 8 chars`, () => {
+  it('should return error message for values with less then 8 chars', () => {
     expect(validateConfirmPassword(password, '12crowNine')).toBe(
       "Passwords don't match"
     );
@@ -109,18 +109,18 @@ describe('Validate Goal Description', () => {
   let minChars = 5;
   let maxChars = 11;
 
-  it(`should return undefined for valid goal description value`, () => {
+  it('should return undefined for valid goal description value', () => {
     expect(validateGoalDescription(value, minChars, maxChars)).toBe(undefined);
   });
 
-  it(`should return error message for values with less then 5 chars`, () => {
+  it(`should return error message for values with less then ${minChars} chars`, () => {
     value = 'hi';
     expect(validateGoalDescription(value, minChars, maxChars)).toBe(
       `Goal description must have at least ${minChars} characters`
     );
   });
 
-  it(`should return error message for values with more than then 11 chars`, () => {
+  it(`should return error message for values with more than then ${maxChars} chars`, () => {
     value = 'Lorem ipsum sunny';
     expect(validateGoalDescription(value, minChars, maxChars)).toBe(
       `Goal description must have less than ${maxChars} characters`
@@ -151,7 +151,7 @@ describe('Validate Start Date Input', () => {
     jest.restoreAllMocks();
   });
 
-  it(`should return undefined for valid start date`, () => {
+  it('should return undefined for valid start date', () => {
     spy.mockReturnValue(true);
     expect(validateStartDateInput(date)).toBe(undefined);
   });
@@ -184,7 +184,7 @@ describe('Validate End Date Input', () => {
     jest.restoreAllMocks();
   });
 
-  it(`should return undefined for valid end date date`, () => {
+  it('should return undefined for valid end date', () => {
     spyIsPresentDate.mockReturnValue(true);
     spyIsOneWeekFromDate.mockReturnValue(true);
     expect(validateEndDateInput(startDate, endDate)).toBe(undefined);
@@ -220,11 +220,7 @@ const errorsMock = {
 };
 
 const cleanErrorsMock = {
-  confirmPassword: 'Required',
-  email: 'Required',
-  firstName: 'Name must have at least 2 characters',
-  lastName: 'Required',
-  password: 'Required',
+  ...errorsMock,
 };
 
 const partialErrorsMock = {
@@ -301,5 +297,52 @@ describe('Validate Login Form', () => {
 
   it("should return an errors' object if one or more form values are invalid", () => {
     expect(validateLoginForm(invalidLoginValues)).toEqual(loginErrors);
+  });
+});
+
+const goalFormValues = {
+  goalDefinition:
+    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+  priority: 'main',
+  startDate: '2023-03-23',
+  endDate: '2023-06-16',
+};
+
+const invalidGoalFormValues = {
+  goalDefinition:
+    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+  priority: '',
+  startDate: '2023-03-23',
+  endDate: '',
+};
+
+const goalFormErrors = {
+  priority: 'Required',
+  startDate: "You can't add a date in the past",
+  endDate: 'Required',
+};
+
+describe('Validate Goals Form', () => {
+  let spyIsPresentDate;
+  let spyIsOneWeekFromDate;
+
+  beforeEach(() => {
+    spyIsPresentDate = jest.spyOn(dateModule, 'isPresentDate');
+    spyIsOneWeekFromDate = jest.spyOn(dateModule, 'isOneWeekFromDate');
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('should return an empty errors object if all form values are valid', () => {
+    spyIsPresentDate.mockReturnValue(true);
+    spyIsOneWeekFromDate.mockReturnValue(true);
+    expect(validateGoalsForm(goalFormValues)).toEqual({});
+  });
+
+  it("should return an errors' object including one or more error key - values", () => {
+    spyIsPresentDate.mockReturnValue(false);
+    expect(validateGoalsForm(invalidGoalFormValues)).toEqual(goalFormErrors);
   });
 });
