@@ -8,6 +8,10 @@ import {
   validateName,
   validatePassword,
   validateStartDateInput,
+  cleanUpErrors,
+  validateSignupForm,
+  validateLoginForm,
+  // validateGoalsForm,
 } from '../validation';
 
 const validEmails = [
@@ -204,5 +208,98 @@ describe('Validate End Date Input', () => {
 
   it('should return "Required" error message when no values are passed', () => {
     expect(validateEndDateInput()).toBe('Required');
+  });
+});
+
+const errorsMock = {
+  confirmPassword: 'Required',
+  email: 'Required',
+  firstName: 'Name must have at least 2 characters',
+  lastName: 'Required',
+  password: 'Required',
+};
+
+const cleanErrorsMock = {
+  confirmPassword: 'Required',
+  email: 'Required',
+  firstName: 'Name must have at least 2 characters',
+  lastName: 'Required',
+  password: 'Required',
+};
+
+const partialErrorsMock = {
+  confirmPassword: 'Required',
+  email: 'Required',
+  firstName: undefined,
+  lastName: undefined,
+  password: 'Required',
+};
+
+const cleanedPartialErrorsMock = {
+  confirmPassword: 'Required',
+  email: 'Required',
+  password: 'Required',
+};
+
+describe('Clean up errors util', () => {
+  it('should not filter out any of the errors', () => {
+    expect(cleanUpErrors(errorsMock)).toEqual(cleanErrorsMock);
+  });
+
+  it('should filter out all errors that have a value of undefined', () => {
+    expect(cleanUpErrors(partialErrorsMock)).toEqual(cleanedPartialErrorsMock);
+  });
+});
+
+const signupValues = {
+  confirmPassword: 'hillShadow',
+  email: 'jimmy@example.com',
+  firstName: 'Jimmy',
+  lastName: 'Berry',
+  password: 'hillShadow',
+};
+
+const invalidSignupValues = {
+  confirmPassword: '',
+  email: '',
+  firstName: 'Jimmy',
+  lastName: 'Berry',
+  password: '',
+};
+
+describe('Validate Signup Form', () => {
+  it('should return an empty errors object if all form values are valid', () => {
+    expect(validateSignupForm(signupValues)).toEqual({});
+  });
+
+  it("should return an errors' object if one or more form values are invalid", () => {
+    expect(validateSignupForm(invalidSignupValues)).toEqual(
+      cleanedPartialErrorsMock
+    );
+  });
+});
+
+const loginValues = {
+  email: 'jimmy@example.com',
+  password: 'hillShadow',
+};
+
+const invalidLoginValues = {
+  email: 'berry@example',
+  password: '',
+};
+
+const loginErrors = {
+  email: 'Invalid email address',
+  password: 'Required',
+};
+
+describe('Validate Login Form', () => {
+  it('should return an empty errors object if all form values are valid', () => {
+    expect(validateLoginForm(loginValues)).toEqual({});
+  });
+
+  it("should return an errors' object if one or more form values are invalid", () => {
+    expect(validateLoginForm(invalidLoginValues)).toEqual(loginErrors);
   });
 });
