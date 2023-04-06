@@ -154,6 +154,7 @@ describe('Validate Start Date Input', () => {
   it('should return undefined for valid start date', () => {
     spy.mockReturnValue(true);
     expect(validateStartDateInput(date)).toBe(undefined);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should return error message when the date is in the past', () => {
@@ -161,6 +162,7 @@ describe('Validate Start Date Input', () => {
     expect(validateStartDateInput(date)).toBe(
       "You can't add a date in the past"
     );
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should return "Required" error message when no value is passed', () => {
@@ -188,6 +190,8 @@ describe('Validate End Date Input', () => {
     spyIsPresentDate.mockReturnValue(true);
     spyIsOneWeekFromDate.mockReturnValue(true);
     expect(validateEndDateInput(startDate, endDate)).toBe(undefined);
+    expect(spyIsPresentDate).toHaveBeenCalled();
+    expect(spyIsOneWeekFromDate).toHaveBeenCalled();
   });
 
   it('should return error message when there is less than a week between start and end date', () => {
@@ -196,6 +200,8 @@ describe('Validate End Date Input', () => {
     expect(validateEndDateInput(startDate, endDate)).toBe(
       'You must alllow at least one week between the start and end dates'
     );
+    expect(spyIsPresentDate).toHaveBeenCalled();
+    expect(spyIsOneWeekFromDate).toHaveBeenCalled();
   });
 
   it('should return error message when the end date is in the past', () => {
@@ -204,6 +210,8 @@ describe('Validate End Date Input', () => {
     expect(validateEndDateInput(startDate, endDate)).toBe(
       "You can't add a date in the past"
     );
+    expect(spyIsPresentDate).toHaveBeenCalled();
+    expect(spyIsOneWeekFromDate).not.toHaveBeenCalled();
   });
 
   it('should return "Required" error message when no values are passed', () => {
@@ -339,10 +347,13 @@ describe('Validate Goals Form', () => {
     spyIsPresentDate.mockReturnValue(true);
     spyIsOneWeekFromDate.mockReturnValue(true);
     expect(validateGoalsForm(goalFormValues)).toEqual({});
+    expect(spyIsPresentDate).toHaveBeenCalled();
+    expect(spyIsOneWeekFromDate).toHaveBeenCalled();
   });
 
   it("should return an errors' object including one or more error key - values", () => {
     spyIsPresentDate.mockReturnValue(false);
     expect(validateGoalsForm(invalidGoalFormValues)).toEqual(goalFormErrors);
+    expect(spyIsPresentDate).toHaveBeenCalled();
   });
 });
