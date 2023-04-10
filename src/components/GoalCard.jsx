@@ -5,11 +5,11 @@ import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
 import Paragraph from '../core-components/Paragraph';
 import Span from '../core-components/Span';
-import { capitalizeWord } from '../utils/format';
+import { capitalizeFirstChar } from '../utils/format';
 
 const GoalCard = ({ goal, goalCardText, handleDelete, handleEdit }) => {
   const { editBtn, deleteBtn, timeSection, showHabitsBtn } = goalCardText;
-  const goalPriority = capitalizeWord(goal.priority);
+  const goalPriority = capitalizeFirstChar(goal.priority);
 
   return (
     <Div

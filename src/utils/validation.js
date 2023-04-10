@@ -1,10 +1,12 @@
 import { isPresentDate, isOneWeekFromDate } from './date';
 
+const EMAIL_REGX = /^[A-Z0-9][A-Z0-9._%+-]*@[A-Z0-9.-]*[A-Z0-9]+\.[A-Z]{2,4}$/i;
+
 const validateEmail = (email) => {
   let error;
   if (!email) {
     error = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+  } else if (!EMAIL_REGX.test(email)) {
     error = 'Invalid email address';
   }
   return error;
@@ -40,14 +42,19 @@ const validateConfirmPassword = (password, confirmPassword) => {
   return error;
 };
 
-const validateTextBlocks = (value, minChars, maxChars) => {
+const validateGoalDescription = (value, minChars, maxChars) => {
   let error;
+
+  if (minChars >= maxChars) {
+    throw new Error("minChars argument shouldn't be larger than maxChars");
+  }
+
   if (!value) {
     error = 'Required';
   } else if (value.length < minChars) {
-    error = 'Goal description must have at least 20 characters';
+    error = `Goal description must have at least ${minChars} characters`;
   } else if (value.length > maxChars) {
-    error = 'Goal description must have less than 300 characters';
+    error = `Goal description must have less than ${maxChars} characters`;
   }
   return error;
 };
@@ -79,7 +86,7 @@ const validateEndDateInput = (value, startDateValue) => {
     error = 'Required';
   } else if (!isPresentDate(value)) {
     error = "You can't add a date in the past";
-  } else if (!isOneWeekFromDate(value, startDateValue)) {
+  } else if (!isOneWeekFromDate(startDateValue, value)) {
     error = 'You must alllow at least one week between the start and end dates';
   }
   return error;
@@ -126,7 +133,7 @@ const validateGoalsForm = (values) => {
   const { goalDefinition, priority, startDate, endDate } = values;
 
   const errors = {};
-  errors.goalDefinition = validateTextBlocks(goalDefinition, 20, 300);
+  errors.goalDefinition = validateGoalDescription(goalDefinition, 20, 300);
   errors.priority = validateGoalPriority(priority);
   errors.startDate = validateStartDateInput(startDate);
   errors.endDate = validateEndDateInput(endDate, startDate);
@@ -135,4 +142,17 @@ const validateGoalsForm = (values) => {
   return cleanErrors;
 };
 
-export { validateSignupForm, validateLoginForm, validateGoalsForm };
+export {
+  validateEmail,
+  validateName,
+  validatePassword,
+  validateConfirmPassword,
+  validateGoalPriority,
+  validateGoalDescription,
+  validateEndDateInput,
+  validateStartDateInput,
+  cleanUpErrors,
+  validateSignupForm,
+  validateLoginForm,
+  validateGoalsForm,
+};
