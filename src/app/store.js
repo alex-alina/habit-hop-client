@@ -11,6 +11,12 @@ const reducer = {
   logout: logoutReducer,
 };
 
+export const setupStore = () => {
+  return configureStore({
+    reducer,
+  });
+};
+
 export const store = configureStore({
   reducer,
 });
