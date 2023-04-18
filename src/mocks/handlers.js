@@ -4,10 +4,11 @@ import { baseUrl, localStorageJwtKey } from '../utils/constants';
 import { mockJwt } from './constants';
 
 export const handlers = [
-  rest.post(`${baseUrl}/logins`, (req, res, ctx) => {
+  rest.post(`${baseUrl}/login`, (req, res, ctx) => {
     // Persist user's authentication in the session
-    sessionStorage.setItem('is-authenticated', 'true');
-    // localStorage.setItem(localStorageJwtKey, mockJwt);
+    // sessionStorage.setItem('is-authenticated', 'true');
+    localStorage.setItem(localStorageJwtKey, mockJwt);
+    console.log('LOOOG LStorage', localStorage.getItem(localStorageJwtKey));
     return res(
       ctx.json({
         data: {

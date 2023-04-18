@@ -1,19 +1,16 @@
-import React from 'react';
+import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
 import { Provider } from 'react-redux';
-import { setupStore } from '../app/store';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { setupStore } from '../app/store';
 import defaultTheme from '../styles/theme';
 
-export function renderWithProviders(
+export function renderWithProvidersAndRouter(
   ui,
-  {
-    // Automatically create a store instance if no store was passed in
-    store = setupStore(),
-    route = '/',
-    ...renderOptions
-  } = {}
+  { store = setupStore(), route = '/', ...renderOptions } = {}
 ) {
   window.history.pushState({}, 'Test page', route);
 
@@ -27,10 +24,9 @@ export function renderWithProviders(
     );
   }
 
-  // Return an object with the store and all of RTL's query functions
   return {
     store,
-    // user: userEvent.setup(),
+    user: userEvent.setup(),
     ...render(ui, { wrapper: Wrapper, ...renderOptions }),
   };
 }
