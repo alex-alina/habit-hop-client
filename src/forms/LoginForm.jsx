@@ -1,7 +1,7 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../actions-reducers/login';
 import Button from '../core-components/Button';
 import Paragraph from '../core-components/Paragraph';
@@ -11,7 +11,7 @@ import { TextField } from './Fields';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const loginStatus = useSelector((state) => state.login.status);
+  const navigate = useNavigate();
   const loginError = useSelector((state) => state.login.error);
 
   return (
@@ -22,7 +22,11 @@ const LoginForm = () => {
       }}
       validate={(values) => validateLoginForm(values)}
       onSubmit={(values, actions) => {
-        dispatch(loginUser(values));
+        dispatch(loginUser(values))
+          .unwrap()
+          .then(() => {
+            navigate('/goals');
+          });
         actions.setSubmitting(false);
       }}
     >
@@ -60,9 +64,6 @@ const LoginForm = () => {
             >
               {loginScreen.loginBtn}
             </Button>
-            {loginStatus === 'success' ? (
-              <Navigate replace to="/goals" />
-            ) : null}
           </Form>
         );
       }}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   addGoal,
   deleteGoal,
@@ -34,6 +34,7 @@ const {
 
 const Goals = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userToken = localStorage.getItem(localStorageJwtKey);
   const userId = userToken && extractUserId(userToken);
 
@@ -42,7 +43,6 @@ const Goals = () => {
   const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
-  const [shouldRedirect, setShouldRedirect] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedGoal, setEditedGoal] = useState(null);
 
@@ -75,13 +75,9 @@ const Goals = () => {
     }
     if (!userToken || isExpired(userToken)) {
       dispatch(logout());
-      setShouldRedirect(true);
+      navigate('/login');
     }
-  }, [userToken, shouldRedirect]);
-
-  if (shouldRedirect) {
-    return <Navigate replace to="/login" />;
-  }
+  }, [userToken]);
 
   return (
     <Div width="100%">
@@ -125,7 +121,7 @@ const Goals = () => {
             onClick={(e) => {
               e.preventDefault();
               dispatch(logout());
-              setShouldRedirect(!shouldRedirect);
+              navigate('/login');
             }}
           >
             {logoutBtn}
