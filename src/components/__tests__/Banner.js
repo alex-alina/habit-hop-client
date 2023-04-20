@@ -11,7 +11,7 @@ describe('Banner', () => {
   const text = 'You can close this banner';
 
   it('renders Banner with text and icon', () => {
-    const { debug } = renderWithTheme(
+    renderWithTheme(
       <Banner iconName={firstIcon} mt={4} data-testid="banner">
         {text}
       </Banner>
@@ -19,7 +19,6 @@ describe('Banner', () => {
 
     const banner = screen.getByText(text);
     const icon = screen.getByRole('graphics-symbol', { hidden: true });
-    debug();
     expect(banner).toBeInTheDocument();
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveStyle('width: 20px');
