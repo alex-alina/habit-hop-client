@@ -31,7 +31,7 @@ const Banner = ({
       <Div display="flex" alignItems="center">
         <Span>
           <SvgIcon
-            role="img"
+            role="graphics-symbol"
             aria-hidden="true"
             width={20}
             height={20}

@@ -18,7 +18,7 @@ describe('Banner', () => {
     );
 
     const banner = screen.getByText(text);
-    const icon = screen.getByRole('img', { hidden: true });
+    const icon = screen.getByRole('graphics-symbol', { hidden: true });
     debug();
     expect(banner).toBeInTheDocument();
     expect(icon).toBeInTheDocument();
