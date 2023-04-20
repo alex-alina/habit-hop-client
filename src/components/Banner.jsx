@@ -5,7 +5,12 @@ import Paragraph from '../core-components/Paragraph';
 import Span from '../core-components/Span';
 import Button from '../core-components/Button';
 
-const Banner = ({ children, iconName, stroke = '#1A237E', ...restProps }) => {
+const Banner = ({
+  children,
+  iconName,
+  iconStroke = '#1A237E',
+  ...restProps
+}) => {
   const [isVisible, setVisibility] = useState(true);
 
   if (!isVisible) return null;
@@ -29,7 +34,7 @@ const Banner = ({ children, iconName, stroke = '#1A237E', ...restProps }) => {
             width={20}
             height={20}
             name={iconName}
-            stroke={stroke}
+            stroke={iconStroke}
             style={{ marginRight: 6 }}
           />
         </Span>
