@@ -40,6 +40,7 @@ const Svg = ({
   width = '26px',
   height = '26px',
   viewBox = '0 0 48 48',
+  ...props
 }) => (
   <CoreSvg
     width={width}
@@ -47,6 +48,7 @@ const Svg = ({
     height={height}
     viewBox={viewBox}
     xmlns="http://www.w3.org/2000/svg"
+    {...props}
   >
     {Object.values(name).map((path, i) => {
       return (

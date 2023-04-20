@@ -13,10 +13,15 @@ import Label from '../Label';
 import Paragraph from '../Paragraph';
 import Section from '../Section';
 import Span from '../Span';
+import { OrderedList, UnorderedList, ListItem } from '../List';
+import { Select } from '../Select';
+import TextArea from '../Textarea';
+import Svg from '../Svg';
+import icons from '../../utils/icons';
 
 it('renders Anchor tag', () => {
   render(
-    <Anchor href="https://example.com" target="_blank">
+    <Anchor href="https://example.com" target="_blank" color="blue">
       Example page link
     </Anchor>
   );
@@ -24,6 +29,7 @@ it('renders Anchor tag', () => {
   expect(a).toBeInTheDocument();
   expect(a).toHaveAttribute('href', 'https://example.com');
   expect(a).toHaveAttribute('target', '_blank');
+  expect(a).toHaveStyle('color: blue');
 });
 
 it('renders Button component', async () => {
@@ -135,4 +141,171 @@ it('renders Span component', async () => {
   const span = screen.getByText(/sunshine/i);
   expect(span).toBeInTheDocument();
   expect(span).toHaveStyle('background-color: orange');
+});
+
+it('renders Unordered List with ListItem components', async () => {
+  const items = ['one', 'two', 'three'];
+  render(
+    <UnorderedList data-testid="ul" fontSize="16px" mt="20px">
+      {items.map((item, i) => {
+        return (
+          <ListItem key={i} mb="10px" data-testid={`li${i}`}>
+            {item}
+          </ListItem>
+        );
+      })}
+    </UnorderedList>
+  );
+
+  const ul = screen.getByTestId(/ul/i);
+  const lis = screen.getAllByTestId(/li[0-9]/i);
+  expect(ul).toBeInTheDocument();
+  expect(ul).toHaveStyle({ 'font-size': '16px', 'margin-top': '20px' });
+  expect(lis).toHaveLength(3);
+  expect(lis[0]).toBeInTheDocument();
+  expect(lis[1]).toHaveTextContent(/two/i);
+  expect(lis[2]).toHaveStyle({ 'margin-bottom': '10px' });
+});
+
+it('renders Ordered List with ListItem components', async () => {
+  const items = ['red', 'blue', 'green'];
+  render(
+    <OrderedList data-testid="ul" fontSize="16px" mt="20px">
+      {items.map((item, i) => {
+        return (
+          <ListItem key={i} mb="10px" data-testid={`li${i}`}>
+            {item}
+          </ListItem>
+        );
+      })}
+    </OrderedList>
+  );
+
+  const ol = screen.getByTestId(/ul/i);
+  const lis = screen.getAllByTestId(/li[0-9]/i);
+  expect(ol).toBeInTheDocument();
+  expect(ol).toHaveStyle({ 'font-size': '16px', 'margin-top': '20px' });
+  expect(lis).toHaveLength(3);
+  expect(lis[0]).toBeInTheDocument();
+  expect(lis[1]).toHaveTextContent(/blue/i);
+  expect(lis[2]).toHaveStyle({ 'margin-bottom': '10px' });
+});
+
+describe('renders Select component', () => {
+  it('should correctly set the default option / placeholder', async () => {
+    const options = ['spring', 'summer', 'autumn', 'winter'];
+    render(
+      <ThemeProvider theme={defaultTheme}>
+        <>
+          <Label htmlFor="seasons">Seasons</Label>
+          <Select
+            options={options}
+            placeholder="Seasons"
+            name="seasons"
+            id="seasons"
+            data-testid="select"
+            fontSize="16px"
+            mt="20px"
+          />
+        </>
+      </ThemeProvider>
+    );
+
+    const select = screen.getByLabelText(/seasons/i);
+
+    expect(select).toBeInTheDocument();
+    expect(select).toHaveAttribute('name', 'seasons');
+    expect(select).toHaveStyle({ 'font-size': '16px', 'margin-top': '20px' });
+    expect(screen.getByRole('option', { name: 'Seasons' }).selected).toBe(true);
+    expect(screen.getByRole('option', { name: 'Seasons' })).toHaveValue(
+      'Seasons'
+    );
+  });
+
+  it('displays the correct number of options', async () => {
+    const options = ['spring', 'summer', 'autumn', 'winter'];
+    render(
+      <ThemeProvider theme={defaultTheme}>
+        <>
+          <Label htmlFor="seasons">Seasons</Label>
+          <Select
+            options={options}
+            placeholder="Seasons"
+            name="seasons"
+            id="seasons"
+          />
+        </>
+      </ThemeProvider>
+    );
+
+    expect(screen.getAllByRole('option').length).toBe(5);
+  });
+
+  it('allows the user to select a specific season', async () => {
+    const options = ['spring', 'summer', 'autumn', 'winter'];
+    render(
+      <ThemeProvider theme={defaultTheme}>
+        <>
+          <Label htmlFor="seasons">Seasons</Label>
+          <Select
+            options={options}
+            placeholder="Seasons"
+            name="seasons"
+            id="seasons"
+          />
+        </>
+      </ThemeProvider>
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole('combobox'),
+      screen.getByRole('option', { name: 'summer' })
+    );
+    expect(screen.getByRole('option', { name: 'summer' }).selected).toBe(true);
+
+    await userEvent.selectOptions(
+      // the select element has combobox as an implicit ARIA role
+      screen.getByRole('combobox'),
+      screen.getByRole('option', { name: 'winter' })
+    );
+    expect(screen.getByRole('option', { name: 'winter' }).selected).toBe(true);
+  });
+});
+
+describe('renders TextArea with Label component', () => {
+  it('allows user to type in a maximum of ten', async () => {
+    render(
+      <ThemeProvider theme={defaultTheme}>
+        <>
+          <Label htmlFor="survey">Feedback</Label>
+          <TextArea
+            bg="yellow"
+            id="survey"
+            name="feedback"
+            placeholder="Customer feedback"
+            maxLength={10}
+          />
+        </>
+      </ThemeProvider>
+    );
+    const textArea = screen.getByLabelText(/feedback/i);
+    expect(textArea).toBeInTheDocument();
+    expect(textArea).toHaveAttribute('placeholder', 'Customer feedback');
+    expect(textArea).toHaveAttribute('maxLength', '10');
+    expect(textArea).toHaveStyle('background-color: yellow');
+
+    const text16Chars = 'Great experience';
+    const text10Chars = 'Great expe';
+    await userEvent.type(textArea, text16Chars);
+    expect(textArea).toHaveValue(text10Chars);
+  });
+});
+
+it('renders SVG component', async () => {
+  render(<Svg name={icons['add-one']} role="img" aria-hidden="true" />);
+
+  const svg = screen.getByRole('img', { hidden: true });
+  expect(svg).toBeInTheDocument();
+  expect(svg).toHaveAttribute('height', '26px');
+  expect(svg).toHaveAttribute('viewBox', '0 0 48 48');
 });
