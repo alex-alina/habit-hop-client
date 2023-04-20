@@ -8,7 +8,7 @@ import Paragraph from '../core-components/Paragraph';
 import { signupScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
 import { validateSignupForm } from '../utils/validation';
-import { TextField } from './Fields';
+import { InputField } from './Fields';
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
@@ -49,27 +49,27 @@ const SignUpForm = () => {
                 {createUserError.message}
               </Paragraph>
             ) : null}
-            <TextField
+            <InputField
               name="firstName"
               type="text"
               label="First Name"
               placeholder="First Name"
             />
-            <TextField
+            <InputField
               name="lastName"
               type="text"
               label="Last Name"
               placeholder="Last Name"
             />
-            <TextField
+            <InputField
               name="email"
               type="email"
               label="Email"
               placeholder="janedoe@example.com"
             />
 
-            <TextField name="password" type="password" label="Password" />
-            <TextField
+            <InputField name="password" type="password" label="Password" />
+            <InputField
               name="confirmPassword"
               type="password"
               label="Confirm Password"

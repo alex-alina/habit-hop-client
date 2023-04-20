@@ -7,7 +7,7 @@ import Button from '../core-components/Button';
 import Paragraph from '../core-components/Paragraph';
 import { loginScreen } from '../text/text';
 import { validateLoginForm } from '../utils/validation';
-import { TextField } from './Fields';
+import { InputField } from './Fields';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -44,13 +44,13 @@ const LoginForm = () => {
                 {loginError.message}
               </Paragraph>
             ) : null}
-            <TextField
+            <InputField
               name="email"
               type="email"
               label="Email"
               placeholder="janedoe@example.com"
             />
-            <TextField name="password" type="password" label="Password" />
+            <InputField name="password" type="password" label="Password" />
             <Button
               variant="primaryLg"
               my={[4, 4, 3, 5, 5]}
