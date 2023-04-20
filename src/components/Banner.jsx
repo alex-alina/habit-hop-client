@@ -31,6 +31,8 @@ const Banner = ({
       <Div display="flex" alignItems="center">
         <Span>
           <SvgIcon
+            role="img"
+            aria-hidden="true"
             width={20}
             height={20}
             name={iconName}
@@ -45,8 +47,9 @@ const Banner = ({
         variant="iconButton"
         alignSelf="flex-start"
         onClick={() => setVisibility(!isVisible)}
+        aria-label="Close banner"
       >
-        <SvgIcon width={16} height={16} name="close" />
+        <SvgIcon aria-hidden="true" width={16} height={16} name="close" />
       </Button>
     </Div>
   );

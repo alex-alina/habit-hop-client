@@ -302,7 +302,7 @@ describe('renders TextArea with Label component', () => {
 });
 
 it('renders SVG component', async () => {
-  render(<Svg name={icons['add-one']} role="img" aria-hidden="true" />);
+  render(<Svg paths={icons['add-one']} role="img" aria-hidden="true" />);
 
   const svg = screen.getByRole('img', { hidden: true });
   expect(svg).toBeInTheDocument();

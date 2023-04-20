@@ -47,6 +47,7 @@ const Login = () => {
         pt={[2, 2, 2, 2, 5]}
       >
         <Button
+          aria-label="Back to home page"
           display={['none', 'none', 'none', 'none', 'flex']}
           variant="roundButtonLg"
           alignItems="center"
@@ -56,7 +57,7 @@ const Login = () => {
           ml={[2, 2, 2, 2, 5]}
         >
           <Link to="/">
-            <SvgIcon name="arrow-left" />
+            <SvgIcon name="arrow-left" aria-hidden="true" />
           </Link>
         </Button>
 

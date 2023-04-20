@@ -30,7 +30,7 @@ const CoreSvg = styled('svg')(
 import React from 'react';
 
 const Svg = ({
-  name = {},
+  paths = {},
   style = {},
   fill = 'none',
   stroke = '#1A237E',
@@ -50,7 +50,7 @@ const Svg = ({
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    {Object.values(name).map((path, i) => {
+    {Object.values(paths).map((path, i) => {
       return (
         <path
           fill={fill}
