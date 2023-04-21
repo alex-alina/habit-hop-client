@@ -9,6 +9,7 @@ describe('IconButton', () => {
   const iconList = Object.keys(icons);
   const firstIcon = iconList[0];
   const clickHandler = jest.fn();
+
   it('renders IconButton with icon and text', () => {
     renderWithTheme(
       <IconButton

@@ -19,6 +19,7 @@ const PlantDeco = (props) => {
 const FormsOverlay = ({ children, closeHandler }) => {
   return (
     <Div
+      role="dialog"
       display="flex"
       flexDirection="column"
       width="100%"
@@ -43,7 +44,7 @@ const FormsOverlay = ({ children, closeHandler }) => {
         mt={4}
         onClick={closeHandler}
       >
-        <SvgIcon name="close" aria-hidden="true" />
+        <SvgIcon name="close" role="graphics-symbol" aria-hidden="true" />
       </Button>
       <Div display="flex" justifyContent="center" mt={[4, 4, 7, 7, 8]}>
         <PlantDeco pr={8} />
