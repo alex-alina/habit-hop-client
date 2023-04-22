@@ -3,10 +3,17 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { setupStore } from '../app/store';
 import defaultTheme from '../styles/theme';
+
+const Wrapper = ({ children }) => {
+  return <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>;
+};
+
+export const renderWithTheme = (ui, options) =>
+  render(ui, { wrapper: Wrapper, ...options });
 
 export function renderWithProvidersAndRouter(
   ui,
@@ -17,9 +24,9 @@ export function renderWithProvidersAndRouter(
   function Wrapper({ children }) {
     return (
       <Provider store={store}>
-        <MemoryRouter initialEntries={[route]}>
+        <BrowserRouter>
           <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>
-        </MemoryRouter>
+        </BrowserRouter>
       </Provider>
     );
   }
@@ -30,13 +37,3 @@ export function renderWithProvidersAndRouter(
     ...render(ui, { wrapper: Wrapper, ...renderOptions }),
   };
 }
-// import React from 'react';
-// import { ThemeProvider } from 'styled-components';
-// import defaultTheme from '../styles/theme';
-
-const Wrapper = ({ children }) => {
-  return <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>;
-};
-
-export const renderWithTheme = (ui, options) =>
-  render(ui, { wrapper: Wrapper, ...options });

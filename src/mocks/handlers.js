@@ -1,14 +1,13 @@
 // Mock Service Worker handlers.js
 import { rest } from 'msw';
-import { baseUrl, localStorageJwtKey } from '../utils/constants';
-import { mockJwt } from './constants';
+import { baseUrl } from '../utils/constants';
+import { mockJwt, storageJwtKey } from './constants';
 
 export const handlers = [
-  rest.post(`${baseUrl}/login`, (req, res, ctx) => {
-    // Persist user's authentication in the session
-    // sessionStorage.setItem('is-authenticated', 'true');
-    localStorage.setItem(localStorageJwtKey, mockJwt);
-    console.log('LOOOG LStorage', localStorage.getItem(localStorageJwtKey));
+  rest.post(`${baseUrl}/logins`, (req, res, ctx) => {
+    // Persist user's authentication token in Storage
+    localStorage.setItem(storageJwtKey, mockJwt);
+
     return res(
       ctx.json({
         data: {
