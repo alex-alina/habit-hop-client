@@ -7,7 +7,7 @@ const IconButton = ({
   clickHandler,
   variant,
   iconName,
-  stroke = '#1A237E',
+  iconColor = '#1A237E',
   ...restProps
 }) => {
   return (
@@ -24,8 +24,10 @@ const IconButton = ({
         width={18}
         height={18}
         name={iconName}
-        stroke={stroke}
+        stroke={iconColor}
         style={{ marginLeft: 8 }}
+        role="graphics-symbol"
+        aria-hidden="true"
       />
     </Button>
   );

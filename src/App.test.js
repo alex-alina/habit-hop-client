@@ -5,7 +5,7 @@ import { store } from './app/store';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 
-test('renders sign up page title', () => {
+test('renders App', () => {
   render(
     <Provider store={store}>
       <BrowserRouter>
@@ -13,4 +13,7 @@ test('renders sign up page title', () => {
       </BrowserRouter>
     </Provider>
   );
+
+  const appIntroScreen = screen.getByText('Hello hopper...');
+  expect(appIntroScreen).toBeInTheDocument();
 });

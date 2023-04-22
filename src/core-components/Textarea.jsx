@@ -47,7 +47,7 @@ const StyledCoreTextArea = styled(CoreTextarea)`
   }
 `;
 
-export const Textarea = ({ children, field, ...props }) => {
+const Textarea = ({ children, field, ...props }) => {
   return (
     <StyledCoreTextArea
       color="text"

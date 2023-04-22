@@ -3,9 +3,9 @@ import Svg from '../core-components/Svg';
 
 const SvgIcon = ({ name, ...props }) => {
   if (!Object.hasOwn(icons, name)) {
-    throw new Error('this icon name does not exist');
+    return null;
   }
-  return <Svg name={icons[name]} {...props} />;
+  return <Svg paths={icons[name]} name={name} {...props} />;
 };
 
 export default SvgIcon;

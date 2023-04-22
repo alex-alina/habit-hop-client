@@ -30,3 +30,13 @@ export function renderWithProvidersAndRouter(
     ...render(ui, { wrapper: Wrapper, ...renderOptions }),
   };
 }
+// import React from 'react';
+// import { ThemeProvider } from 'styled-components';
+// import defaultTheme from '../styles/theme';
+
+const Wrapper = ({ children }) => {
+  return <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>;
+};
+
+export const renderWithTheme = (ui, options) =>
+  render(ui, { wrapper: Wrapper, ...options });

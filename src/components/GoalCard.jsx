@@ -38,7 +38,7 @@ const GoalCard = ({ goal, goalCardText, handleDelete, handleEdit }) => {
         <IconButton
           clickHandler={handleDelete}
           iconName="delete"
-          stroke="#922B21"
+          iconColor="#922B21"
           variant="secondaryDangerSm"
           width={120}
         >
