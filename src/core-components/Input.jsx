@@ -47,9 +47,10 @@ const StyledCoreInput = styled(CoreInput)`
   }
 `;
 
-export const TextInput = ({ children, field, ...props }) => {
+export const Input = ({ children, field, ...props }) => {
   return (
     <StyledCoreInput
+      type="text"
       color="text"
       fontFamily="body"
       fontSize={3}

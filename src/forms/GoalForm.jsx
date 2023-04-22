@@ -5,7 +5,7 @@ import Button from '../core-components/Button';
 import Paragraph from '../core-components/Paragraph';
 import { goalsScreen } from '../text/text';
 import { validateGoalsForm } from '../utils/validation';
-import { SelectField, TextArea, TextField } from './Fields';
+import { SelectField, TextArea, InputField } from './Fields';
 
 const GOAL_PRIORITIES = ['main', 'secondary', 'tertiary'];
 
@@ -65,13 +65,13 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
               options={GOAL_PRIORITIES}
               placeholder={select.placeholder}
             />
-            <TextField
+            <InputField
               name="startDate"
               type="date"
               format="yyyy-mm-dd"
               label={startdateInput.label}
             />
-            <TextField
+            <InputField
               format="yyyy-mm-dd"
               name="endDate"
               type="date"

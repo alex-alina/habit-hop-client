@@ -1,20 +1,18 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { createUser } from '../actions-reducers/users';
 import Button from '../core-components/Button';
 import Paragraph from '../core-components/Paragraph';
 import { signupScreen } from '../text/text';
-import { validateSignupForm } from '../utils/validation';
-import { TextField } from './Fields';
-import { extractUserId } from '../utils/jwt';
 import { localStorageJwtKey } from '../utils/constants';
+import { validateSignupForm } from '../utils/validation';
+import { InputField } from './Fields';
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
-  const userToken = localStorage.getItem(localStorageJwtKey);
-  const userId = userToken && extractUserId(userToken);
+  const navigate = useNavigate();
   const createUserError = useSelector((state) => state.user.error);
 
   return (
@@ -29,7 +27,11 @@ const SignUpForm = () => {
       validate={(values) => validateSignupForm(values)}
       onSubmit={(values, actions) => {
         localStorage.removeItem(localStorageJwtKey);
-        dispatch(createUser(values));
+        dispatch(createUser(values))
+          .unwrap()
+          .then(() => {
+            navigate('/goals');
+          });
         actions.setSubmitting(false);
       }}
     >
@@ -47,27 +49,27 @@ const SignUpForm = () => {
                 {createUserError.message}
               </Paragraph>
             ) : null}
-            <TextField
+            <InputField
               name="firstName"
               type="text"
               label="First Name"
               placeholder="First Name"
             />
-            <TextField
+            <InputField
               name="lastName"
               type="text"
               label="Last Name"
               placeholder="Last Name"
             />
-            <TextField
+            <InputField
               name="email"
               type="email"
               label="Email"
               placeholder="janedoe@example.com"
             />
 
-            <TextField name="password" type="password" label="Password" />
-            <TextField
+            <InputField name="password" type="password" label="Password" />
+            <InputField
               name="confirmPassword"
               type="password"
               label="Confirm Password"
@@ -87,8 +89,6 @@ const SignUpForm = () => {
             >
               {signupScreen.signupBtn}
             </Button>
-
-            {userId ? <Navigate replace to="/goals" /> : null}
           </Form>
         );
       }}
