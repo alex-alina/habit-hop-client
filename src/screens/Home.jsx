@@ -8,7 +8,9 @@ import Div from '../core-components/Div';
 import Heading from '../core-components/Heading';
 import { homeScreen } from '../text/text';
 
-const Home = () => {
+const Home = ({ content = homeScreen }) => {
+  const { intro, loginBtn, signupBtn } = content;
+
   return (
     <Div
       height="auto"
@@ -28,17 +30,20 @@ const Home = () => {
         fontFamily="heading"
         mb={[0, 0, 3, 4, 4]}
       >
-        {homeScreen.intro}
+        {intro}
       </Heading>
       <Div display="flex" justifyContent="space-around" alignItems="flex-end">
         <Div display={['none', 'none', 'none', 'none', 'block']}>
-          <PlantOne width={300} height={400} />
+          <PlantOne width={300} height={400} aria-hidden="true" />
         </Div>
         <Div>
-          <Human style={{ width: 'auto', maxWidth: 300, maxHeight: 400 }} />
+          <Human
+            style={{ width: 'auto', maxWidth: 300, maxHeight: 400 }}
+            aria-hidden="true"
+          />
         </Div>
         <Div display={['none', 'none', 'none', 'none', 'block']}>
-          <PlantTwo width={300} height={500} />
+          <PlantTwo width={300} height={500} aria-hidden="true" />
         </Div>
       </Div>
 
@@ -50,12 +55,12 @@ const Home = () => {
       >
         <Link to="/signup">
           <Button variant="primaryLg" mr={[0, 0, 5, 5, 5]} mb={[4, 4, 0, 0, 0]}>
-            {homeScreen.signupBtn}
+            {signupBtn}
           </Button>
         </Link>
 
         <Link to="/login">
-          <Button variant="secondaryLg">{homeScreen.loginBtn}</Button>
+          <Button variant="secondaryLg">{loginBtn}</Button>
         </Link>
       </Div>
     </Div>

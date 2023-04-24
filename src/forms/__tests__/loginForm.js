@@ -5,11 +5,23 @@ import { mockJwt, storageJwtKey } from '../../mocks/constants';
 import { renderWithProvidersAndRouter } from '../../utils/testUtils';
 import LoginForm from '../LoginForm';
 
+const content = {
+  emailField: {
+    label: 'Email',
+    placeholder: 'janedoe@example.com',
+  },
+  passwordField: {
+    label: 'Password',
+    placeholder: 'Password',
+  },
+  loginBtn: 'Log in',
+};
+
 const credentials = { email: 'ella@example.com', password: 'azsxdcfv' };
 
 describe('login form', () => {
   it('allows user to log in and redirects them to /goals', async () => {
-    renderWithProvidersAndRouter(<LoginForm />, {
+    renderWithProvidersAndRouter(<LoginForm content={content} />, {
       route: '/login',
     });
 

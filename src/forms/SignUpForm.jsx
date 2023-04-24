@@ -5,15 +5,22 @@ import { useNavigate } from 'react-router-dom';
 import { createUser } from '../actions-reducers/users';
 import Button from '../core-components/Button';
 import Paragraph from '../core-components/Paragraph';
-import { signupScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
 import { validateSignupForm } from '../utils/validation';
 import { InputField } from './Fields';
 
-const SignUpForm = () => {
+const SignUpForm = ({ content }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const createUserError = useSelector((state) => state.user.error);
+  const {
+    firstNameField,
+    lastNameField,
+    emailField,
+    passwordField,
+    confirmPasswordField,
+    signupBtn,
+  } = content;
 
   return (
     <Formik
@@ -52,27 +59,33 @@ const SignUpForm = () => {
             <InputField
               name="firstName"
               type="text"
-              label="First Name"
-              placeholder="First Name"
+              label={firstNameField.label}
+              placeholder={firstNameField.placeholder}
             />
             <InputField
               name="lastName"
               type="text"
-              label="Last Name"
-              placeholder="Last Name"
+              label={lastNameField.label}
+              placeholder={lastNameField.placeholder}
             />
             <InputField
               name="email"
               type="email"
-              label="Email"
-              placeholder="janedoe@example.com"
+              label={emailField.label}
+              placeholder={emailField.placeholder}
             />
 
-            <InputField name="password" type="password" label="Password" />
+            <InputField
+              name="password"
+              type="password"
+              label={passwordField.label}
+              placeholder={passwordField.placeholder}
+            />
             <InputField
               name="confirmPassword"
               type="password"
-              label="Confirm Password"
+              label={confirmPasswordField.label}
+              placeholder={confirmPasswordField.placeholder}
             />
 
             <Button
@@ -87,7 +100,7 @@ const SignUpForm = () => {
                 submitForm();
               }}
             >
-              {signupScreen.signupBtn}
+              {signupBtn}
             </Button>
           </Form>
         );
