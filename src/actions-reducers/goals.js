@@ -26,7 +26,6 @@ export const getGoals = createAsyncThunk(
 
       const goals = response.body.data.goals;
       const formattedGoals = goals.map((goal) => formatGoal(goal));
-
       return { items: formattedGoals };
     } catch (err) {
       if (err.response) {
@@ -132,6 +131,7 @@ const goalsReducer = createReducer(initialState, (builder) => {
       const status = 'success';
       const currentGoals = state.items;
       const newGoals = [...currentGoals, action.payload];
+
       return { ...state, items: newGoals, status, error: {} };
     })
     .addCase(addGoal.rejected, (state, action) => {

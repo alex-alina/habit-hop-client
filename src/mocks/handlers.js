@@ -1,7 +1,15 @@
 // Mock Service Worker handlers.js
 import { rest } from 'msw';
 import { baseUrl } from '../utils/constants';
-import { mockJwt, storageJwtKey, mockUserData } from './constants';
+import {
+  mockJwt,
+  storageJwtKey,
+  mockUserData,
+  mockGoalData1,
+  mockGoalData2,
+  mockGoalData3,
+  editGoalData,
+} from './constants';
 
 const loginHandler = rest.post(`${baseUrl}/logins`, (req, res, ctx) => {
   // Persist user's authentication token in Storage
@@ -82,16 +90,20 @@ export const getUserHandlerException = rest.get(
 const getGoalsHandler = rest.get(
   `${baseUrl}/users/:userId/goals`,
   (req, res, ctx) => {
-    // const isAuthenticated = localStorage.getItem('jwt');
-    // if (!isAuthenticated) {
-    //   return res(
-    //     ctx.status(401),
-    //     ctx.json({
-    //       errorMessage: 'Not authorized',
-    //     })
-    //   );
-    // }
+    return res(
+      ctx.json({
+        data: {
+          goals: [mockGoalData1, mockGoalData2, mockGoalData3],
+        },
+      }),
+      ctx.status(200)
+    );
+  }
+);
 
+export const getEmptyGoalsHandler = rest.get(
+  `${baseUrl}/users/:userId/goals`,
+  (req, res, ctx) => {
     return res(
       ctx.json({
         data: {
@@ -102,29 +114,68 @@ const getGoalsHandler = rest.get(
     );
   }
 );
+
+const addGoalHandler = rest.post(
+  `${baseUrl}/users/:userId/goals`,
+  (req, res, ctx) => {
+    return res(
+      ctx.json({
+        data: {
+          goal: mockGoalData1,
+        },
+      }),
+      ctx.status(201)
+    );
+  }
+);
+
+const deleteGoalHandler = rest.delete(
+  `${baseUrl}/users/:userId/goals/:goalId`,
+  (req, res, ctx) => {
+    return res(ctx.status(204));
+  }
+);
+
+const editGoalHandler = rest.patch(
+  `${baseUrl}/users/:userId/goals/:goalId`,
+  (req, res, ctx) => {
+    return res(
+      ctx.json({
+        data: {
+          goal: editGoalData,
+        },
+      }),
+      ctx.status(201)
+    );
+  }
+);
+
 export const handlers = [
   loginHandler,
   signupHandler,
   getUserHandler,
   getGoalsHandler,
-  // rest.get('/user', (req, res, ctx) => {
-  //   // Check if the user is authenticated in this session
-  //   const isAuthenticated = sessionStorage.getItem('is-authenticated');
-  //   if (!isAuthenticated) {
-  //     // If not authenticated, respond with a 403 error
-  //     return res(
-  //       ctx.status(403),
-  //       ctx.json({
-  //         errorMessage: 'Not authorized',
-  //       })
-  //     );
-  //   }
-  //   // If authenticated, return a mocked user details
-  //   return res(
-  //     ctx.status(200),
-  //     ctx.json({
-  //       username: 'admin',
-  //     })
-  //   );
-  // }),
+  addGoalHandler,
+  deleteGoalHandler,
+  editGoalHandler,
 ];
+
+// rest.get('/user', (req, res, ctx) => {
+//   // Check if the user is authenticated in this session
+//       // const isAuthenticated = localStorage.getItem('jwt');
+// if (!isAuthenticated) {
+//   return res(
+//     ctx.status(401),
+//     ctx.json({
+//       errorMessage: 'Not authorized',
+//     })
+//   );
+// }
+//   // If authenticated, return a mocked user details
+//   return res(
+//     ctx.status(200),
+//     ctx.json({
+//       username: 'admin',
+//     })
+//   );
+// }),
