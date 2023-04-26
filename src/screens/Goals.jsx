@@ -31,6 +31,7 @@ const Goals = ({ content = goalsScreen }) => {
     maxNumOfGoalsInfo,
     goalCard,
     addGoalBtn,
+    goalsForm,
   } = content;
 
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ const Goals = ({ content = goalsScreen }) => {
       {goalFormIsVisible && (
         <FormsOverlay closeHandler={handleCloseOverlay}>
           <GoalForm
+            content={goalsForm}
             handleSubmit={isEditMode ? handlEditGoal : handleAddGoal}
             handleCloseOverlay={handleCloseOverlay}
             goal={isEditMode ? editedGoal : null}
@@ -146,7 +148,7 @@ const Goals = ({ content = goalsScreen }) => {
                 {user.firstName},{noGoalsIntro}
               </Header>
 
-              <GoalForm handleSubmit={handleAddGoal} />
+              <GoalForm content={goalsForm} handleSubmit={handleAddGoal} />
             </>
           ) : (
             <Div
