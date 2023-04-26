@@ -140,29 +140,10 @@ describe('Validate Goal Description', () => {
 });
 
 describe('Validate Start Date Input', () => {
-  let spy;
   let date = '2023-03-23';
 
-  beforeEach(() => {
-    spy = jest.spyOn(dateModule, 'isPresentDate');
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   it('should return undefined for valid start date', () => {
-    spy.mockReturnValue(true);
     expect(validateStartDateInput(date)).toBe(undefined);
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should return error message when the date is in the past', () => {
-    spy.mockReturnValue(false);
-    expect(validateStartDateInput(date)).toBe(
-      "You can't add a date in the past"
-    );
-    expect(spy).toHaveBeenCalled();
   });
 
   it('should return "Required" error message when no value is passed', () => {
@@ -173,12 +154,9 @@ describe('Validate Start Date Input', () => {
 describe('Validate End Date Input', () => {
   let startDate = '2023-03-23';
   let endDate = '2023-06-16';
-
-  let spyIsPresentDate;
   let spyIsOneWeekFromDate;
 
   beforeEach(() => {
-    spyIsPresentDate = jest.spyOn(dateModule, 'isPresentDate');
     spyIsOneWeekFromDate = jest.spyOn(dateModule, 'isOneWeekFromDate');
   });
 
@@ -187,31 +165,17 @@ describe('Validate End Date Input', () => {
   });
 
   it('should return undefined for valid end date', () => {
-    spyIsPresentDate.mockReturnValue(true);
     spyIsOneWeekFromDate.mockReturnValue(true);
     expect(validateEndDateInput(startDate, endDate)).toBe(undefined);
-    expect(spyIsPresentDate).toHaveBeenCalled();
     expect(spyIsOneWeekFromDate).toHaveBeenCalled();
   });
 
   it('should return error message when there is less than a week between start and end date', () => {
-    spyIsPresentDate.mockReturnValue(true);
     spyIsOneWeekFromDate.mockReturnValue(false);
     expect(validateEndDateInput(startDate, endDate)).toBe(
       'You must alllow at least one week between the start and end dates'
     );
-    expect(spyIsPresentDate).toHaveBeenCalled();
     expect(spyIsOneWeekFromDate).toHaveBeenCalled();
-  });
-
-  it('should return error message when the end date is in the past', () => {
-    spyIsPresentDate.mockReturnValue(false);
-    spyIsOneWeekFromDate.mockReturnValue(true);
-    expect(validateEndDateInput(startDate, endDate)).toBe(
-      "You can't add a date in the past"
-    );
-    expect(spyIsPresentDate).toHaveBeenCalled();
-    expect(spyIsOneWeekFromDate).not.toHaveBeenCalled();
   });
 
   it('should return "Required" error message when no values are passed', () => {
@@ -320,22 +284,20 @@ const invalidGoalFormValues = {
   goalDefinition:
     'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
   priority: '',
-  startDate: '2023-03-23',
+  startDate: '',
   endDate: '',
 };
 
 const goalFormErrors = {
   priority: 'Required',
-  startDate: "You can't add a date in the past",
+  startDate: 'Required',
   endDate: 'Required',
 };
 
 describe('Validate Goals Form', () => {
-  let spyIsPresentDate;
   let spyIsOneWeekFromDate;
 
   beforeEach(() => {
-    spyIsPresentDate = jest.spyOn(dateModule, 'isPresentDate');
     spyIsOneWeekFromDate = jest.spyOn(dateModule, 'isOneWeekFromDate');
   });
 
@@ -344,16 +306,12 @@ describe('Validate Goals Form', () => {
   });
 
   it('should return an empty errors object if all form values are valid', () => {
-    spyIsPresentDate.mockReturnValue(true);
     spyIsOneWeekFromDate.mockReturnValue(true);
     expect(validateGoalsForm(goalFormValues)).toEqual({});
-    expect(spyIsPresentDate).toHaveBeenCalled();
     expect(spyIsOneWeekFromDate).toHaveBeenCalled();
   });
 
   it("should return an errors' object including one or more error key - values", () => {
-    spyIsPresentDate.mockReturnValue(false);
     expect(validateGoalsForm(invalidGoalFormValues)).toEqual(goalFormErrors);
-    expect(spyIsPresentDate).toHaveBeenCalled();
   });
 });

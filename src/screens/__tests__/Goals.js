@@ -83,3 +83,5 @@ describe('Goals component', () => {
     expect(window.location.pathname).toBe('/login');
   });
 });
+
+// expect(() => validateGoalDescription(value, 14, 5)).toThrow(Error);
