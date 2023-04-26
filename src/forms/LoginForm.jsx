@@ -27,6 +27,9 @@ const LoginForm = ({ content }) => {
           .unwrap()
           .then(() => {
             navigate('/goals');
+          })
+          .catch((err) => {
+            err;
           });
         actions.setSubmitting(false);
       }}

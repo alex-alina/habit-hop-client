@@ -22,17 +22,17 @@ import { goalsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
 import { extractUserId, isExpired } from '../utils/jwt';
 
-const {
-  logoutBtn,
-  greeting,
-  goalsIntro,
-  noGoalsIntro,
-  maxNumOfGoalsInfo,
-  goalCard,
-  addGoalBtn,
-} = goalsScreen;
+const Goals = ({ content = goalsScreen }) => {
+  const {
+    logoutBtn,
+    greeting,
+    goalsIntro,
+    noGoalsIntro,
+    maxNumOfGoalsInfo,
+    goalCard,
+    addGoalBtn,
+  } = content;
 
-const Goals = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userToken = localStorage.getItem(localStorageJwtKey);

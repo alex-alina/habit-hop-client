@@ -4,6 +4,8 @@ import React from 'react';
 import { mockJwt, storageJwtKey } from '../../mocks/constants';
 import { renderWithProvidersAndRouter } from '../../utils/testUtils';
 import LoginForm from '../LoginForm';
+import { server } from '../../mocks/server';
+import { loginHandlerException } from '../../mocks/handlers';
 
 const content = {
   emailField: {
@@ -18,8 +20,9 @@ const content = {
 };
 
 const credentials = { email: 'ella@example.com', password: 'azsxdcfv' };
+const invalidCredentials = { email: 'ella@example.com', password: 'azsxwerti' };
 
-describe('login form', () => {
+describe('LoginForm component', () => {
   it('allows user to log in and redirects them to /goals', async () => {
     renderWithProvidersAndRouter(<LoginForm content={content} />, {
       route: '/login',
@@ -41,5 +44,29 @@ describe('login form', () => {
 
     expect(window.localStorage.getItem(storageJwtKey)).toBe(mockJwt);
     expect(window.location.pathname).toBe('/goals');
+  });
+
+  it('displays error message when login fails', async () => {
+    server.use(loginHandlerException);
+
+    renderWithProvidersAndRouter(<LoginForm content={content} />, {
+      route: '/login',
+    });
+
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+    const logInBtn = screen.getByText('Log in');
+    const errorMessage = screen.queryByText('Incorrect password or email');
+
+    expect(errorMessage).not.toBeInTheDocument();
+
+    await userEvent.type(emailInput, invalidCredentials.email);
+    await userEvent.type(passwordInput, invalidCredentials.password);
+    await userEvent.click(logInBtn);
+
+    const errorDisplay = screen.getByText('Incorrect password or email');
+    expect(errorDisplay).toBeInTheDocument();
+
+    expect(window.location.pathname).toBe('/login');
   });
 });
