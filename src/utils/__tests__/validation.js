@@ -31,7 +31,7 @@ const invalidEmails = [
   'berry@gmail..com',
 ];
 
-describe('Validate Email', () => {
+describe('Email validation', () => {
   validEmails.map((email, index) => {
     it(`should return undefined for valid email with index ${index}`, () => {
       expect(validateEmail(email)).toBe(undefined);
@@ -49,7 +49,7 @@ describe('Validate Email', () => {
   });
 });
 
-describe('Validate Name', () => {
+describe('Name validation', () => {
   it('should return undefined for valid name', () => {
     expect(validateName('Mike Mo')).toBe(undefined);
   });
@@ -63,7 +63,7 @@ describe('Validate Name', () => {
   });
 });
 
-describe('Validate Password', () => {
+describe('Password validation', () => {
   it('should return undefined for valid pasword value', () => {
     expect(validatePassword('12crownNine')).toBe(undefined);
   });
@@ -104,7 +104,7 @@ describe('Goal priority validation', () => {
   });
 });
 
-describe('Validate Goal Description', () => {
+describe('Goal Description validation', () => {
   let value = 'Lorem ipsum';
   let minChars = 5;
   let maxChars = 11;
@@ -139,7 +139,7 @@ describe('Validate Goal Description', () => {
   });
 });
 
-describe('Validate Start Date Input', () => {
+describe('Start Date Input validation', () => {
   let date = '2023-03-23';
 
   it('should return undefined for valid start date', () => {
@@ -151,7 +151,7 @@ describe('Validate Start Date Input', () => {
   });
 });
 
-describe('Validate End Date Input', () => {
+describe('End Date Input validation', () => {
   let startDate = '2023-03-23';
   let endDate = '2023-06-16';
   let spyIsOneWeekFromDate;
@@ -209,7 +209,7 @@ const cleanedPartialErrorsMock = {
   password: 'Required',
 };
 
-describe('Clean up errors util', () => {
+describe('cleanUpErrors util', () => {
   it('should not filter out any of the errors', () => {
     expect(cleanUpErrors(errorsMock)).toEqual(cleanErrorsMock);
   });
@@ -235,7 +235,7 @@ const invalidSignupValues = {
   password: '',
 };
 
-describe('Validate Signup Form', () => {
+describe('Signup Form validation', () => {
   it('should return an empty errors object if all form values are valid', () => {
     expect(validateSignupForm(signupValues)).toEqual({});
   });
@@ -262,7 +262,7 @@ const loginErrors = {
   password: 'Required',
 };
 
-describe('Validate Login Form', () => {
+describe('Login Form validation', () => {
   it('should return an empty errors object if all form values are valid', () => {
     expect(validateLoginForm(loginValues)).toEqual({});
   });
@@ -294,7 +294,7 @@ const goalFormErrors = {
   endDate: 'Required',
 };
 
-describe('Validate Goals Form', () => {
+describe('Goals Form validation', () => {
   let spyIsOneWeekFromDate;
 
   beforeEach(() => {

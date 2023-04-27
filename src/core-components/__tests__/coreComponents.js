@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import * as React from 'react';
 import { ThemeProvider } from 'styled-components';
 import defaultTheme from '../../styles/theme';
+import icons from '../../utils/icons';
 import Anchor from '../Anchor';
 import Button from '../Button';
 import Div from '../Div';
@@ -10,14 +11,13 @@ import Heading from '../Heading';
 import Image from '../Image';
 import Input from '../Input';
 import Label from '../Label';
+import { ListItem, OrderedList, UnorderedList } from '../List';
 import Paragraph from '../Paragraph';
 import Section from '../Section';
-import Span from '../Span';
-import { OrderedList, UnorderedList, ListItem } from '../List';
 import Select from '../Select';
-import TextArea from '../Textarea';
+import Span from '../Span';
 import Svg from '../Svg';
-import icons from '../../utils/icons';
+import TextArea from '../Textarea';
 
 it('renders Anchor tag', () => {
   render(
@@ -159,6 +159,7 @@ it('renders Unordered List with ListItem components', async () => {
 
   const ul = screen.getByTestId(/ul/i);
   const lis = screen.getAllByTestId(/li[0-9]/i);
+
   expect(ul).toBeInTheDocument();
   expect(ul).toHaveStyle({ 'font-size': '16px', 'margin-top': '20px' });
   expect(lis).toHaveLength(3);
@@ -183,6 +184,7 @@ it('renders Ordered List with ListItem components', async () => {
 
   const ol = screen.getByTestId(/ul/i);
   const lis = screen.getAllByTestId(/li[0-9]/i);
+
   expect(ol).toBeInTheDocument();
   expect(ol).toHaveStyle({ 'font-size': '16px', 'margin-top': '20px' });
   expect(lis).toHaveLength(3);
@@ -191,8 +193,8 @@ it('renders Ordered List with ListItem components', async () => {
   expect(lis[2]).toHaveStyle({ 'margin-bottom': '10px' });
 });
 
-describe('renders Select component', () => {
-  it('should correctly set the default option / placeholder', async () => {
+describe('Select component', () => {
+  it('should have the default option / placeholder correctly set ', async () => {
     const options = ['spring', 'summer', 'autumn', 'winter'];
     render(
       <ThemeProvider theme={defaultTheme}>
@@ -240,7 +242,7 @@ describe('renders Select component', () => {
     expect(screen.getAllByRole('option').length).toBe(5);
   });
 
-  it('renders component without options', async () => {
+  it('renders without options', async () => {
     render(
       <ThemeProvider theme={defaultTheme}>
         <>
@@ -252,7 +254,7 @@ describe('renders Select component', () => {
     expect(screen.getAllByRole('option').length).toBe(1);
   });
 
-  it('allows the user to select a specific season', async () => {
+  it('allows the user to select a specific option', async () => {
     const options = ['spring', 'summer', 'autumn', 'winter'];
     render(
       <ThemeProvider theme={defaultTheme}>
@@ -283,8 +285,8 @@ describe('renders Select component', () => {
   });
 });
 
-describe('renders TextArea with Label component', () => {
-  it('allows user to type in a maximum of ten', async () => {
+describe('TextArea with Label component', () => {
+  it('allows user to type in a maximum of ten chars', async () => {
     render(
       <ThemeProvider theme={defaultTheme}>
         <>
