@@ -46,6 +46,13 @@ describe('Renders Login screen', () => {
     expect(signUpLink).toBeInTheDocument();
   });
 
+  it('renders Login screen with default text content', () => {
+    renderWithProvidersAndRouter(<Login />);
+
+    expect(screen.getByLabelText('Email')).toBeInTheDocument();
+    expect(screen.getByText("Don't have an account yet?")).toBeInTheDocument();
+  });
+
   it('redirects to Home screen when the "Go back" button is clicked', async () => {
     renderWithProvidersAndRouter(<Login content={mockText} />, {
       route: '/login',

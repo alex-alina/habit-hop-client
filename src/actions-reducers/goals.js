@@ -55,6 +55,11 @@ export const addGoal = createAsyncThunk(
         const errorWrapper = JSON.parse(err.response.text);
         throw `${errorWrapper.error.message}`;
       }
+      if (err.message.match(/Request has been terminated/i)) {
+        throw new Error(
+          'There are issues with the server. Please try again later'
+        );
+      }
       throw new Error(err);
     }
   }
@@ -75,6 +80,11 @@ export const deleteGoal = createAsyncThunk(
       if (err.response) {
         const errorWrapper = JSON.parse(err.response.text);
         throw `${errorWrapper.error.message}`;
+      }
+      if (err.message.match(/Request has been terminated/i)) {
+        throw new Error(
+          'There are issues with the server. Please try again later'
+        );
       }
       throw new Error(err);
     }
@@ -98,6 +108,11 @@ export const editGoal = createAsyncThunk(
       if (err.response) {
         const errorWrapper = JSON.parse(err.response.text);
         throw `${errorWrapper.error.message}`;
+      }
+      if (err.message.match(/Request has been terminated/i)) {
+        throw new Error(
+          'There are issues with the server. Please try again later'
+        );
       }
       throw new Error(err);
     }

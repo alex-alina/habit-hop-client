@@ -62,6 +62,11 @@ describe('Renders SignUp screen', () => {
     expect(signupButton).toBeInTheDocument();
   });
 
+  it('renders SignUp with default text content', () => {
+    renderWithProvidersAndRouter(<Signup />);
+    expect(screen.getByText('Create account')).toBeInTheDocument();
+  });
+
   it('redirects to Home screen when the "Go back" button is clicked', async () => {
     renderWithProvidersAndRouter(<Signup content={mockText} />, {
       route: '/signup',

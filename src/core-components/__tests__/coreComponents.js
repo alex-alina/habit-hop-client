@@ -8,13 +8,13 @@ import Button from '../Button';
 import Div from '../Div';
 import Heading from '../Heading';
 import Image from '../Image';
-import { Input } from '../Input';
+import Input from '../Input';
 import Label from '../Label';
 import Paragraph from '../Paragraph';
 import Section from '../Section';
 import Span from '../Span';
 import { OrderedList, UnorderedList, ListItem } from '../List';
-import { Select } from '../Select';
+import Select from '../Select';
 import TextArea from '../Textarea';
 import Svg from '../Svg';
 import icons from '../../utils/icons';
@@ -203,7 +203,6 @@ describe('renders Select component', () => {
             placeholder="Seasons"
             name="seasons"
             id="seasons"
-            data-testid="select"
             fontSize="16px"
             mt="20px"
           />
@@ -239,6 +238,18 @@ describe('renders Select component', () => {
     );
 
     expect(screen.getAllByRole('option').length).toBe(5);
+  });
+
+  it('renders component without options', async () => {
+    render(
+      <ThemeProvider theme={defaultTheme}>
+        <>
+          <Label htmlFor="seasons">Seasons</Label>
+          <Select placeholder="Seasons" name="seasons" id="seasons" />
+        </>
+      </ThemeProvider>
+    );
+    expect(screen.getAllByRole('option').length).toBe(1);
   });
 
   it('allows the user to select a specific season', async () => {

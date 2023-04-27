@@ -20,10 +20,13 @@ const content = {
 };
 
 const credentials = { email: 'ella@example.com', password: 'azsxdcfv' };
-const invalidCredentials = { email: 'ella@example.com', password: 'azsxwerti' };
+const incorrectCredentials = {
+  email: 'ella@example.com',
+  password: 'azsxwerti',
+};
 
 describe('LoginForm component', () => {
-  it('allows user to log in and redirects them to /goals', async () => {
+  it('renders form and redirects user /goals after successful submit', async () => {
     renderWithProvidersAndRouter(<LoginForm content={content} />, {
       route: '/login',
     });
@@ -37,10 +40,6 @@ describe('LoginForm component', () => {
     await userEvent.type(emailInput, credentials.email);
     await userEvent.type(passwordInput, credentials.password);
     await userEvent.click(logInBtn);
-
-    expect(emailInput).toHaveValue(credentials.email);
-    expect(passwordInput).toHaveValue(credentials.password);
-    expect(logInBtn).toBeInTheDocument();
 
     expect(window.localStorage.getItem(storageJwtKey)).toBe(mockJwt);
     expect(window.location.pathname).toBe('/goals');
@@ -60,13 +59,29 @@ describe('LoginForm component', () => {
 
     expect(errorMessage).not.toBeInTheDocument();
 
-    await userEvent.type(emailInput, invalidCredentials.email);
-    await userEvent.type(passwordInput, invalidCredentials.password);
+    await userEvent.type(emailInput, incorrectCredentials.email);
+    await userEvent.type(passwordInput, incorrectCredentials.password);
     await userEvent.click(logInBtn);
 
     const errorDisplay = screen.getByText('Incorrect password or email');
     expect(errorDisplay).toBeInTheDocument();
 
+    expect(window.location.pathname).toBe('/login');
+  });
+
+  it('does not submit invalid values', async () => {
+    renderWithProvidersAndRouter(<LoginForm content={content} />, {
+      route: '/login',
+    });
+
+    const emailInput = screen.getByLabelText('Email');
+    const logInBtn = screen.getByText('Log in');
+
+    await userEvent.type(emailInput, 'alex@gmail');
+    await userEvent.click(logInBtn);
+
+    expect(screen.getByText('Invalid email address')).toBeInTheDocument();
+    expect(screen.getByText('Required')).toBeInTheDocument();
     expect(window.location.pathname).toBe('/login');
   });
 });

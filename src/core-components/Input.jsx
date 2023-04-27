@@ -47,7 +47,7 @@ const StyledCoreInput = styled(CoreInput)`
   }
 `;
 
-export const Input = ({ children, field, ...props }) => {
+const Input = ({ children, field, ...props }) => {
   return (
     <StyledCoreInput
       type="text"
@@ -67,3 +67,5 @@ export const Input = ({ children, field, ...props }) => {
     </StyledCoreInput>
   );
 };
+
+export default Input;

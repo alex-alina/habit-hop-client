@@ -1,7 +1,12 @@
 import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { editGoalData, mockGoalFormData, mockJwt } from '../../mocks/constants';
+import {
+  mockGoalData1,
+  editGoalData,
+  mockGoalFormData,
+  mockJwt,
+} from '../../mocks/constants';
 import { getEmptyGoalsHandler } from '../../mocks/handlers';
 import { server } from '../../mocks/server';
 import * as jwtModule from '../../utils/jwt';
@@ -215,6 +220,7 @@ describe('Goals component', () => {
       });
       reRender = rerender;
     });
+    expect(screen.getByText(mockGoalData1.goalDefinition)).toBeInTheDocument();
 
     const editGoalButtons = screen.getAllByText('Edit');
     expect(editGoalButtons).toHaveLength(3);

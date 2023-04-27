@@ -75,17 +75,17 @@ const getUserHandler = rest.get(`${baseUrl}/users/:userId`, (req, res, ctx) => {
   );
 });
 
-export const getUserHandlerException = rest.get(
-  `${baseUrl}/users/:userId`,
-  (req, res, ctx) => {
-    return res(
-      ctx.status(404),
-      ctx.json({
-        error: { message: 'User not found' },
-      })
-    );
-  }
-);
+// export const getUserHandlerException = rest.get(
+//   `${baseUrl}/users/:userId`,
+//   (req, res, ctx) => {
+//     return res(
+//       ctx.status(404),
+//       ctx.json({
+//         error: { message: 'User not found' },
+//       })
+//     );
+//   }
+// );
 
 const getGoalsHandler = rest.get(
   `${baseUrl}/users/:userId/goals`,
@@ -149,6 +149,18 @@ const editGoalHandler = rest.patch(
     );
   }
 );
+
+// export const editGoalHandlerException = rest.patch(
+//   `${baseUrl}/users/:userId/goals/:goalId`,
+//   (req, res, ctx) => {
+//     return res(
+//       ctx.status(404),
+//       ctx.json({
+//         error: { message: 'Goal not found' },
+//       })
+//     );
+//   }
+// );
 
 export const handlers = [
   loginHandler,
