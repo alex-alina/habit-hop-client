@@ -2,10 +2,10 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { mockJwt, storageJwtKey } from '../../mocks/constants';
+import { loginHandlerException } from '../../mocks/handlers';
+import { server } from '../../mocks/server';
 import { renderWithProvidersAndRouter } from '../../utils/testUtils';
 import LoginForm from '../LoginForm';
-import { server } from '../../mocks/server';
-import { loginHandlerException } from '../../mocks/handlers';
 
 const content = {
   emailField: {
@@ -55,16 +55,16 @@ describe('LoginForm component', () => {
     const emailInput = screen.getByLabelText('Email');
     const passwordInput = screen.getByLabelText('Password');
     const logInBtn = screen.getByText('Log in');
-    const errorMessage = screen.queryByText('Incorrect password or email');
+    const noErrorMessage = screen.queryByText('Incorrect password or email');
 
-    expect(errorMessage).not.toBeInTheDocument();
+    expect(noErrorMessage).not.toBeInTheDocument();
 
     await userEvent.type(emailInput, incorrectCredentials.email);
     await userEvent.type(passwordInput, incorrectCredentials.password);
     await userEvent.click(logInBtn);
 
-    const errorDisplay = screen.getByText('Incorrect password or email');
-    expect(errorDisplay).toBeInTheDocument();
+    const errorMessage = screen.getByText('Incorrect password or email');
+    expect(errorMessage).toBeInTheDocument();
 
     expect(window.location.pathname).toBe('/login');
   });
