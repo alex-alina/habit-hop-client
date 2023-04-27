@@ -1,9 +1,9 @@
-import FormOverlay from '../FormOverlay';
-import Div from '../../core-components/Div';
-import Heading from '../../core-components/Heading';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import Div from '../../core-components/Div';
+import Heading from '../../core-components/Heading';
 import { renderWithTheme } from '../../utils/testUtils';
+import FormOverlay from '../FormOverlay';
 
 const text = 'You can close this overlay';
 const clickHandler = jest.fn();

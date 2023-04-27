@@ -1,9 +1,9 @@
-import Banner from '../Banner';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import Banner from '../Banner';
 
-import { renderWithTheme } from '../../utils/testUtils';
 import icons from '../../utils/icons';
+import { renderWithTheme } from '../../utils/testUtils';
 
 describe('Banner', () => {
   const iconList = Object.keys(icons);
