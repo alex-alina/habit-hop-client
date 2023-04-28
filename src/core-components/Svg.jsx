@@ -30,7 +30,7 @@ const CoreSvg = styled('svg')(
 import React from 'react';
 
 const Svg = ({
-  paths = {},
+  paths,
   style = {},
   fill = 'none',
   stroke = '#1A237E',

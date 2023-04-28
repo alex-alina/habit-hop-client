@@ -8,9 +8,9 @@ import Heading from '../core-components/Heading';
 import LoginForm from '../forms/LoginForm';
 import { loginScreen } from '../text/text';
 
-const { intro, introMobile, signupRedirect } = loginScreen;
+const Login = ({ content = loginScreen }) => {
+  const { intro, introMobile, form, signupRedirect } = content;
 
-const Login = () => {
   return (
     <Div
       display="flex"
@@ -46,34 +46,35 @@ const Login = () => {
         width={['100%', '100%', 'auto', 'auto', ' 50%']}
         pt={[2, 2, 2, 2, 5]}
       >
-        <Button
-          aria-label="Back to home page"
-          display={['none', 'none', 'none', 'none', 'flex']}
-          variant="roundButtonLg"
-          alignItems="center"
-          flexDirection="column"
-          width={40}
-          height={40}
-          ml={[2, 2, 2, 2, 5]}
-        >
-          <Link to="/">
+        <Link to="/">
+          <Button
+            aria-label="Back to home page"
+            display={['none', 'none', 'none', 'none', 'flex']}
+            variant="roundButtonLg"
+            alignItems="center"
+            flexDirection="column"
+            width={40}
+            height={40}
+            ml={[2, 2, 2, 2, 5]}
+          >
             <SvgIcon name="arrow-left" aria-hidden="true" />
-          </Link>
-        </Button>
+          </Button>
+        </Link>
 
-        <Button
-          display={['flex', 'flex', 'flex', 'flex', 'none']}
-          variant="roundButtonLg"
-          position="absolute"
-          top={2}
-          alignItems="center"
-          flexDirection="column"
-          ml={[2, 2, 2, 2, 9]}
-        >
-          <Link to="/">
+        <Link to="/">
+          <Button
+            aria-label="Back to home page"
+            display={['flex', 'flex', 'flex', 'flex', 'none']}
+            variant="roundButtonLg"
+            position="absolute"
+            top={2}
+            alignItems="center"
+            flexDirection="column"
+            ml={[2, 2, 2, 2, 9]}
+          >
             <SvgIcon name="arrow-left" />
-          </Link>
-        </Button>
+          </Button>
+        </Link>
 
         <Div
           mx="auto"
@@ -102,7 +103,7 @@ const Login = () => {
           >
             {introMobile}
           </Heading>
-          <LoginForm />
+          <LoginForm content={form} />
         </Div>
         <Div
           display="flex"

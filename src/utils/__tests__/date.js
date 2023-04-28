@@ -1,15 +1,12 @@
 import { dateToTimestamp, isPresentDate, isOneWeekFromDate } from '../date';
 
-describe('yyyy-mm-dd date format is converted to timestamp', () => {
+it('converts yyyy-mm-dd date format to timestamp', () => {
   let date = '2023-04-18';
   let timestamp = 1681776000000;
-
-  it('returns timestamp', () => {
-    expect(dateToTimestamp(date)).toBe(timestamp);
-  });
+  expect(dateToTimestamp(date)).toBe(timestamp);
 });
 
-describe('Date is in the present', () => {
+describe('isPresentDate util', () => {
   let date = '2023-04-18';
   let today = '2023-04-16';
 
@@ -35,7 +32,7 @@ describe('Date is in the present', () => {
   });
 });
 
-describe('Is one week from date', () => {
+describe('isOneWeekFromDate util', () => {
   let endDate = '2023-04-18';
   let startDate = '2023-04-10';
 

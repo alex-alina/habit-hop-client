@@ -22,17 +22,18 @@ import { goalsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
 import { extractUserId, isExpired } from '../utils/jwt';
 
-const {
-  logoutBtn,
-  greeting,
-  goalsIntro,
-  noGoalsIntro,
-  maxNumOfGoalsInfo,
-  goalCard,
-  addGoalBtn,
-} = goalsScreen;
+const Goals = ({ content = goalsScreen }) => {
+  const {
+    logoutBtn,
+    greeting,
+    goalsIntro,
+    noGoalsIntro,
+    maxNumOfGoalsInfo,
+    goalCard,
+    addGoalBtn,
+    goalsForm,
+  } = content;
 
-const Goals = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userToken = localStorage.getItem(localStorageJwtKey);
@@ -92,6 +93,7 @@ const Goals = () => {
       {goalFormIsVisible && (
         <FormsOverlay closeHandler={handleCloseOverlay}>
           <GoalForm
+            content={goalsForm}
             handleSubmit={isEditMode ? handlEditGoal : handleAddGoal}
             handleCloseOverlay={handleCloseOverlay}
             goal={isEditMode ? editedGoal : null}
@@ -146,7 +148,7 @@ const Goals = () => {
                 {user.firstName},{noGoalsIntro}
               </Header>
 
-              <GoalForm handleSubmit={handleAddGoal} />
+              <GoalForm content={goalsForm} handleSubmit={handleAddGoal} />
             </>
           ) : (
             <Div

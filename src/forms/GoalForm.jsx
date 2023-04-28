@@ -3,16 +3,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../core-components/Button';
 import Paragraph from '../core-components/Paragraph';
-import { goalsScreen } from '../text/text';
 import { validateGoalsForm } from '../utils/validation';
 import { SelectField, TextArea, InputField } from './Fields';
 
 const GOAL_PRIORITIES = ['main', 'secondary', 'tertiary'];
 
-const { goalDescription, startdateInput, endDateInput, select, button } =
-  goalsScreen.goalsForm;
-
-const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
+const GoalForm = ({ content, goal, handleSubmit, handleCloseOverlay }) => {
   const initialValues = {
     goalDefinition: goal ? goal.goalDefinition : '',
     priority: goal ? goal.priority : '',
@@ -20,6 +16,8 @@ const GoalForm = ({ goal, handleSubmit, handleCloseOverlay }) => {
     endDate: goal ? goal.endDate : '',
   };
 
+  const { goalDescription, startdateInput, endDateInput, select, button } =
+    content;
   const goalError = useSelector((state) => state.goals.error);
 
   return (

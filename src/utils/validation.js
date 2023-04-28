@@ -1,4 +1,4 @@
-import { isPresentDate, isOneWeekFromDate } from './date';
+import { isOneWeekFromDate } from './date';
 
 const EMAIL_REGX = /^[A-Z0-9][A-Z0-9._%+-]*@[A-Z0-9.-]*[A-Z0-9]+\.[A-Z]{2,4}$/i;
 
@@ -72,8 +72,6 @@ const validateStartDateInput = (value = null) => {
 
   if (!value) {
     error = 'Required';
-  } else if (!isPresentDate(value)) {
-    error = "You can't add a date in the past";
   }
 
   return error;
@@ -84,8 +82,6 @@ const validateEndDateInput = (value, startDateValue) => {
 
   if (!value) {
     error = 'Required';
-  } else if (!isPresentDate(value)) {
-    error = "You can't add a date in the past";
   } else if (!isOneWeekFromDate(startDateValue, value)) {
     error = 'You must alllow at least one week between the start and end dates';
   }

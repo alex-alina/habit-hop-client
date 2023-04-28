@@ -59,7 +59,7 @@ const StyledCoreSelect = styled(CoreSelect)`
   }
 `;
 
-export const Select = ({ placeholder, options = [], field, ...props }) => {
+const Select = ({ placeholder, options = [], field, ...props }) => {
   return (
     <StyledCoreSelect
       color="text"

@@ -5,14 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../actions-reducers/login';
 import Button from '../core-components/Button';
 import Paragraph from '../core-components/Paragraph';
-import { loginScreen } from '../text/text';
 import { validateLoginForm } from '../utils/validation';
 import { InputField } from './Fields';
 
-const LoginForm = () => {
+const LoginForm = ({ content }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loginError = useSelector((state) => state.login.error);
+
+  const { emailField, passwordField, loginBtn } = content;
 
   return (
     <Formik
@@ -26,6 +27,9 @@ const LoginForm = () => {
           .unwrap()
           .then(() => {
             navigate('/goals');
+          })
+          .catch((err) => {
+            err;
           });
         actions.setSubmitting(false);
       }}
@@ -47,10 +51,15 @@ const LoginForm = () => {
             <InputField
               name="email"
               type="email"
-              label="Email"
-              placeholder="janedoe@example.com"
+              label={emailField.label}
+              placeholder={emailField.placeholder}
             />
-            <InputField name="password" type="password" label="Password" />
+            <InputField
+              name="password"
+              type="password"
+              label={passwordField.label}
+              placeholder={passwordField.placeholder}
+            />
             <Button
               variant="primaryLg"
               my={[4, 4, 3, 5, 5]}
@@ -62,7 +71,7 @@ const LoginForm = () => {
                 submitForm();
               }}
             >
-              {loginScreen.loginBtn}
+              {loginBtn}
             </Button>
           </Form>
         );

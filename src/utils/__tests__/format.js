@@ -1,6 +1,6 @@
 import { capitalizeFirstChar } from '../format';
 
-describe('Capitalize word', () => {
+describe('capitalizeFirstChar util', () => {
   it('returns empty string if passed an empty string', () => {
     expect(capitalizeFirstChar('')).toBe('');
   });

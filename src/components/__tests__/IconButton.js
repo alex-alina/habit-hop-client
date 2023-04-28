@@ -1,9 +1,9 @@
-import IconButton from '../IconButton';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import IconButton from '../IconButton';
 
-import { renderWithTheme } from '../../utils/testUtils';
 import icons from '../../utils/icons';
+import { renderWithTheme } from '../../utils/testUtils';
 
 describe('IconButton', () => {
   const iconList = Object.keys(icons);
@@ -43,10 +43,9 @@ describe('IconButton', () => {
       </IconButton>
     );
 
-    const button = screen.getByTestId('button');
-    await userEvent.click(button);
+    await userEvent.click(screen.getByTestId('button'));
     expect(clickHandler).toHaveBeenCalled();
-    await userEvent.click(button);
+    await userEvent.click(screen.getByTestId('button'));
     expect(clickHandler).toHaveBeenCalledTimes(2);
   });
 });

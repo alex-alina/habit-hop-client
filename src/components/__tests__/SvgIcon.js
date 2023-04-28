@@ -1,6 +1,6 @@
-import SvgIcon from '../SvgIcon';
 import { render, screen } from '@testing-library/react';
 import icons from '../../utils/icons';
+import SvgIcon from '../SvgIcon';
 
 describe('SvgIcon', () => {
   const iconList = Object.keys(icons);
@@ -9,9 +9,8 @@ describe('SvgIcon', () => {
   it('renders SvgIcon', () => {
     const { rerender } = render(<SvgIcon name={firstIcon} role="img" />);
 
-    const svgIcon = screen.getByRole('img');
-    expect(svgIcon).toBeInTheDocument();
-    expect(svgIcon).toHaveStyle('width: 26px');
+    expect(screen.getByRole('img')).toBeInTheDocument();
+    expect(screen.getByRole('img')).toHaveStyle('width: 26px');
 
     rerender(
       <SvgIcon name={firstIcon} role="graphics-symbol" aria-hidden="true" />

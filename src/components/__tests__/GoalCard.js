@@ -1,7 +1,7 @@
-import GoalCard from '../GoalCard';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '../../utils/testUtils';
+import GoalCard from '../GoalCard';
 
 const editClickHandler = jest.fn();
 const deleteClickHandler = jest.fn();
@@ -35,23 +35,21 @@ describe('GoalCard', () => {
       />
     );
 
-    const editBtn = screen.getByText(mockGoalText.editBtn);
-    const deleteBtn = screen.getByText(mockGoalText.deleteBtn);
-    const priority = screen.getByRole('heading', { level: 3 });
+    const priorityTitle = screen.getByRole('heading', { level: 3 });
     const timeSectionTitle = screen.getByRole('heading', { level: 4 });
-    const showHabitsBtn = screen.getByText(mockGoalText.showHabitsBtn);
     const startDateLabel = screen.getByText(
       mockGoalText.timeSection.startLabel
     );
-    const endDate = screen.getByText(mockGoalData.endDate);
 
-    expect(editBtn).toBeInTheDocument();
-    expect(deleteBtn).toBeInTheDocument();
-    expect(priority).toHaveTextContent(/main goal/i);
-    expect(timeSectionTitle).toHaveTextContent(mockGoalText.timeSection.title);
+    expect(screen.getByText(mockGoalText.editBtn)).toBeInTheDocument();
+    expect(screen.getByText(mockGoalText.deleteBtn)).toBeInTheDocument();
+    expect(screen.getByText(mockGoalData.endDate)).toBeInTheDocument();
     expect(startDateLabel).toBeInTheDocument();
-    expect(endDate).toBeInTheDocument();
-    expect(showHabitsBtn).toHaveStyle('max-width: 150px');
+    expect(priorityTitle).toHaveTextContent(/main goal/i);
+    expect(timeSectionTitle).toHaveTextContent(mockGoalText.timeSection.title);
+    expect(screen.getByText(mockGoalText.showHabitsBtn)).toHaveStyle(
+      'max-width: 150px'
+    );
   });
 
   it('should call handlers when the edit and delete buttons are clicked', async () => {

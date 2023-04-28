@@ -1,7 +1,7 @@
 import { useField } from 'formik';
 import React from 'react';
 import Div from '../core-components/Div';
-import { Input } from '../core-components/Input';
+import Input from '../core-components/Input';
 import Label from '../core-components/Label';
 import Paragraph from '../core-components/Paragraph';
 import Select from '../core-components/Select';

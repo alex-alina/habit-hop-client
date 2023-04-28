@@ -8,7 +8,9 @@ import Heading from '../core-components/Heading';
 import SignUpForm from '../forms/SignUpForm';
 import { signupScreen } from '../text/text';
 
-const SignUp = () => {
+const SignUp = ({ content = signupScreen }) => {
+  const { intro, form } = content;
+
   return (
     <Div
       display="flex"
@@ -44,35 +46,34 @@ const SignUp = () => {
         width={['100%', '100%', 'auto', 'auto', ' 50%']}
         pt={[2, 2, 2, 2, 5]}
       >
-        <Button
-          aria-label="Back to home page"
-          display={['none', 'none', 'none', 'none', 'flex']}
-          variant="roundButtonLg"
-          alignItems="center"
-          flexDirection="column"
-          width={40}
-          height={40}
-          ml={[2, 2, 2, 2, 5]}
-        >
-          <Link to="/">
+        <Link to="/">
+          <Button
+            aria-label="Back to home page"
+            display={['none', 'none', 'none', 'none', 'flex']}
+            variant="roundButtonLg"
+            alignItems="center"
+            flexDirection="column"
+            width={40}
+            height={40}
+            ml={[2, 2, 2, 2, 5]}
+          >
             <SvgIcon name="arrow-left" aria-hidden="true" />
-          </Link>
-        </Button>
-
-        <Button
-          display={['flex', 'flex', 'flex', 'flex', 'none']}
-          variant="roundButtonLg"
-          position="absolute"
-          top={2}
-          alignItems="center"
-          flexDirection="column"
-          ml={[2, 2, 2, 2, 9]}
-        >
-          <Link to="/">
+          </Button>
+        </Link>
+        <Link to="/">
+          <Button
+            aria-label="Back to home page"
+            display={['flex', 'flex', 'flex', 'flex', 'none']}
+            variant="roundButtonLg"
+            position="absolute"
+            top={2}
+            alignItems="center"
+            flexDirection="column"
+            ml={[2, 2, 2, 2, 9]}
+          >
             <SvgIcon name="arrow-left" />
-          </Link>
-        </Button>
-
+          </Button>
+        </Link>
         <Div
           mx="auto"
           mt={4}
@@ -88,9 +89,9 @@ const SignUp = () => {
             mb={[2, 2, 2, 3, 3]}
             mt={(2, 2, 4, 4, 4)}
           >
-            {signupScreen.intro}
+            {intro}
           </Heading>
-          <SignUpForm />
+          <SignUpForm content={form} />
         </Div>
       </Div>
     </Div>
