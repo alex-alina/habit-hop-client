@@ -52,12 +52,12 @@ describe('LoginForm component', () => {
       route: '/login',
     });
 
+    const noErrorMessage = screen.queryByText('Incorrect password or email');
+    expect(noErrorMessage).not.toBeInTheDocument();
+
     const emailInput = screen.getByLabelText('Email');
     const passwordInput = screen.getByLabelText('Password');
     const logInBtn = screen.getByText('Log in');
-    const noErrorMessage = screen.queryByText('Incorrect password or email');
-
-    expect(noErrorMessage).not.toBeInTheDocument();
 
     await userEvent.type(emailInput, incorrectCredentials.email);
     await userEvent.type(passwordInput, incorrectCredentials.password);
@@ -65,7 +65,6 @@ describe('LoginForm component', () => {
 
     const errorMessage = screen.getByText('Incorrect password or email');
     expect(errorMessage).toBeInTheDocument();
-
     expect(window.location.pathname).toBe('/login');
   });
 
