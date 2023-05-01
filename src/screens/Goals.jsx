@@ -40,6 +40,7 @@ const Goals = ({ content = goalsScreen }) => {
   const userId = userToken && extractUserId(userToken);
 
   const user = useSelector((state) => state.user);
+  const goalsError = useSelector((state) => state.goals.error);
   const goals = useSelector((state) => state.goals.items);
   const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
 
@@ -164,6 +165,18 @@ const Goals = ({ content = goalsScreen }) => {
               {!showAddGoalBtn && (
                 <Banner iconName="tips" mt={4}>
                   {maxNumOfGoalsInfo}
+                </Banner>
+              )}
+              {goalsError && goalsError.message && (
+                <Banner
+                  color="error"
+                  bg="white"
+                  fontSize={3}
+                  iconName="caution"
+                  iconStroke="#922B21"
+                  mt={4}
+                >
+                  {goalsError.message}
                 </Banner>
               )}
             </Div>

@@ -1,8 +1,6 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import Button from '../core-components/Button';
-import Paragraph from '../core-components/Paragraph';
 import { validateGoalsForm } from '../utils/validation';
 import { SelectField, TextArea, InputField } from './Fields';
 
@@ -18,7 +16,6 @@ const GoalForm = ({ content, goal, handleSubmit, handleCloseOverlay }) => {
 
   const { goalDescription, startdateInput, endDateInput, select, button } =
     content;
-  const goalError = useSelector((state) => state.goals.error);
 
   return (
     <Formik
@@ -45,11 +42,6 @@ const GoalForm = ({ content, goal, handleSubmit, handleCloseOverlay }) => {
               borderRadius: 10,
             }}
           >
-            {goalError && goalError.message ? (
-              <Paragraph mb={4} color="error" fontSize={4}>
-                {goalError.message}
-              </Paragraph>
-            ) : null}
             <TextArea
               name="goalDefinition"
               label={goalDescription.label}
