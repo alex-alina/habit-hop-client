@@ -32,6 +32,11 @@ export const getGoals = createAsyncThunk(
         const errorWrapper = JSON.parse(err.response.text);
         throw `${errorWrapper.error.message}`;
       }
+      if (err.message.match(/Request has been terminated/i)) {
+        throw new Error(
+          'There are issues with the server. Please try again later'
+        );
+      }
       throw new Error(err);
     }
   }

@@ -40,8 +40,11 @@ const Goals = ({ content = goalsScreen }) => {
   const userId = userToken && extractUserId(userToken);
 
   const user = useSelector((state) => state.user);
+  const userError = user.error;
+  const goalsError = useSelector((state) => state.goals.error);
   const goals = useSelector((state) => state.goals.items);
   const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
+  const hasMaxGoalsNum = goals && goals.length === 3;
 
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -139,14 +142,16 @@ const Goals = ({ content = goalsScreen }) => {
         >
           {goals && goals.length === 0 ? (
             <>
-              <Header
-                mt={1}
-                mb={3}
-                textAlign={['center', 'center', 'center', 'left', 'left']}
-              >
-                {greeting}
-                {user.firstName},{noGoalsIntro}
-              </Header>
+              {user && user.firstName && (
+                <Header
+                  mt={1}
+                  mb={3}
+                  textAlign={['center', 'center', 'center', 'left', 'left']}
+                >
+                  {greeting}
+                  {user.firstName},{noGoalsIntro}
+                </Header>
+              )}
 
               <GoalForm content={goalsForm} handleSubmit={handleAddGoal} />
             </>
@@ -158,10 +163,36 @@ const Goals = ({ content = goalsScreen }) => {
               mb={6}
               mt={1}
             >
-              <Header>
-                {user.firstName}'s {goalsIntro}
-              </Header>
-              {!showAddGoalBtn && (
+              {user && user.firstName && (
+                <Header>
+                  {user.firstName}'s {goalsIntro}
+                </Header>
+              )}
+              {userError && userError.message && (
+                <Banner
+                  color="error"
+                  bg="white"
+                  fontSize={3}
+                  iconName="caution"
+                  iconStroke="#922B21"
+                  mt={4}
+                >
+                  {userError.message}
+                </Banner>
+              )}
+              {goalsError && goalsError.message && (
+                <Banner
+                  color="error"
+                  bg="white"
+                  fontSize={3}
+                  iconName="caution"
+                  iconStroke="#922B21"
+                  mt={4}
+                >
+                  {goalsError.message}
+                </Banner>
+              )}
+              {hasMaxGoalsNum && (
                 <Banner iconName="tips" mt={4}>
                   {maxNumOfGoalsInfo}
                 </Banner>

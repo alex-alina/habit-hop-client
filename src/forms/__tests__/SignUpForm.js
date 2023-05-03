@@ -2,10 +2,14 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { mockJwt, storageJwtKey } from '../../mocks/constants';
+import {
+  signupHandlerException,
+  signupNetworkError,
+  signupServerDownError,
+} from '../../mocks/handlers';
+import { server } from '../../mocks/server';
 import { renderWithProvidersAndRouter } from '../../utils/testUtils';
 import SignUpForm from '../SignUpForm';
-import { server } from '../../mocks/server';
-import { signupHandlerException } from '../../mocks/handlers';
 
 const content = {
   firstNameField: {
@@ -99,6 +103,72 @@ describe('SignUpForm component', () => {
     const errorDisplay = screen.getByText(
       'A user with this email already exists'
     );
+
+    expect(errorDisplay).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/signup');
+  });
+
+  it('displays error message when server is not responding', async () => {
+    server.use(signupServerDownError);
+
+    renderWithProvidersAndRouter(<SignUpForm content={content} />, {
+      route: '/signup',
+    });
+
+    await userEvent.type(
+      screen.getByLabelText('First Name'),
+      credentials.firstName
+    );
+    await userEvent.type(
+      screen.getByLabelText('Last Name'),
+      credentials.lastName
+    );
+    await userEvent.type(screen.getByLabelText('Email'), credentials.email);
+    await userEvent.type(
+      screen.getByLabelText('Password'),
+      credentials.password
+    );
+    await userEvent.type(
+      screen.getByLabelText('Confirm Password'),
+      credentials.confirmPassword
+    );
+    await userEvent.click(screen.getByText('Sign up'));
+
+    const errorDisplay = screen.getByText(
+      /There are issues with the server. Please try again later/i
+    );
+
+    expect(errorDisplay).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/signup');
+  });
+
+  it('displays network error', async () => {
+    server.use(signupNetworkError);
+
+    renderWithProvidersAndRouter(<SignUpForm content={content} />, {
+      route: '/signup',
+    });
+
+    await userEvent.type(
+      screen.getByLabelText('First Name'),
+      credentials.firstName
+    );
+    await userEvent.type(
+      screen.getByLabelText('Last Name'),
+      credentials.lastName
+    );
+    await userEvent.type(screen.getByLabelText('Email'), credentials.email);
+    await userEvent.type(
+      screen.getByLabelText('Password'),
+      credentials.password
+    );
+    await userEvent.type(
+      screen.getByLabelText('Confirm Password'),
+      credentials.confirmPassword
+    );
+    await userEvent.click(screen.getByText('Sign up'));
+
+    const errorDisplay = screen.getByText(/Test: some other network error/i);
 
     expect(errorDisplay).toBeInTheDocument();
     expect(window.location.pathname).toBe('/signup');
