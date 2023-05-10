@@ -70,6 +70,30 @@ const goalsScreen = {
     },
     showHabitsBtn: 'Show Habits',
   },
+  habitForm: {
+    habitDescription: {
+      label: 'Habit description',
+      placeholder: 'Go S.M.A.R.T',
+    },
+    habitTypeInput: {
+      label: 'Habit type',
+      placeholder: 'Choose habit type',
+      radioGroup: { first: 'develop new habit', second: 'break old habit' },
+    },
+    progressMetricSection: {
+      title: 'Progress metric',
+      distance: { label: 'Distance', radioGroup: { first: 'm', second: 'km' } },
+      duration: {
+        label: 'Duration',
+        radioGroup: { first: 'min', second: 'hours' },
+      },
+      quantity: {
+        label: 'Number of',
+        placeholder: 'books, pages, fruit...',
+      },
+    },
+    button: 'Add new goal',
+  },
   goalsForm: {
     goalDescription: {
       label: 'Goal description',

@@ -20,6 +20,7 @@ const colors = {
   error: baseColors.red[7],
   success: baseColors.green[6],
   warning: baseColors.orange[5],
+  active: baseColors.blue[7],
   input: {
     border: baseColors.grey[3],
     hover: baseColors.blue[7],
