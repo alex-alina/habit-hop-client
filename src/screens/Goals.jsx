@@ -42,6 +42,17 @@ const Goals = ({ content = goalsScreen }) => {
   const userToken = localStorage.getItem(localStorageJwtKey);
   const userId = userToken && extractUserId(userToken);
 
+  useEffect(() => {
+    if (userId && userToken) {
+      dispatch(getCurrentUser({ userId, userToken }));
+      dispatch(getGoals({ userId, userToken }));
+    }
+    if (!userToken || isExpired(userToken)) {
+      dispatch(logout());
+      navigate('/login');
+    }
+  }, [userToken]);
+
   const user = useSelector((state) => state.user);
   const userError = user.error;
   const goals = useSelector((state) => state.goals.items);
@@ -95,17 +106,6 @@ const Goals = ({ content = goalsScreen }) => {
     setHabitFormVisibility(true);
     setHabitGoalId(goalId);
   };
-
-  useEffect(() => {
-    if (userId && userToken) {
-      dispatch(getCurrentUser({ userId, userToken }));
-      dispatch(getGoals({ userId, userToken }));
-    }
-    if (!userToken || isExpired(userToken)) {
-      dispatch(logout());
-      navigate('/login');
-    }
-  }, [userToken]);
 
   return (
     <Div width="100%">
