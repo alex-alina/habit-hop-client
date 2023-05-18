@@ -68,7 +68,9 @@ const goalsScreen = {
       startLabel: 'Starts on: ',
       endLabel: 'Ends on: ',
     },
+    addHabitBtn: 'Add habit',
     showHabitsBtn: 'Show Habits',
+    hideHabitsBtn: 'Hide Habits',
   },
   habitForm: {
     habitDescription: {
@@ -76,23 +78,37 @@ const goalsScreen = {
       placeholder: 'Go S.M.A.R.T',
     },
     habitTypeInput: {
-      label: 'Habit type',
-      placeholder: 'Choose habit type',
-      radioGroup: { first: 'develop new habit', second: 'break old habit' },
+      legend: 'Habit type',
+      radios: [
+        { label: 'develop new habit', value: 'develop' },
+        { label: 'break old habit', value: 'break' },
+      ],
     },
     progressMetricSection: {
-      title: 'Progress metric',
-      distance: { label: 'Distance', radioGroup: { first: 'm', second: 'km' } },
-      duration: {
-        label: 'Duration',
-        radioGroup: { first: 'min', second: 'hours' },
-      },
-      quantity: {
-        label: 'Number of',
-        placeholder: 'books, pages, fruit...',
-      },
+      title: 'Progress metric (select one)',
+      radioGroups: [
+        {
+          legend: 'Distance:',
+          radios: [
+            { label: 'm', value: 'meter' },
+            { label: 'km', value: 'km' },
+          ],
+        },
+        {
+          legend: 'Duration:',
+          radios: [
+            { label: 'minutes', value: 'minutes' },
+            { label: 'hours', value: 'hours' },
+            { label: 'days', value: 'days' },
+          ],
+        },
+        {
+          legend: 'Quantity:',
+          radios: [{ label: 'unit count', value: 'count' }],
+        },
+      ],
     },
-    button: 'Add new goal',
+    button: 'Add new habit',
   },
   goalsForm: {
     goalDescription: {

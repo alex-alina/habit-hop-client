@@ -7,6 +7,7 @@ import {
   editGoal,
   getGoals,
 } from '../actions-reducers/goals';
+import { addHabit } from '../actions-reducers/habits';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
 import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
@@ -18,6 +19,7 @@ import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
 import GoalForm from '../forms/GoalForm';
+import HabitForm from '../forms/HabitForm';
 import { goalsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
 import { extractUserId, isExpired } from '../utils/jwt';
@@ -32,6 +34,7 @@ const Goals = ({ content = goalsScreen }) => {
     goalCard,
     addGoalBtn,
     goalsForm,
+    habitForm,
   } = content;
 
   const dispatch = useDispatch();
@@ -41,8 +44,8 @@ const Goals = ({ content = goalsScreen }) => {
 
   const user = useSelector((state) => state.user);
   const userError = user.error;
-  const goalsError = useSelector((state) => state.goals.error);
   const goals = useSelector((state) => state.goals.items);
+  const goalsError = useSelector((state) => state.goals.error);
   const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
   const hasMaxGoalsNum = goals && goals.length === 3;
 
@@ -50,17 +53,28 @@ const Goals = ({ content = goalsScreen }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedGoal, setEditedGoal] = useState(null);
 
-  const handleCloseOverlay = () => setGoalFormVisibility(false);
+  const [habitFormIsVisible, setHabitFormVisibility] = useState(false);
+  const [habitGoalId, setHabitGoalId] = useState('');
+
+  const handleCloseOverlay = (formName) => {
+    if (formName === 'goal') {
+      setGoalFormVisibility(false);
+    }
+
+    if (formName === 'habit') {
+      setHabitFormVisibility(false);
+    }
+  };
 
   const handleAddGoal = (goal) => {
     dispatch(addGoal({ userId, userToken, goal }));
   };
 
-  const handlEditGoal = (updatedGoal, goalId) => {
+  const handleEditGoal = (updatedGoal, goalId) => {
     dispatch(editGoal({ userId, userToken, goalId, updatedGoal }));
   };
 
-  const handleDelete = (e, goalId) => {
+  const handleDeleteGoal = (e, goalId) => {
     e.preventDefault();
     dispatch(deleteGoal({ userId, userToken, goalId }));
   };
@@ -70,6 +84,16 @@ const Goals = ({ content = goalsScreen }) => {
     setIsEditMode(true);
     setEditedGoal(goal);
     setGoalFormVisibility(true);
+  };
+
+  const handleAddHabit = (habit, goalId) => {
+    dispatch(addHabit({ userId, userToken, goalId, habit }));
+    setHabitGoalId('');
+  };
+
+  const handleHabitFormOverlay = (goalId) => {
+    setHabitFormVisibility(true);
+    setHabitGoalId(goalId);
   };
 
   useEffect(() => {
@@ -93,13 +117,25 @@ const Goals = ({ content = goalsScreen }) => {
       >
         <GoalsOverviewImg width="100%" height="100%" />
       </Div>
+
       {goalFormIsVisible && (
-        <FormsOverlay closeHandler={handleCloseOverlay}>
+        <FormsOverlay closeHandler={() => handleCloseOverlay('goal')}>
           <GoalForm
             content={goalsForm}
-            handleSubmit={isEditMode ? handlEditGoal : handleAddGoal}
-            handleCloseOverlay={handleCloseOverlay}
+            handleSubmit={isEditMode ? handleEditGoal : handleAddGoal}
+            handleCloseOverlay={() => handleCloseOverlay('goal')}
             goal={isEditMode ? editedGoal : null}
+          />
+        </FormsOverlay>
+      )}
+
+      {habitFormIsVisible && (
+        <FormsOverlay closeHandler={() => handleCloseOverlay('habit')}>
+          <HabitForm
+            content={habitForm}
+            handleCloseOverlay={() => handleCloseOverlay('habit')}
+            handleSubmit={handleAddHabit}
+            goalId={habitGoalId}
           />
         </FormsOverlay>
       )}
@@ -121,7 +157,7 @@ const Goals = ({ content = goalsScreen }) => {
         >
           <Button
             variant="secondaryMd"
-            my={4}
+            my={3}
             mx={[2, 2, 2, 2, 7]}
             onClick={(e) => {
               e.preventDefault();
@@ -199,6 +235,7 @@ const Goals = ({ content = goalsScreen }) => {
               )}
             </Div>
           )}
+
           {goals &&
             goals.length > 0 &&
             goals.map((goal, i) => {
@@ -208,11 +245,13 @@ const Goals = ({ content = goalsScreen }) => {
                   key={i}
                   goal={goal}
                   goalCardText={goalCard}
-                  handleDelete={(e) => handleDelete(e, goalId)}
+                  handleDelete={(e) => handleDeleteGoal(e, goalId)}
                   handleEdit={(e) => handleEdit(e, goal)}
+                  handleHabitFormOverlay={() => handleHabitFormOverlay(goalId)}
                 />
               );
             })}
+
           {showAddGoalBtn && (
             <IconButton
               clickHandler={() => {

@@ -22,10 +22,11 @@ const mockGoalText = {
     endLabel: 'Ends on:',
   },
   showHabitsBtn: 'Show Habits',
+  hideHabitsBtn: 'Hide Habits',
 };
 
 describe('GoalCard', () => {
-  it('renders GoalCard with content', () => {
+  it('renders GoalCard with content', async () => {
     renderWithTheme(
       <GoalCard
         goal={mockGoalData}
@@ -47,9 +48,12 @@ describe('GoalCard', () => {
     expect(startDateLabel).toBeInTheDocument();
     expect(priorityTitle).toHaveTextContent(/main goal/i);
     expect(timeSectionTitle).toHaveTextContent(mockGoalText.timeSection.title);
-    expect(screen.getByText(mockGoalText.showHabitsBtn)).toHaveStyle(
-      'max-width: 150px'
+    expect(screen.getByText(mockGoalText.showHabitsBtn)).toHaveTextContent(
+      'Show Habits'
     );
+
+    await userEvent.click(screen.getByText(mockGoalText.showHabitsBtn));
+    expect(screen.getByText(mockGoalText.hideHabitsBtn)).toBeInTheDocument();
   });
 
   it('should call handlers when the edit and delete buttons are clicked', async () => {

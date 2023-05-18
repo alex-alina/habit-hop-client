@@ -39,10 +39,10 @@ export const roundButton = {
 
 export const roundButtonLg = {
   ...roundButton,
-  width: 50,
-  height: 50,
-  py: 2,
-  px: 2,
+  width: [40, 40, 50, 50, 50],
+  height: [40, 40, 50, 50, 50],
+  py: [1, 1, 2, 2, 2],
+  px: [1, 1, 2, 2, 2],
 };
 
 export const buttonSizes = {
@@ -56,7 +56,7 @@ export const buttonSizes = {
     lineHeight: 0,
   },
   small: {
-    fontSize: 2,
+    fontSize: [1, 1, 2, 2, 2],
     lineHeight: 0,
     py: 1,
     borderWidth: '1px',
