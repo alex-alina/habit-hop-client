@@ -2,7 +2,7 @@ import { ErrorMessage, Form, Formik } from 'formik';
 import React from 'react';
 import FieldError from '../components/FieldError';
 import Button from '../core-components/Button';
-import Label from '../core-components/Label';
+import Div from '../core-components/Div';
 import { validateHabitForm } from '../utils/validation';
 import { RadioGroup, TextArea } from './Fields';
 
@@ -66,7 +66,9 @@ const HabitForm = ({
             />
             <ErrorMessage name="habitType" component={FieldError} />
 
-            <Label mt={2}>{progressMetricSection.title}</Label>
+            <Div color="label" fontSize={4} fontFamily="body" mb={2} mt={2}>
+              {progressMetricSection.title}
+            </Div>
             {progressMetricSection.radioGroups.map((radioGroup, i) => (
               <RadioGroup
                 key={i}

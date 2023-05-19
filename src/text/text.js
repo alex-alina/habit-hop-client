@@ -106,6 +106,10 @@ const goalsScreen = {
           legend: 'Quantity:',
           radios: [{ label: 'unit count', value: 'count' }],
         },
+        {
+          legend: 'Completion:',
+          radios: [{ label: 'finished activity', value: 'is-completed' }],
+        },
       ],
     },
     button: 'Add new habit',
