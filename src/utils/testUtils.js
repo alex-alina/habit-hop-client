@@ -6,10 +6,10 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { setupStore } from '../app/store';
-import defaultTheme from '../styles/theme';
+import mockTheme from '../mocks/theme';
 
 const Wrapper = ({ children }) => {
-  return <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>;
+  return <ThemeProvider theme={mockTheme}>{children}</ThemeProvider>;
 };
 
 export const renderWithTheme = (ui, options) =>
@@ -25,7 +25,7 @@ export function renderWithProvidersAndRouter(
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>
+          <ThemeProvider theme={mockTheme}>{children}</ThemeProvider>
         </BrowserRouter>
       </Provider>
     );
