@@ -53,13 +53,25 @@ const Goals = ({ content = goalsScreen }) => {
     }
   }, [userToken]);
 
-  const user = useSelector((state) => state.user);
-  const userError = user.error;
-  const goals = useSelector((state) => state.goals.items);
-  const goalsError = useSelector((state) => state.goals.error);
-  const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
-  const hasMaxGoalsNum = goals && goals.length === 3;
-  const habitsError = useSelector((state) => state.habits.error);
+  const fullState = useSelector((state) => state);
+  const { user, goals, habits } = fullState;
+
+  const stateEntities = Object.keys(fullState);
+  const errors = stateEntities
+    .map((entity) => {
+      const error = fullState[entity].error;
+      let message = '';
+      if (error && error.message) {
+        message = error.message;
+      }
+      return message;
+    })
+    .filter((error) => error !== '');
+
+  const goalsList = goals.items;
+  const goalsListLen = goalsList && goalsList.length;
+  const showAddGoalBtn = goalsListLen > 0 && goalsListLen < 3;
+  const hasMaxGoalsNum = goalsListLen === 3;
 
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -177,7 +189,7 @@ const Goals = ({ content = goalsScreen }) => {
           mx="auto"
           width={['90%', '90%', '80%', '80%', '65%']}
         >
-          {goals && goals.length === 0 ? (
+          {goalsListLen === 0 ? (
             <>
               {user && user.firstName && (
                 <Header
@@ -205,43 +217,20 @@ const Goals = ({ content = goalsScreen }) => {
                   {user.firstName}'s {goalsIntro}
                 </Header>
               )}
+              {errors.map((error, i) => (
+                <Banner
+                  key={i}
+                  color="error"
+                  bg="white"
+                  fontSize={3}
+                  iconName="caution"
+                  iconStroke="#922B21"
+                  mt={4}
+                >
+                  {error}
+                </Banner>
+              ))}
 
-              {userError && userError.message && (
-                <Banner
-                  color="error"
-                  bg="white"
-                  fontSize={3}
-                  iconName="caution"
-                  iconStroke="#922B21"
-                  mt={4}
-                >
-                  {userError.message}
-                </Banner>
-              )}
-              {goalsError && goalsError.message && (
-                <Banner
-                  color="error"
-                  bg="white"
-                  fontSize={3}
-                  iconName="caution"
-                  iconStroke="#922B21"
-                  mt={4}
-                >
-                  {goalsError.message}
-                </Banner>
-              )}
-              {habitsError && habitsError.message && (
-                <Banner
-                  color="error"
-                  bg="white"
-                  fontSize={3}
-                  iconName="caution"
-                  iconStroke="#922B21"
-                  mt={4}
-                >
-                  {habitsError.message}
-                </Banner>
-              )}
               {hasMaxGoalsNum && (
                 <Banner iconName="tips" mt={4}>
                   {maxNumOfGoalsInfo}
@@ -250,9 +239,8 @@ const Goals = ({ content = goalsScreen }) => {
             </Div>
           )}
 
-          {goals &&
-            goals.length > 0 &&
-            goals.map((goal, i) => {
+          {goalsListLen > 0 &&
+            goalsList.map((goal, i) => {
               const goalId = goal.id;
               return (
                 <GoalCard
