@@ -53,3 +53,24 @@ export const editGoalData = {
   priority: 'main',
   startDate: '2023-04-08',
 };
+
+export const mockHabitFormData = {
+  habitDescription: 'Exercise daily',
+  habitType: 'develop',
+  progressMetric: 'minutes',
+};
+
+export const mockHabitData = {
+  id: '66c8b782-6238-42a2-ab77-2c03d19b1d0f',
+  habitDescription: 'Exercise daily',
+  habitType: 'develop',
+  progressMetric: 'minutes',
+  goal: {
+    id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+    goalDefinition:
+      'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+    priority: 'main',
+    startDate: '2023-04-08',
+    endDate: '2023-05-06',
+  },
+};

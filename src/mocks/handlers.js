@@ -9,6 +9,7 @@ import {
   mockJwt,
   mockUserData,
   storageJwtKey,
+  mockHabitData,
 } from './constants';
 
 //Login handlers
@@ -304,6 +305,47 @@ export const deleteGoalServerDownError = rest.delete(
   }
 );
 
+// habits handlers
+const addHabitHandler = rest.post(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res, ctx) => {
+    return res(
+      ctx.json({
+        data: {
+          habit: mockHabitData,
+        },
+      }),
+      ctx.status(201)
+    );
+  }
+);
+
+export const addHabitException = rest.post(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res, ctx) => {
+    return res(
+      ctx.status(404),
+      ctx.json({
+        error: { message: 'Test Error: Habit was not added' },
+      })
+    );
+  }
+);
+
+export const addHabitNetworkError = rest.post(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res) => {
+    return res.networkError('Test: some other network error');
+  }
+);
+
+export const addHabitServerDownError = rest.post(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res) => {
+    return res.networkError('Request has been terminated');
+  }
+);
+
 export const handlers = [
   loginHandler,
   signupHandler,
@@ -312,4 +354,5 @@ export const handlers = [
   addGoalHandler,
   deleteGoalHandler,
   editGoalHandler,
+  addHabitHandler,
 ];

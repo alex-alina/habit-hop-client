@@ -59,6 +59,7 @@ const Goals = ({ content = goalsScreen }) => {
   const goalsError = useSelector((state) => state.goals.error);
   const showAddGoalBtn = goals && goals.length > 0 && goals.length < 3;
   const hasMaxGoalsNum = goals && goals.length === 3;
+  const habitsError = useSelector((state) => state.habits.error);
 
   const [goalFormIsVisible, setGoalFormVisibility] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -204,6 +205,7 @@ const Goals = ({ content = goalsScreen }) => {
                   {user.firstName}'s {goalsIntro}
                 </Header>
               )}
+
               {userError && userError.message && (
                 <Banner
                   color="error"
@@ -226,6 +228,18 @@ const Goals = ({ content = goalsScreen }) => {
                   mt={4}
                 >
                   {goalsError.message}
+                </Banner>
+              )}
+              {habitsError && habitsError.message && (
+                <Banner
+                  color="error"
+                  bg="white"
+                  fontSize={3}
+                  iconName="caution"
+                  iconStroke="#922B21"
+                  mt={4}
+                >
+                  {habitsError.message}
                 </Banner>
               )}
               {hasMaxGoalsNum && (
