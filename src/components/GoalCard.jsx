@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import IconButton from '../components/IconButton';
 import Div from '../core-components/Div';
 import Header from '../core-components/Heading';
 import Paragraph from '../core-components/Paragraph';
 import Span from '../core-components/Span';
 import { capitalizeFirstChar } from '../utils/format';
+import { useSelector } from 'react-redux';
 
 const GoalCard = ({
   goal,
@@ -12,6 +13,7 @@ const GoalCard = ({
   handleDelete,
   handleEdit,
   handleHabitFormOverlay,
+  handleGetHabits,
   ...props
 }) => {
   const {
@@ -22,9 +24,33 @@ const GoalCard = ({
     showHabitsBtn,
     hideHabitsBtn,
   } = goalCardText;
-  const goalPriority = capitalizeFirstChar(goal.priority);
 
+  const goalPriority = capitalizeFirstChar(goal.priority);
   const [areHabitsVisible, setAreHabitsVisible] = useState(false);
+  const goalId = goal.id;
+
+  useEffect(() => {
+    handleGetHabits(goalId);
+  }, []);
+
+  const habits = useSelector((state) => state.habits.items);
+  const ownHabits = habits && habits[goalId];
+
+  // const habitsLen = habits && habits.length;
+  const developHabits =
+    ownHabits &&
+    ownHabits.filter((habit) => {
+      if (habit.habitType === 'develop') {
+        return habit;
+      }
+    });
+  const breakHabits =
+    ownHabits &&
+    ownHabits.filter((habit) => {
+      if (habit.habitType === 'break') {
+        return habit;
+      }
+    });
 
   return (
     <Div
@@ -127,8 +153,28 @@ const GoalCard = ({
       </Div>
 
       {areHabitsVisible && (
-        <Div my={2} p={3} height={200} width="100%" bg="turquoise.0">
-          Temporary template
+        <Div
+          my={2}
+          p={3}
+          display="flex"
+          justifyContent="space-between"
+          width="100%"
+          bg="turquoise.0"
+        >
+          {developHabits && (
+            <Div width="40%" bg="orange.2">
+              {developHabits.map((habit, i) => (
+                <Div key={i}>{habit.habitDescription}</Div>
+              ))}
+            </Div>
+          )}
+          {breakHabits && (
+            <Div width="40%" bg="green.2">
+              {breakHabits.map((habit, i) => (
+                <Div key={i}>{habit.habitDescription}</Div>
+              ))}
+            </Div>
+          )}
         </Div>
       )}
     </Div>

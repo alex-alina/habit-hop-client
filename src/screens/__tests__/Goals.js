@@ -5,13 +5,16 @@ import {
   editGoalData,
   mockGoalData1,
   mockGoalFormData,
-  mockJwt,
   mockHabitFormData,
+  mockJwt,
 } from '../../mocks/constants';
 import {
   addGoalException,
   addGoalNetworkError,
   addGoalServerDownError,
+  addHabitException,
+  addHabitNetworkError,
+  addHabitServerDownError,
   deleteGoalException,
   deleteGoalNetworkError,
   deleteGoalServerDownError,
@@ -22,13 +25,13 @@ import {
   getGoalsException,
   getGoalsNetworkError,
   getGoalsServerDownError,
+  getHabitsException,
+  getHabitsNetworkError,
+  getHabitsServerDownError,
   getThreeGoalsHandler,
   getUserException,
   getUserNetworkError,
   getUserServerDownError,
-  addHabitException,
-  addHabitNetworkError,
-  addHabitServerDownError,
 } from '../../mocks/handlers';
 import { server } from '../../mocks/server';
 import * as jwtModule from '../../utils/jwt';
@@ -636,7 +639,7 @@ describe('On the Goals screen, a user can', () => {
   });
 });
 
-describe('In a Goal Card, a user can', () => {
+describe('In a Goal Card, a user', () => {
   beforeEach(() => {
     Object.defineProperty(window, 'localStorage', {
       value: {
@@ -651,8 +654,27 @@ describe('In a Goal Card, a user can', () => {
     jest.restoreAllMocks();
   });
 
+  it('can see the habis of a goal if they expand the goal card', async () => {
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+    const user = userEvent.setup();
+
+    const showHabitButtons = screen.getAllByText(/show habits/i);
+    const showHabitBtn = showHabitButtons[0];
+    await user.click(showHabitBtn);
+    const habitText = screen.getByText(/stop using screens after 20.30/i);
+    const secondHabitText = screen.getByText(
+      /do 10 min yoga practice every evening/i
+    );
+    expect(habitText).toBeInTheDocument();
+    expect(secondHabitText).toBeInTheDocument();
+  });
+
   //add habits
-  it('add a new habit for that goal', async () => {
+  it('can add a new habit for that goal', async () => {
     let reRender;
 
     await act(async () => {
@@ -689,7 +711,7 @@ describe('In a Goal Card, a user can', () => {
     expect(screen.getByText(/overview/i)).toBeInTheDocument();
   });
 
-  it('see an error message when habit could not be added', async () => {
+  it(' can see an error message when habit could not be added', async () => {
     server.use(addHabitException);
     let reRender;
 
@@ -733,7 +755,7 @@ describe('In a Goal Card, a user can', () => {
     ).toBeInTheDocument();
   });
 
-  it('see a network error message - on add habit', async () => {
+  it('can see a network error message - on add habit', async () => {
     server.use(addHabitNetworkError);
 
     await act(async () => {
@@ -768,7 +790,7 @@ describe('In a Goal Card, a user can', () => {
     ).toBeInTheDocument();
   });
 
-  it('see a server down error message - on add habit', async () => {
+  it('can see a server down error message - on add habit', async () => {
     server.use(addHabitServerDownError);
 
     await act(async () => {
@@ -802,6 +824,67 @@ describe('In a Goal Card, a user can', () => {
       screen.getByText(
         /There are issues with the server. Please try again later/i
       )
+    ).toBeInTheDocument();
+  });
+});
+
+describe('Fetch habits errors: on the Goals screen a user', () => {
+  beforeEach(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn(() => mockJwt),
+        removeItem: jest.fn(() => null),
+      },
+      writable: true,
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  //get habits error messages
+  it('sees a server down error when fetching habits fails', async () => {
+    server.use(getHabitsServerDownError);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(
+      screen.getByText(
+        /There are issues with the server. Please try again later/i
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('sees a network error when fetching habits fails', async () => {
+    server.use(getHabitsNetworkError);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(
+      screen.getByText(/Test: some other network error/i)
+    ).toBeInTheDocument();
+  });
+
+  it('sees an error messages when the habits were not found', async () => {
+    server.use(getHabitsException);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(
+      screen.getByText(/Test Error: Habits not found/i)
     ).toBeInTheDocument();
   });
 });

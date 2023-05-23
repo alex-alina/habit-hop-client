@@ -6,11 +6,17 @@ import {
   mockGoalData1,
   mockGoalData2,
   mockGoalData3,
+  mockHabitData,
+  mockHabitsData,
   mockJwt,
   mockUserData,
   storageJwtKey,
-  mockHabitData,
 } from './constants';
+
+export const ServerDownError = (url) =>
+  rest.post(url, (req, res) => {
+    return res.networkError('Request has been terminated');
+  });
 
 //Login handlers
 const loginHandler = rest.post(`${baseUrl}/logins`, (req, res, ctx) => {
@@ -38,12 +44,7 @@ export const loginHandlerException = rest.post(
   }
 );
 
-export const loginServerDownError = rest.post(
-  `${baseUrl}/logins`,
-  (req, res) => {
-    return res.networkError('Request has been terminated');
-  }
-);
+export const loginServerDownError = ServerDownError(`${baseUrl}/logins`);
 
 export const loginNetworkError = rest.post(`${baseUrl}/logins`, (req, res) => {
   return res.networkError('Test: some other network error');
@@ -76,12 +77,7 @@ export const signupHandlerException = rest.post(
   }
 );
 
-export const signupServerDownError = rest.post(
-  `${baseUrl}/users`,
-  (req, res) => {
-    return res.networkError('Request has been terminated');
-  }
-);
+export const signupServerDownError = ServerDownError(`${baseUrl}/users`);
 
 export const signupNetworkError = rest.post(`${baseUrl}/users`, (req, res) => {
   return res.networkError('Test: some other network error');
@@ -227,11 +223,8 @@ export const addGoalNetworkError = rest.post(
   }
 );
 
-export const addGoalServerDownError = rest.post(
-  `${baseUrl}/users/:userId/goals`,
-  (req, res) => {
-    return res.networkError('Request has been terminated');
-  }
+export const addGoalServerDownError = ServerDownError(
+  `${baseUrl}/users/:userId/goals`
 );
 
 const editGoalHandler = rest.patch(
@@ -305,7 +298,47 @@ export const deleteGoalServerDownError = rest.delete(
   }
 );
 
-// habits handlers
+// Habits handlers
+const getHabitsHandler = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res, ctx) => {
+    return res(
+      ctx.json({
+        data: {
+          habits: mockHabitsData,
+        },
+      }),
+      ctx.status(201)
+    );
+  }
+);
+
+export const getHabitsException = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res, ctx) => {
+    return res(
+      ctx.status(404),
+      ctx.json({
+        error: { message: 'Test Error: Habits not found' },
+      })
+    );
+  }
+);
+
+export const getHabitsServerDownError = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res) => {
+    return res.networkError('Request has been terminated');
+  }
+);
+
+export const getHabitsNetworkError = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res) => {
+    return res.networkError('Test: some other network error');
+  }
+);
+
 const addHabitHandler = rest.post(
   `${baseUrl}/users/:userId/goals/:goalId/habits`,
   (req, res, ctx) => {
@@ -354,5 +387,6 @@ export const handlers = [
   addGoalHandler,
   deleteGoalHandler,
   editGoalHandler,
+  getHabitsHandler,
   addHabitHandler,
 ];

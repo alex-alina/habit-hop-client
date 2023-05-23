@@ -7,7 +7,7 @@ import {
   editGoal,
   getGoals,
 } from '../actions-reducers/goals';
-import { addHabit } from '../actions-reducers/habits';
+import { addHabit, getHabits } from '../actions-reducers/habits';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
 import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
@@ -54,7 +54,7 @@ const Goals = ({ content = goalsScreen }) => {
   }, [userToken]);
 
   const fullState = useSelector((state) => state);
-  const { user, goals, habits } = fullState;
+  const { user, goals } = fullState;
 
   const stateEntities = Object.keys(fullState);
   const errors = stateEntities
@@ -70,6 +70,7 @@ const Goals = ({ content = goalsScreen }) => {
 
   const goalsList = goals.items;
   const goalsListLen = goalsList && goalsList.length;
+
   const showAddGoalBtn = goalsListLen > 0 && goalsListLen < 3;
   const hasMaxGoalsNum = goalsListLen === 3;
 
@@ -118,6 +119,10 @@ const Goals = ({ content = goalsScreen }) => {
   const handleHabitFormOverlay = (goalId) => {
     setHabitFormVisibility(true);
     setHabitGoalId(goalId);
+  };
+
+  const handleGetHabits = (goalId) => {
+    dispatch(getHabits({ userId, userToken, goalId }));
   };
 
   return (
@@ -250,6 +255,7 @@ const Goals = ({ content = goalsScreen }) => {
                   handleDelete={(e) => handleDeleteGoal(e, goalId)}
                   handleEdit={(e) => handleEdit(e, goal)}
                   handleHabitFormOverlay={() => handleHabitFormOverlay(goalId)}
+                  handleGetHabits={() => handleGetHabits(goalId)}
                 />
               );
             })}

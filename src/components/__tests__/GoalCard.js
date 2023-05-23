@@ -1,10 +1,12 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithTheme } from '../../utils/testUtils';
+import { renderWithProvidersAndRouter } from '../../utils/testUtils';
 import GoalCard from '../GoalCard';
 
 const editClickHandler = jest.fn();
 const deleteClickHandler = jest.fn();
+const handleHabitFormOverlay = jest.fn();
+const handleGetHabits = jest.fn();
 
 const mockGoalData = {
   goalDefinition: 'become a baker',
@@ -26,13 +28,19 @@ const mockGoalText = {
 };
 
 describe('GoalCard', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it('renders GoalCard with content', async () => {
-    renderWithTheme(
+    renderWithProvidersAndRouter(
       <GoalCard
         goal={mockGoalData}
         goalCardText={mockGoalText}
         handleDelete={editClickHandler}
         handleEdit={deleteClickHandler}
+        handleHabitFormOverlay={handleHabitFormOverlay}
+        handleGetHabits={handleGetHabits}
       />
     );
 
@@ -57,12 +65,14 @@ describe('GoalCard', () => {
   });
 
   it('should call handlers when the edit and delete buttons are clicked', async () => {
-    renderWithTheme(
+    renderWithProvidersAndRouter(
       <GoalCard
         goal={mockGoalData}
         goalCardText={mockGoalText}
         handleDelete={editClickHandler}
         handleEdit={deleteClickHandler}
+        handleHabitFormOverlay={handleHabitFormOverlay}
+        handleGetHabits={handleGetHabits}
       />
     );
 
