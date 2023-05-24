@@ -7,7 +7,8 @@ const colors = {
   text: baseColors.grey[8],
   lightText: baseColors.grey[5],
   label: baseColors.grey[7],
-  divider: baseColors.grey[4],
+  divider: baseColors.blue[1],
+  cardBorder: baseColors.blue[1],
   placeholder: baseColors.grey[3],
   disabled: baseColors.grey[2],
   primary: baseColors.blue[9],
@@ -18,7 +19,7 @@ const colors = {
   alert: baseColors.red[5],
   danger: baseColors.red[5],
   error: baseColors.red[7],
-  success: baseColors.green[6],
+  success: baseColors.green[8],
   warning: baseColors.orange[5],
   active: baseColors.blue[7],
   input: {

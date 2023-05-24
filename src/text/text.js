@@ -71,6 +71,19 @@ const goalsScreen = {
     addHabitBtn: 'Add habit',
     showHabitsBtn: 'Show Habits',
     hideHabitsBtn: 'Hide Habits',
+    habitsContainer: {
+      goToOverviewBtn: 'Habits overview',
+      developSection: {
+        title: 'I will',
+        iconName: '',
+        newEntryBtn: 'New entry',
+      },
+      breakSection: {
+        title: "I won't",
+        iconName: '',
+        newEntryBtn: 'New entry',
+      },
+    },
   },
   habitForm: {
     habitDescription: {

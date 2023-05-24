@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import IconButton from '../components/IconButton';
-import Div from '../core-components/Div';
-import Header from '../core-components/Heading';
-import Paragraph from '../core-components/Paragraph';
-import Span from '../core-components/Span';
-import { capitalizeFirstChar } from '../utils/format';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Div from '../../core-components/Div';
+import Heading from '../../core-components/Heading';
+import Paragraph from '../../core-components/Paragraph';
+import Span from '../../core-components/Span';
+import { capitalizeFirstChar } from '../../utils/format';
+import IconButton from '../IconButton';
+import HabitsSection from './HabitsSection';
 
 const GoalCard = ({
   goal,
@@ -23,8 +24,8 @@ const GoalCard = ({
     addHabitBtn,
     showHabitsBtn,
     hideHabitsBtn,
+    habitsContainer,
   } = goalCardText;
-
   const goalPriority = capitalizeFirstChar(goal.priority);
   const [areHabitsVisible, setAreHabitsVisible] = useState(false);
   const goalId = goal.id;
@@ -35,22 +36,7 @@ const GoalCard = ({
 
   const habits = useSelector((state) => state.habits.items);
   const ownHabits = habits && habits[goalId];
-
-  // const habitsLen = habits && habits.length;
-  const developHabits =
-    ownHabits &&
-    ownHabits.filter((habit) => {
-      if (habit.habitType === 'develop') {
-        return habit;
-      }
-    });
-  const breakHabits =
-    ownHabits &&
-    ownHabits.filter((habit) => {
-      if (habit.habitType === 'break') {
-        return habit;
-      }
-    });
+  const borderStyle = '2px solid';
 
   return (
     <Div
@@ -62,11 +48,10 @@ const GoalCard = ({
       mx={0}
       bg="white"
       borderRadius={1}
-      borderWidth="2px"
-      borderStyle="solid"
-      borderColor="blue.1"
+      border={borderStyle}
+      borderColor="cardBorder"
       px={[4, 4, 4, 6, 6]}
-      pt={4}
+      py={4}
       {...props}
     >
       <Div display="flex" justifyContent="space-between" mb={4}>
@@ -93,8 +78,10 @@ const GoalCard = ({
         display="flex"
         flexDirection={['column', 'column', 'column', 'row', 'row']}
         justifyContent="space-between"
-        borderTop="2px solid #C5CAE9"
-        borderBottom="2px solid #C5CAE9"
+        borderTop={borderStyle}
+        borderTopColor="divider"
+        borderBottom={borderStyle}
+        borderBottomColor="divider"
         py={[3, 3, 3, 4, 4]}
       >
         <Div
@@ -102,9 +89,9 @@ const GoalCard = ({
           flexDirection="column"
           width={['90%', '90%', '90%', '40%', '40%']}
         >
-          <Header as="h3" fontSize={4}>
+          <Heading as="h3" fontSize={4}>
             {goalPriority} goal
-          </Header>
+          </Heading>
           <Paragraph mt={2} mr={6}>
             {goal.goalDefinition}
           </Paragraph>
@@ -116,9 +103,9 @@ const GoalCard = ({
           mt={[4, 4, 4, 0, 0]}
           width={['90%', '90%', '90%', '40%', '40%']}
         >
-          <Header as="h4" fontSize={4} mb={1}>
+          <Heading as="h3" fontSize={4} mb={1}>
             {timeSection.title}
-          </Header>
+          </Heading>
           <Paragraph mb={1}>
             <Span color="heading">{timeSection.startLabel}</Span>
             {goal.startDate}
@@ -153,29 +140,7 @@ const GoalCard = ({
       </Div>
 
       {areHabitsVisible && (
-        <Div
-          my={2}
-          p={3}
-          display="flex"
-          justifyContent="space-between"
-          width="100%"
-          bg="turquoise.0"
-        >
-          {developHabits && (
-            <Div width="40%" bg="orange.2">
-              {developHabits.map((habit, i) => (
-                <Div key={i}>{habit.habitDescription}</Div>
-              ))}
-            </Div>
-          )}
-          {breakHabits && (
-            <Div width="40%" bg="green.2">
-              {breakHabits.map((habit, i) => (
-                <Div key={i}>{habit.habitDescription}</Div>
-              ))}
-            </Div>
-          )}
-        </Div>
+        <HabitsSection content={habitsContainer} habits={ownHabits} mt={2} />
       )}
     </Div>
   );

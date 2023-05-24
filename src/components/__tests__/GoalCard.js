@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProvidersAndRouter } from '../../utils/testUtils';
-import GoalCard from '../GoalCard';
+import GoalCard from '../GoalCard/GoalCard';
 
 const editClickHandler = jest.fn();
 const deleteClickHandler = jest.fn();
@@ -25,6 +25,19 @@ const mockGoalText = {
   },
   showHabitsBtn: 'Show Habits',
   hideHabitsBtn: 'Hide Habits',
+  habitsContainer: {
+    goToOverviewBtn: 'Habits overview',
+    developSection: {
+      title: 'I will',
+      iconName: '',
+      newEntryBtn: 'New entry',
+    },
+    breakSection: {
+      title: "I won't",
+      iconName: '',
+      newEntryBtn: 'New entry',
+    },
+  },
 };
 
 describe('GoalCard', () => {
@@ -43,9 +56,9 @@ describe('GoalCard', () => {
         handleGetHabits={handleGetHabits}
       />
     );
-
-    const priorityTitle = screen.getByRole('heading', { level: 3 });
-    const timeSectionTitle = screen.getByRole('heading', { level: 4 });
+    const titles = screen.getAllByRole('heading', { level: 3 });
+    const priorityTitle = titles[0];
+    const timeSectionTitle = titles[1];
     const startDateLabel = screen.getByText(
       mockGoalText.timeSection.startLabel
     );
