@@ -1,10 +1,12 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithTheme } from '../../utils/testUtils';
-import GoalCard from '../GoalCard';
+import { renderWithProvidersAndRouter } from '../../utils/testUtils';
+import GoalCard from '../GoalCard/GoalCard';
 
 const editClickHandler = jest.fn();
 const deleteClickHandler = jest.fn();
+const handleHabitFormOverlay = jest.fn();
+const handleGetHabits = jest.fn();
 
 const mockGoalData = {
   goalDefinition: 'become a baker',
@@ -22,21 +24,41 @@ const mockGoalText = {
     endLabel: 'Ends on:',
   },
   showHabitsBtn: 'Show Habits',
+  hideHabitsBtn: 'Hide Habits',
+  habitsContainer: {
+    goToOverviewBtn: 'Habits overview',
+    developSection: {
+      title: 'I will',
+      iconName: '',
+      newEntryBtn: 'New entry',
+    },
+    breakSection: {
+      title: "I won't",
+      iconName: '',
+      newEntryBtn: 'New entry',
+    },
+  },
 };
 
 describe('GoalCard', () => {
-  it('renders GoalCard with content', () => {
-    renderWithTheme(
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('renders GoalCard with content', async () => {
+    renderWithProvidersAndRouter(
       <GoalCard
         goal={mockGoalData}
         goalCardText={mockGoalText}
         handleDelete={editClickHandler}
         handleEdit={deleteClickHandler}
+        handleHabitFormOverlay={handleHabitFormOverlay}
+        handleGetHabits={handleGetHabits}
       />
     );
-
-    const priorityTitle = screen.getByRole('heading', { level: 3 });
-    const timeSectionTitle = screen.getByRole('heading', { level: 4 });
+    const titles = screen.getAllByRole('heading', { level: 3 });
+    const priorityTitle = titles[0];
+    const timeSectionTitle = titles[1];
     const startDateLabel = screen.getByText(
       mockGoalText.timeSection.startLabel
     );
@@ -47,18 +69,23 @@ describe('GoalCard', () => {
     expect(startDateLabel).toBeInTheDocument();
     expect(priorityTitle).toHaveTextContent(/main goal/i);
     expect(timeSectionTitle).toHaveTextContent(mockGoalText.timeSection.title);
-    expect(screen.getByText(mockGoalText.showHabitsBtn)).toHaveStyle(
-      'max-width: 150px'
+    expect(screen.getByText(mockGoalText.showHabitsBtn)).toHaveTextContent(
+      'Show Habits'
     );
+
+    await userEvent.click(screen.getByText(mockGoalText.showHabitsBtn));
+    expect(screen.getByText(mockGoalText.hideHabitsBtn)).toBeInTheDocument();
   });
 
   it('should call handlers when the edit and delete buttons are clicked', async () => {
-    renderWithTheme(
+    renderWithProvidersAndRouter(
       <GoalCard
         goal={mockGoalData}
         goalCardText={mockGoalText}
         handleDelete={editClickHandler}
         handleEdit={deleteClickHandler}
+        handleHabitFormOverlay={handleHabitFormOverlay}
+        handleGetHabits={handleGetHabits}
       />
     );
 

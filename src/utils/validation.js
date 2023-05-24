@@ -138,6 +138,23 @@ const validateGoalsForm = (values) => {
   return cleanErrors;
 };
 
+const validateHabitForm = (values) => {
+  const errors = {};
+
+  Object.keys(values).map((fieldName) => {
+    const fieldValue = values[fieldName];
+
+    if (!fieldValue) {
+      errors[fieldName] = 'Required';
+    } else {
+      errors[fieldName] = undefined;
+    }
+  });
+
+  const cleanErrors = cleanUpErrors(errors);
+  return cleanErrors;
+};
+
 export {
   validateEmail,
   validateName,
@@ -151,4 +168,5 @@ export {
   validateSignupForm,
   validateLoginForm,
   validateGoalsForm,
+  validateHabitForm,
 };

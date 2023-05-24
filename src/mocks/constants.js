@@ -53,3 +53,55 @@ export const editGoalData = {
   priority: 'main',
   startDate: '2023-04-08',
 };
+
+export const mockHabitFormData = {
+  habitDescription: 'Exercise daily',
+  habitType: 'develop',
+  progressMetric: 'minutes',
+};
+
+export const mockHabitData = {
+  id: '66c8b782-6238-42a2-ab77-2c03d19b1d0f',
+  habitDescription: 'Exercise daily',
+  habitType: 'develop',
+  progressMetric: 'minutes',
+  goal: {
+    id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+    goalDefinition:
+      'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+    priority: 'main',
+    startDate: '2023-04-08',
+    endDate: '2023-05-06',
+  },
+};
+
+export const mockHabitsData = [
+  {
+    id: 'aa750fa3-2643-4d84-b4b5-090162ae08b6',
+    habitDescription: 'Stop using screens after 20.30',
+    habitType: 'break',
+    progressMetric: 'is-completed',
+    goal: {
+      id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+      goalDefinition:
+        'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+      priority: 'secondary',
+      startDate: '2023-05-07',
+      endDate: '2023-07-15',
+    },
+  },
+  {
+    id: 'cf826e63-c332-48d8-bd50-41d16329fc37',
+    habitDescription: 'Do 10 min yoga practice every evening',
+    habitType: 'develop',
+    progressMetric: 'minutes',
+    goal: {
+      id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+      goalDefinition:
+        'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+      priority: 'secondary',
+      startDate: '2023-05-07',
+      endDate: '2023-07-15',
+    },
+  },
+];

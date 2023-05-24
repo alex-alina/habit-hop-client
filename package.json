@@ -60,6 +60,7 @@
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/*.{js,jsx,ts,tsx}",
       "!src/styles/*.{js,jsx,ts,tsx}",
+      "!src/mocks/theme.js",
       "!<rootDir>/node_modules/",
       "!<rootDir>/path/to/dir/"
     ]

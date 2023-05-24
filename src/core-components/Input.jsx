@@ -13,7 +13,7 @@ import {
   typography,
 } from 'styled-system';
 
-const CoreInput = styled('input')(
+export const CoreInput = styled('input')(
   background,
   border,
   color,

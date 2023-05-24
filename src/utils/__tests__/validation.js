@@ -12,6 +12,7 @@ import {
   validateSignupForm,
   validateLoginForm,
   validateGoalsForm,
+  validateHabitForm,
 } from '../validation';
 
 const validEmails = [
@@ -313,5 +314,60 @@ describe('Goals Form validation', () => {
 
   it("should return an errors' object including one or more error key - values", () => {
     expect(validateGoalsForm(invalidGoalFormValues)).toEqual(goalFormErrors);
+  });
+
+  const signupValues = {
+    confirmPassword: 'hillShadow',
+    email: 'jimmy@example.com',
+    firstName: 'Jimmy',
+    lastName: 'Berry',
+    password: 'hillShadow',
+  };
+
+  const invalidSignupValues = {
+    confirmPassword: '',
+    email: '',
+    firstName: 'Jimmy',
+    lastName: 'Berry',
+    password: '',
+  };
+
+  describe('Signup Form validation', () => {
+    it('should return an empty errors object if all form values are valid', () => {
+      expect(validateSignupForm(signupValues)).toEqual({});
+    });
+
+    it("should return an errors' object if one or more form values are invalid", () => {
+      expect(validateSignupForm(invalidSignupValues)).toEqual(
+        cleanedPartialErrorsMock
+      );
+    });
+  });
+
+  const habitValues = {
+    habitDescription: 'Do yoga daily',
+    habitType: 'develop',
+    progressMetric: 'minutes',
+  };
+
+  const invalidhabitValues = {
+    habitDescription: 'Do yoga daily',
+    habitType: '',
+    progressMetric: '',
+  };
+
+  const habitFormErrors = {
+    habitType: 'Required',
+    progressMetric: 'Required',
+  };
+
+  describe('Habit Form validation', () => {
+    it('should return an empty errors object if all form values are valid', () => {
+      expect(validateHabitForm(habitValues)).toEqual({});
+    });
+
+    it("should return an errors' object if one or more form values are invalid", () => {
+      expect(validateHabitForm(invalidhabitValues)).toEqual(habitFormErrors);
+    });
   });
 });

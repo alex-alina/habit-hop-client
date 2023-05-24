@@ -73,11 +73,7 @@ describe('GoalForm component', () => {
 
     expect(screen.getByRole('option', { name: 'main' }).selected).toBe(true);
 
-    await waitFor(() =>
-      expect(handleSubmit).toHaveBeenCalledWith({
-        ...formData,
-      })
-    );
+    await waitFor(() => expect(handleSubmit).toHaveBeenCalledWith(formData));
     expect(handleCloseOverlay).toHaveBeenCalledTimes(1);
   });
 
@@ -104,9 +100,7 @@ describe('GoalForm component', () => {
     ).toBeInTheDocument();
 
     await waitFor(() =>
-      expect(handleSubmit).not.toHaveBeenCalledWith({
-        ...invalidFormData,
-      })
+      expect(handleSubmit).not.toHaveBeenCalledWith(invalidFormData)
     );
   });
 });

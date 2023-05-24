@@ -1,4 +1,4 @@
-import baseColors from './colors';
+import baseColors from '../styles/colors';
 
 const colors = {
   ...baseColors,
@@ -7,8 +7,7 @@ const colors = {
   text: baseColors.grey[8],
   lightText: baseColors.grey[5],
   label: baseColors.grey[7],
-  divider: baseColors.blue[1],
-  cardBorder: baseColors.blue[1],
+  divider: baseColors.grey[4],
   placeholder: baseColors.grey[3],
   disabled: baseColors.grey[2],
   primary: baseColors.blue[9],
@@ -19,7 +18,7 @@ const colors = {
   alert: baseColors.red[5],
   danger: baseColors.red[5],
   error: baseColors.red[7],
-  success: baseColors.green[8],
+  success: baseColors.green[6],
   warning: baseColors.orange[5],
   active: baseColors.blue[7],
   input: {
@@ -107,7 +106,7 @@ export const space = [0, 4, 8, 12, 16, 24, 32, 40, 48, 56, 112, 168].map(
 //168: 11
 export const zIndices = [0, 10, 50, 100, 500, 1000];
 
-const defaultTheme = {
+const mockTheme = {
   colors,
   breakpoints,
   fonts,
@@ -120,4 +119,4 @@ const defaultTheme = {
   zIndices,
 };
 
-export default defaultTheme;
+export default mockTheme;

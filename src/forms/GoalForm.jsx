@@ -37,7 +37,8 @@ const GoalForm = ({ content, goal, handleSubmit, handleCloseOverlay }) => {
               background: 'white',
               maxWidth: 400,
               width: '80%',
-              marginTop: 20,
+              marginTop: 10,
+              marginBottom: 20,
               padding: 30,
               borderRadius: 10,
             }}
@@ -46,7 +47,8 @@ const GoalForm = ({ content, goal, handleSubmit, handleCloseOverlay }) => {
               name="goalDefinition"
               label={goalDescription.label}
               placeholder={goalDescription.placeholder}
-              height={60}
+              height={100}
+              maxWidth={380}
               maxlength={300}
             />
             <SelectField

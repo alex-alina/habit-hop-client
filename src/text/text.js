@@ -68,7 +68,64 @@ const goalsScreen = {
       startLabel: 'Starts on: ',
       endLabel: 'Ends on: ',
     },
+    addHabitBtn: 'Add habit',
     showHabitsBtn: 'Show Habits',
+    hideHabitsBtn: 'Hide Habits',
+    habitsContainer: {
+      goToOverviewBtn: 'Habits overview',
+      developSection: {
+        title: 'I will',
+        iconName: '',
+        newEntryBtn: 'New entry',
+      },
+      breakSection: {
+        title: "I won't",
+        iconName: '',
+        newEntryBtn: 'New entry',
+      },
+    },
+  },
+  habitForm: {
+    habitDescription: {
+      label: 'Habit description',
+      placeholder: 'Go S.M.A.R.T',
+    },
+    habitTypeInput: {
+      legend: 'Habit type',
+      radios: [
+        { label: 'develop new habit', value: 'develop' },
+        { label: 'break old habit', value: 'break' },
+      ],
+    },
+    progressMetricSection: {
+      title: 'Progress metric (select one)',
+      radioGroups: [
+        {
+          legend: 'Distance:',
+          radios: [
+            { label: 'm', value: 'meter' },
+            { label: 'km', value: 'km' },
+          ],
+        },
+        {
+          legend: 'Duration:',
+          radios: [
+            { label: 'minutes', value: 'minutes' },
+            { label: 'hours', value: 'hours' },
+            { label: 'days', value: 'days' },
+          ],
+        },
+        {
+          legend: 'Quantity:',
+          radios: [{ label: 'unit count', value: 'count' }],
+        },
+        {
+          legend: 'Completion:',
+          radios: [{ label: 'finished activity', value: 'is-completed' }],
+        },
+      ],
+    },
+    button: 'Add new habit',
   },
   goalsForm: {
     goalDescription: {

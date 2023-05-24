@@ -11,6 +11,7 @@ import Heading from '../Heading';
 import Image from '../Image';
 import Input from '../Input';
 import Label from '../Label';
+import Legend from '../Legend';
 import { ListItem, OrderedList, UnorderedList } from '../List';
 import Paragraph from '../Paragraph';
 import Section from '../Section';
@@ -105,6 +106,18 @@ it('renders Input with Label components', async () => {
 
   await userEvent.type(input, 'Joe Mouse');
   expect(input).toHaveValue('Joe Mouse');
+});
+
+it('renders Legend components', async () => {
+  render(
+    <ThemeProvider theme={defaultTheme}>
+      <>
+        <Legend htmlFor="name">Joe Mouse</Legend>
+      </>
+    </ThemeProvider>
+  );
+
+  expect(screen.getByText(/joe mouse/i)).toBeInTheDocument();
 });
 
 it('renders Paragraph component', async () => {

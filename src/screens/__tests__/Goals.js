@@ -5,12 +5,16 @@ import {
   editGoalData,
   mockGoalData1,
   mockGoalFormData,
+  mockHabitFormData,
   mockJwt,
 } from '../../mocks/constants';
 import {
   addGoalException,
   addGoalNetworkError,
   addGoalServerDownError,
+  addHabitException,
+  addHabitNetworkError,
+  addHabitServerDownError,
   deleteGoalException,
   deleteGoalNetworkError,
   deleteGoalServerDownError,
@@ -21,6 +25,9 @@ import {
   getGoalsException,
   getGoalsNetworkError,
   getGoalsServerDownError,
+  getHabitsException,
+  getHabitsNetworkError,
+  getHabitsServerDownError,
   getThreeGoalsHandler,
   getUserException,
   getUserNetworkError,
@@ -155,7 +162,7 @@ describe('Goals component', () => {
     expect(window.location.pathname).toBe('/login');
   });
 
-  it('displays three goals cards and info banner', async () => {
+  it("displays three goals' cards and info banner", async () => {
     server.use(getThreeGoalsHandler);
 
     await act(async () => {
@@ -206,6 +213,57 @@ describe('Goals component', () => {
     const addGoalBtn = screen.getByText(/add goal/i);
     await userEvent.click(addGoalBtn);
     expect(screen.getByPlaceholderText(/Go S.M.A.R.T/i)).toBeInTheDocument();
+  });
+
+  it('closes the goal form overlay', async () => {
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    const addGoalBtn = screen.getByText(/add goal/i);
+    await userEvent.click(addGoalBtn);
+    expect(screen.getByPlaceholderText(/Go S.M.A.R.T/i)).toBeInTheDocument();
+    const closeBtn = screen.getByLabelText('Close overlay');
+    await userEvent.click(closeBtn);
+    expect(
+      screen.queryByPlaceholderText(/Go S.M.A.R.T/i)
+    ).not.toBeInTheDocument();
+  });
+
+  it('displays the overlay with the habit form when "Add habit" button is clicked', async () => {
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(
+      screen.queryByLabelText(/habit description/i)
+    ).not.toBeInTheDocument();
+
+    const addHabitBtn = screen.getAllByText(/add habit/i)[0];
+    await userEvent.click(addHabitBtn);
+    expect(screen.getByLabelText(/habit description/i)).toBeInTheDocument();
+  });
+
+  it('closes the habit form overlay', async () => {
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    const addHabitBtn = screen.getAllByText(/add habit/i)[0];
+    await userEvent.click(addHabitBtn);
+    expect(screen.getByLabelText(/habit description/i)).toBeInTheDocument();
+
+    const closeBtn = screen.getByLabelText('Close overlay');
+    await userEvent.click(closeBtn);
+    expect(
+      screen.queryByPlaceholderText(/habit description/i)
+    ).not.toBeInTheDocument();
   });
 });
 
@@ -577,6 +635,256 @@ describe('On the Goals screen, a user can', () => {
       screen.getByText(
         /There are issues with the server. Please try again later/i
       )
+    ).toBeInTheDocument();
+  });
+});
+
+describe('In a Goal Card, a user', () => {
+  beforeEach(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn(() => mockJwt),
+        removeItem: jest.fn(() => null),
+      },
+      writable: true,
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('can see the habis of a goal if they expand the goal card', async () => {
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+    const user = userEvent.setup();
+
+    const showHabitButtons = screen.getAllByText(/show habits/i);
+    const showHabitBtn = showHabitButtons[0];
+    await user.click(showHabitBtn);
+    const habitText = screen.getByText(/stop using screens after 20.30/i);
+    const secondHabitText = screen.getByText(
+      /do 10 min yoga practice every evening/i
+    );
+    expect(habitText).toBeInTheDocument();
+    expect(secondHabitText).toBeInTheDocument();
+  });
+
+  //add habits
+  it('can add a new habit for that goal', async () => {
+    let reRender;
+
+    await act(async () => {
+      const { rerender } = renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+      reRender = rerender;
+    });
+    const user = userEvent.setup();
+
+    const addHabitButtons = screen.getAllByText(/add habit/i);
+    const addHabitBtn = addHabitButtons[0];
+    await user.click(addHabitBtn);
+    expect(screen.getByLabelText(/habit description/i)).toBeInTheDocument();
+
+    const habit = screen.getByLabelText('Habit description');
+    const type = screen.getByLabelText('develop new habit');
+    const metric = screen.getByLabelText('minutes');
+    const submitButton = screen.getByText('Add new habit');
+
+    await user.type(habit, mockHabitFormData.habitDescription);
+    await user.click(type, mockHabitFormData.habitType);
+    await user.click(metric, mockHabitFormData.progressMetric);
+    await user.click(submitButton);
+
+    await act(async () => {
+      reRender(<Goals />, {
+        route: '/goals',
+      });
+    });
+    expect(
+      screen.queryByLabelText(/habit description/i)
+    ).not.toBeInTheDocument();
+    expect(screen.getByText(/overview/i)).toBeInTheDocument();
+  });
+
+  it(' can see an error message when habit could not be added', async () => {
+    server.use(addHabitException);
+    let reRender;
+
+    await act(async () => {
+      const { rerender } = renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+
+      reRender = rerender;
+    });
+
+    const user = userEvent.setup();
+
+    const addHabitButtons = screen.getAllByText(/add habit/i);
+    const addHabitBtn = addHabitButtons[0];
+    await user.click(addHabitBtn);
+    expect(screen.getByLabelText(/habit description/i)).toBeInTheDocument();
+
+    await user.type(
+      screen.getByLabelText('Habit description'),
+      mockHabitFormData.habitDescription
+    );
+    await user.click(
+      screen.getByLabelText('develop new habit'),
+      mockHabitFormData.habitType
+    );
+    await user.click(
+      screen.getByLabelText('minutes'),
+      mockHabitFormData.progressMetric
+    );
+    await user.click(screen.getByText('Add new habit'));
+
+    await act(async () => {
+      reRender(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(
+      screen.getByText(/Test Error: Habit was not added/i)
+    ).toBeInTheDocument();
+  });
+
+  it('can see a network error message - on add habit', async () => {
+    server.use(addHabitNetworkError);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    const user = userEvent.setup();
+
+    const addHabitButtons = screen.getAllByText(/add habit/i);
+    const addHabitBtn = addHabitButtons[0];
+    await user.click(addHabitBtn);
+    expect(screen.getByLabelText(/habit description/i)).toBeInTheDocument();
+
+    await user.type(
+      screen.getByLabelText('Habit description'),
+      mockHabitFormData.habitDescription
+    );
+    await user.click(
+      screen.getByLabelText('develop new habit'),
+      mockHabitFormData.habitType
+    );
+    await user.click(
+      screen.getByLabelText('minutes'),
+      mockHabitFormData.progressMetric
+    );
+    await user.click(screen.getByText('Add new habit'));
+
+    expect(
+      screen.getByText(/Test: some other network error/i)
+    ).toBeInTheDocument();
+  });
+
+  it('can see a server down error message - on add habit', async () => {
+    server.use(addHabitServerDownError);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    const user = userEvent.setup();
+
+    const addHabitButtons = screen.getAllByText(/add habit/i);
+    const addHabitBtn = addHabitButtons[0];
+    await user.click(addHabitBtn);
+    expect(screen.getByLabelText(/habit description/i)).toBeInTheDocument();
+
+    await user.type(
+      screen.getByLabelText('Habit description'),
+      mockHabitFormData.habitDescription
+    );
+    await user.click(
+      screen.getByLabelText('develop new habit'),
+      mockHabitFormData.habitType
+    );
+    await user.click(
+      screen.getByLabelText('minutes'),
+      mockHabitFormData.progressMetric
+    );
+    await user.click(screen.getByText('Add new habit'));
+
+    expect(
+      screen.getByText(
+        /There are issues with the server. Please try again later/i
+      )
+    ).toBeInTheDocument();
+  });
+});
+
+describe('Fetch habits errors: on the Goals screen a user', () => {
+  beforeEach(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn(() => mockJwt),
+        removeItem: jest.fn(() => null),
+      },
+      writable: true,
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  //get habits error messages
+  it('sees a server down error when fetching habits fails', async () => {
+    server.use(getHabitsServerDownError);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(
+      screen.getByText(
+        /There are issues with the server. Please try again later/i
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('sees a network error when fetching habits fails', async () => {
+    server.use(getHabitsNetworkError);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(
+      screen.getByText(/Test: some other network error/i)
+    ).toBeInTheDocument();
+  });
+
+  it('sees an error messages when the habits were not found', async () => {
+    server.use(getHabitsException);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(
+      screen.getByText(/Test Error: Habits not found/i)
     ).toBeInTheDocument();
   });
 });
