@@ -317,7 +317,7 @@ describe('On the Goals screen, a user can', () => {
       });
     });
 
-    expect(screen.getByText(/overview/i)).toBeInTheDocument();
+    expect(screen.getByText(/goals overview/i)).toBeInTheDocument();
     expect(screen.getByText('Add goal')).toBeInTheDocument();
     expect(screen.getByText(/show habits/i)).toBeInTheDocument();
     expect(screen.getByText(/billie/i)).toBeInTheDocument();
@@ -708,7 +708,7 @@ describe('In a Goal Card, a user', () => {
     expect(
       screen.queryByLabelText(/habit description/i)
     ).not.toBeInTheDocument();
-    expect(screen.getByText(/overview/i)).toBeInTheDocument();
+    expect(screen.getByText(/goals overview/i)).toBeInTheDocument();
   });
 
   it(' can see an error message when habit could not be added', async () => {

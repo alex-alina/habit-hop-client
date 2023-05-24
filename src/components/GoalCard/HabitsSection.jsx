@@ -48,11 +48,11 @@ const HabitsSection = ({ content, habits, ...props }) => {
       width="100%"
       borderTop="2px solid"
       borderTopColor="divider"
-      pt={2}
+      pt={[3, 3, 3, 4, 4]}
       {...props}
     >
       {developHabits && developHabits.length > 0 && (
-        <Div width={['100%', '100%', '48%', '48%', '48%']} px={1} pt={1}>
+        <Div width={['100%', '100%', '48%', '48%', '48%']} px={1}>
           <Title iconColor="#1D8348" textColor="success">
             {developSection.title}
           </Title>
@@ -65,7 +65,7 @@ const HabitsSection = ({ content, habits, ...props }) => {
         </Div>
       )}
       {breakHabits && breakHabits.length > 0 && (
-        <Div width={['100%', '100%', '48%', '48%', '48%']} px={1} pt={1}>
+        <Div width={['100%', '100%', '48%', '48%', '48%']} px={1}>
           <Title iconColor="#922B21" textColor="error">
             {breakSection.title}
           </Title>

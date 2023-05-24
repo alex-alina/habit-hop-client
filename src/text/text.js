@@ -68,6 +68,7 @@ const goalsScreen = {
       startLabel: 'Starts on: ',
       endLabel: 'Ends on: ',
     },
+    habitsOverviewLink: "Habit's overview",
     addHabitBtn: 'Add habit',
     showHabitsBtn: 'Show Habits',
     hideHabitsBtn: 'Hide Habits',

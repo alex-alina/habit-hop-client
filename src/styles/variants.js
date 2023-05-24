@@ -12,6 +12,22 @@ export const baseButton = {
     transform: 'scale(0.99)',
   },
 };
+export const iconButtonLink = {
+  appearance: 'none',
+  bg: '#fff',
+  border: 'none',
+  color: 'primary',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontFamily: 'button',
+  fontSize: 3,
+  fontWeight: 1,
+  fontStyle: 'italic',
+  lineHeight: 0,
+  px: 0,
+};
+
 export const iconButton = {
   ...baseButton,
   display: 'flex',
@@ -173,4 +189,5 @@ export const buttons = {
   roundButton,
   roundButtonLg,
   iconButton,
+  iconButtonLink,
 };
