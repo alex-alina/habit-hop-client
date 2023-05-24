@@ -1,6 +1,6 @@
 ## HabitHop - Description
 
-This is the client side of a responsive, full stack app where users can set goals and add habits they want to build or drop in order to achieve their goals. 
+This is the client side of a responsive, tested, full stack app where users can set goals and add habits they want to build or drop in order to achieve their goals. 
 
 The app has a signup and a login page and users have to make an account in order to use it.
 
@@ -14,7 +14,7 @@ Navigation between pages of the application is possible, and the forms include v
 
 **Status: WIP**
 
-Estimated deployment time: end of May.
+Estimated MVP deployment time: end of July.
 Demo samples can be seen in the last section.
 
 ## Tech stack
@@ -29,28 +29,26 @@ Demo samples can be seen in the last section.
 - React Testing Library
 
 ## Implemented Features:
-
 - Sign-up / Log-in
 - Log out 
 - Goals page (a maximum of three goals can be added)
 - Add / edit / delete goal
-- Form validation
+- Forms validation (for all the forms used in the app)
+- User can add habits they want to build and habits they have but want to drop
+- Goal cards can expand to show overview of habits.
 
 ## Current work:
-
-- Testing existing functionality
-- Components development: Tooltip, Card, Expandable card
+- Habits screen UI and functionality
+- Editing and deleting habits
+- Components development: Tooltip, Expandable card
 - Features: user profile/settings, add a prompt to confirm user wants to delete goal
+- Filter goal cards display
 - Show / hide password functionality
 
 ## Future development and features
-
-- User can add / edit / delete habits for each goal
-- Use can add habits they want to build and habits they have but want to drop
 - User can fill in data for each habit practiced based on chosen units of measurement
 - User can see stats for each habit
 - Forgotten password functionality
-- Habits screen UI
 - Users can see the time lapsed between start and end dates on each goal card
 - Components needed for the new screen and functionality
 - Refreshing JWT
