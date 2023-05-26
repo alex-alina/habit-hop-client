@@ -29,12 +29,22 @@ const HabitDescription = ({ iconColor, iconName, textColor, children }) => {
   );
 };
 
-const HabitCard = ({ habit, ...props }) => {
+const HabitCard = ({ content, habit, ...props }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showEntries, setShowEntries] = useState(false);
+  const {
+    settingsBtn,
+    editBtn,
+    deleteBtn,
+    newEntryBtn,
+    showEntriesBtn,
+    hideEntriesBtn,
+    developIcon,
+    breakIcon,
+  } = content;
 
   const { habitDescription, habitType } = habit;
-  const iconName = habitType === 'develop' ? 'check-one' : 'close-one';
+  const iconName = habitType === 'develop' ? developIcon : breakIcon;
   const iconColour = habitType === 'develop' ? '#1D8348' : '#922B21';
 
   return (
@@ -63,7 +73,7 @@ const HabitCard = ({ habit, ...props }) => {
           variant="primarySm"
           width={150}
         >
-          Settings
+          {settingsBtn}
         </IconButton>
 
         <IconButton
@@ -73,7 +83,7 @@ const HabitCard = ({ habit, ...props }) => {
           variant="primarySm"
           width={150}
         >
-          New Entry
+          {newEntryBtn}
         </IconButton>
       </Div>
       {showSettings && (
@@ -92,7 +102,7 @@ const HabitCard = ({ habit, ...props }) => {
             variant="secondarySm"
             width={150}
           >
-            Edit
+            {editBtn}
           </IconButton>
 
           <IconButton
@@ -102,7 +112,7 @@ const HabitCard = ({ habit, ...props }) => {
             variant="secondaryDangerSm"
             width={150}
           >
-            Delete
+            {deleteBtn}
           </IconButton>
         </SmallCard>
       )}
@@ -121,7 +131,7 @@ const HabitCard = ({ habit, ...props }) => {
         variant="secondarySm"
         width={170}
       >
-        {showEntries ? `Hide entries` : `Show entries`}
+        {showEntries ? hideEntriesBtn : showEntriesBtn}
       </IconButton>
     </Div>
   );

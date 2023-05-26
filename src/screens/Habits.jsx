@@ -11,16 +11,18 @@ import SvgIcon from '../components/SvgIcon';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Heading from '../core-components/Heading';
+import { habitsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
-import { extractUserId, isExpired } from '../utils/jwt';
+import { isExpired } from '../utils/jwt';
 
-const Habits = () => {
+const Habits = ({ content = habitsScreen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let params = useParams();
   const goalId = params.goalId;
   const userToken = localStorage.getItem(localStorageJwtKey);
   // const userId = userToken && extractUserId(userToken);
+  const { logoutBtn, intro, noHabitsIntro, addHabitBtn, habitCard } = content;
 
   useEffect(() => {
     // if (userId && userToken) {
@@ -50,6 +52,7 @@ const Habits = () => {
     >
       <Div
         bg="primary"
+        minHeight="100vh"
         mr={4}
         px={[6, 6, 6, 6, 8]}
         py={3}
@@ -83,7 +86,7 @@ const Habits = () => {
             }}
             variant="secondaryMd"
           >
-            Log Out
+            {logoutBtn}
           </Button>
         </Div>
 
@@ -123,7 +126,7 @@ const Habits = () => {
             }}
             variant="secondaryMd"
           >
-            Log Out
+            {logoutBtn}
           </Button>
         </Div>
 
@@ -134,7 +137,7 @@ const Habits = () => {
           alignItems="center"
         >
           <Heading mb={4} mt={3}>
-            Habits' Overview
+            {intro}
           </Heading>
           {ownHabits && ownHabits.length === 0 && (
             <SmallCard
@@ -145,7 +148,7 @@ const Habits = () => {
               p={6}
             >
               <Heading as="h2" mb={4}>
-                Oops, you have no habits for this goal...
+                {noHabitsIntro}
               </Heading>
               <Plant width={200} height={200} />
               <IconButton
@@ -156,7 +159,7 @@ const Habits = () => {
                 maxWidth={150}
                 mt={6}
               >
-                Add habit
+                {addHabitBtn}
               </IconButton>
             </SmallCard>
           )}
@@ -164,7 +167,7 @@ const Habits = () => {
           {ownHabits &&
             ownHabits.length > 0 &&
             ownHabits.map((habit, i) => {
-              return <HabitCard habit={habit} key={i} />;
+              return <HabitCard content={habitCard} habit={habit} key={i} />;
             })}
         </Div>
       </Div>

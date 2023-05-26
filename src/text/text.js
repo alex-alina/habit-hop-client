@@ -149,4 +149,21 @@ const goalsScreen = {
   },
 };
 
-export { homeScreen, signupScreen, loginScreen, goalsScreen };
+const habitsScreen = {
+  logoutBtn: 'Log out',
+  intro: "Habits' Overview",
+  noHabitsIntro: 'Oops, you have no habits for this goal...',
+  addHabitBtn: 'Add habit',
+  habitCard: {
+    settingsBtn: 'Settings',
+    editBtn: 'Edit',
+    deleteBtn: 'Delete',
+    newEntryBtn: 'New Entry',
+    showEntriesBtn: 'Show entries',
+    hideEntriesBtn: 'Hide entries',
+    developIcon: 'check-one',
+    breakIcon: 'close-one',
+  },
+};
+
+export { homeScreen, signupScreen, loginScreen, goalsScreen, habitsScreen };
