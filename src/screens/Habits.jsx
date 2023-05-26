@@ -52,7 +52,7 @@ const Habits = ({ content = habitsScreen }) => {
     >
       <Div
         bg="primary"
-        minHeight="100vh"
+        minHeight={['auto', 'auto', 'auto', 'auto', '100vh']}
         mr={4}
         px={[6, 6, 6, 6, 8]}
         py={3}
