@@ -80,7 +80,7 @@ const GoalCard = ({
       <Div
         display="flex"
         flexDirection="column"
-        alignItems="center"
+        // alignItems="center"
         borderBottom={borderStyle}
         borderBottomColor="divider"
         pb={[3, 3, 3, 4, 4]}
@@ -125,21 +125,22 @@ const GoalCard = ({
             </Paragraph>
           </Div>
         </Div>
-
-        <Link
-          to={`/habits/${goalId}`}
-          style={{
-            color: 'inherit',
-            textDecoration: 'none',
-          }}
-        >
-          <IconButtonLink
-            aria-label="Go to habits overview"
-            iconName="arrow-right"
+        <Div alignSelf="center">
+          <Link
+            to={`/habits/${goalId}`}
+            style={{
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
           >
-            {habitsOverviewLink}
-          </IconButtonLink>
-        </Link>
+            <IconButtonLink
+              aria-label="Go to habits overview"
+              iconName="arrow-right"
+            >
+              {habitsOverviewLink}
+            </IconButtonLink>
+          </Link>
+        </Div>
       </Div>
 
       <Div display="flex" justifyContent="space-between" pt={[3, 3, 3, 4, 4]}>
