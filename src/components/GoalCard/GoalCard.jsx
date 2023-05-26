@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Div from '../../core-components/Div';
 import Heading from '../../core-components/Heading';
 import Paragraph from '../../core-components/Paragraph';
 import Span from '../../core-components/Span';
 import { capitalizeFirstChar } from '../../utils/format';
 import IconButton from '../IconButton';
-import HabitsSection from './HabitsSection';
-import { Link } from 'react-router-dom';
 import IconButtonLink from '../IconButtonLink';
+import HabitsSection from './HabitsSection';
+
 const GoalCard = ({
   goal,
   goalCardText,
@@ -126,10 +127,10 @@ const GoalCard = ({
         </Div>
 
         <Link
-          to="/#"
+          to={`/habits/${goalId}`}
           style={{
             color: 'inherit',
-            'text-decoration': 'none',
+            textDecoration: 'none',
           }}
         >
           <IconButtonLink

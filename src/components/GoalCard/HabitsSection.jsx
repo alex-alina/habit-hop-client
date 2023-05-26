@@ -4,12 +4,12 @@ import Paragraph from '../../core-components/Paragraph';
 import SvgIcon from '../SvgIcon';
 import SmallCard from '../SmallCard';
 
-const Title = ({ iconColor, textColor, children }) => {
+const Title = ({ iconColor, iconName, textColor, children }) => {
   return (
     <Div display="flex" alignItems="center" mb={3}>
       <SvgIcon
         role="graphics-symbol"
-        name="check-one"
+        name={iconName}
         aria-hidden="true"
         stroke={iconColor}
         width={20}
@@ -53,7 +53,7 @@ const HabitsSection = ({ content, habits, ...props }) => {
     >
       {developHabits && developHabits.length > 0 && (
         <Div width={['100%', '100%', '48%', '48%', '48%']} px={1}>
-          <Title iconColor="#1D8348" textColor="success">
+          <Title iconColor="#1D8348" iconName="check-one" textColor="success">
             {developSection.title}
           </Title>
 
@@ -66,7 +66,7 @@ const HabitsSection = ({ content, habits, ...props }) => {
       )}
       {breakHabits && breakHabits.length > 0 && (
         <Div width={['100%', '100%', '48%', '48%', '48%']} px={1}>
-          <Title iconColor="#922B21" textColor="error">
+          <Title iconColor="#922B21" iconName="close-one" textColor="error">
             {breakSection.title}
           </Title>
 

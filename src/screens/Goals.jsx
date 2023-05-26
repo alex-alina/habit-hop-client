@@ -17,7 +17,7 @@ import GoalCard from '../components/GoalCard/GoalCard';
 import IconButton from '../components/IconButton';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
-import Header from '../core-components/Heading';
+import Heading from '../core-components/Heading';
 import GoalForm from '../forms/GoalForm';
 import HabitForm from '../forms/HabitForm';
 import { goalsScreen } from '../text/text';
@@ -197,14 +197,14 @@ const Goals = ({ content = goalsScreen }) => {
           {goalsListLen === 0 ? (
             <>
               {user && user.firstName && (
-                <Header
+                <Heading
                   mt={1}
                   mb={3}
                   textAlign={['center', 'center', 'center', 'left', 'left']}
                 >
                   {greeting}
                   {user.firstName},{noGoalsIntro}
-                </Header>
+                </Heading>
               )}
 
               <GoalForm content={goalsForm} handleSubmit={handleAddGoal} />
@@ -218,9 +218,9 @@ const Goals = ({ content = goalsScreen }) => {
               mt={1}
             >
               {user && user.firstName && (
-                <Header>
+                <Heading>
                   {user.firstName}'s {goalsIntro}
-                </Header>
+                </Heading>
               )}
               {errors.map((error, i) => (
                 <Banner

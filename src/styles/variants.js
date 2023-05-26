@@ -3,6 +3,7 @@ export const baseButton = {
   fontFamily: 'button',
   fontSize: 4,
   fontWeight: 2,
+  letterSpacing: 0.25,
   appearance: 'none',
   border: 'none',
   borderRadius: 3,
