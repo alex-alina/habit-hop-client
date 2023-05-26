@@ -69,7 +69,7 @@ describe('Goals component', () => {
     expect(screen.getByText(/hi/i)).toBeInTheDocument();
     expect(screen.getByText(/billie/i)).toBeInTheDocument();
     expect(screen.getByText('Set new goal')).toBeInTheDocument();
-    expect(screen.getByText(/log out/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/log out/i)).toHaveLength(2);
   });
 
   it('renders screen with error messages: no goals and no user data', async () => {
@@ -141,8 +141,26 @@ describe('Goals component', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(window.location.pathname).toBe('/goals');
+    const logOutBtns = screen.getAllByText(/log out/i);
+    await userEvent.click(logOutBtns[0]);
+    expect(window.location.pathname).toBe('/login');
+  });
 
-    await userEvent.click(screen.getByText(/log out/i));
+  it('logs out user and redirects to /login - second button', async () => {
+    let spy;
+    spy = jest.spyOn(jwtModule, 'isExpired');
+    spy.mockReturnValue(false);
+
+    await act(async () => {
+      renderWithProvidersAndRouter(<Goals />, {
+        route: '/goals',
+      });
+    });
+
+    expect(spy).toHaveBeenCalled();
+    expect(window.location.pathname).toBe('/goals');
+    const logOutBtns = screen.getAllByText(/log out/i);
+    await userEvent.click(logOutBtns[1]);
     expect(window.location.pathname).toBe('/login');
   });
 
@@ -317,7 +335,7 @@ describe('On the Goals screen, a user can', () => {
       });
     });
 
-    expect(screen.getByText(/goals overview/i)).toBeInTheDocument();
+    expect(screen.getByText(/goals' overview/i)).toBeInTheDocument();
     expect(screen.getByText('Add goal')).toBeInTheDocument();
     expect(screen.getByText(/show habits/i)).toBeInTheDocument();
     expect(screen.getByText(/billie/i)).toBeInTheDocument();
@@ -708,7 +726,7 @@ describe('In a Goal Card, a user', () => {
     expect(
       screen.queryByLabelText(/habit description/i)
     ).not.toBeInTheDocument();
-    expect(screen.getByText(/goals overview/i)).toBeInTheDocument();
+    expect(screen.getByText(/goals' overview/i)).toBeInTheDocument();
   });
 
   it(' can see an error message when habit could not be added', async () => {
