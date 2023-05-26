@@ -24,7 +24,6 @@ const Banner = ({
       borderStyle="solid"
       borderColor="blue.1"
       borderRadius={2}
-      width="inherit"
       p={3}
       {...restProps}
     >

@@ -43,7 +43,6 @@ const GoalCard = ({
 
   return (
     <Div
-      width={['90%', '90%', '90%', '90%', '70%']}
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
@@ -80,7 +79,6 @@ const GoalCard = ({
       <Div
         display="flex"
         flexDirection="column"
-        // alignItems="center"
         borderBottom={borderStyle}
         borderBottomColor="divider"
         pb={[3, 3, 3, 4, 4]}

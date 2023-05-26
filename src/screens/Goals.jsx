@@ -10,7 +10,10 @@ import {
 import { addHabit, getHabits } from '../actions-reducers/habits';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
-import { ReactComponent as GoalsOverviewImg } from '../assets/illustrations/goals-bg.svg';
+import { ReactComponent as PlantOne } from '../assets/illustrations/Humaaans - Plant 1.svg';
+import { ReactComponent as Plant } from '../assets/illustrations/Humaaans - Plant 2.svg';
+
+import { ReactComponent as Human } from '../assets/illustrations/standing-23.svg';
 import Banner from '../components/Banner';
 import FormsOverlay from '../components/FormOverlay';
 import GoalCard from '../components/GoalCard/GoalCard';
@@ -126,16 +129,11 @@ const Goals = ({ content = goalsScreen }) => {
   };
 
   return (
-    <Div width="100%">
-      <Div
-        zIndex={0}
-        width="100%"
-        height="100vh"
-        display={['none', 'none', 'none', 'flex', 'flex']}
-      >
-        <GoalsOverviewImg width="100%" height="100%" />
-      </Div>
-
+    <Div
+      width="100%"
+      display="flex"
+      flexDirection={['column', 'column', 'column', 'column', 'row']}
+    >
       {goalFormIsVisible && (
         <FormsOverlay closeHandler={() => handleCloseOverlay('goal')}>
           <GoalForm
@@ -159,24 +157,72 @@ const Goals = ({ content = goalsScreen }) => {
       )}
 
       <Div
+        bg="primary"
+        minHeight={['auto', 'auto', 'auto', 'auto', '100vh']}
+        px={6}
+        py={3}
+        width={['auto', 'auto', 'auto', 'auto', '25%']}
+      >
+        <Div
+          mt={[3, 3, 3, 3, 10]}
+          mb={[3, 3, 3, 3, 0]}
+          display="flex"
+          alignItems="center"
+          justifyContent={[
+            'space-between',
+            'space-between',
+            'space-between',
+            'space-between',
+            'center',
+          ]}
+        >
+          <Heading color="#fff">
+            {greeting}
+            {user.firstName}
+          </Heading>
+          <Div
+            alignSelf="flex-end"
+            display={['block', 'block', 'block', 'block', 'none']}
+          >
+            <Button
+              variant="secondaryMd"
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(logout());
+                navigate('/login');
+              }}
+            >
+              {logoutBtn}
+            </Button>
+          </Div>
+        </Div>
+
+        <Div
+          display={['none', 'none', 'none', 'none', 'flex']}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <PlantOne width={100} height={150} />
+          <Human width={200} height={300} />
+          <Plant width={100} height={150} />
+        </Div>
+      </Div>
+
+      <Div
         display="flex"
         flexDirection="column"
         alignItems="center"
         alignContent="center"
-        width="100%"
-        position="absolute"
-        top="0"
+        width={['auto', 'auto', 'auto', 'auto', '75%']}
       >
         <Div
-          width="100%"
-          display="flex"
-          justifyContent="flex-end"
-          alignItems="center"
+          alignSelf="flex-end"
+          display={['none', 'none', 'none', 'none', 'block']}
         >
           <Button
             variant="secondaryMd"
-            my={3}
-            mx={[2, 2, 2, 2, 7]}
+            my={6}
+            mx={[4, 4, 6, 6, 8]}
             onClick={(e) => {
               e.preventDefault();
               dispatch(logout());
@@ -186,24 +232,23 @@ const Goals = ({ content = goalsScreen }) => {
             {logoutBtn}
           </Button>
         </Div>
+
         <Div
           display="flex"
           flexDirection="column"
           justifyContent="flex-start"
           alignItems="center"
-          mx="auto"
-          width={['90%', '90%', '80%', '80%', '65%']}
+          width={['90%', '90%', '90%', '90%', '80%']}
         >
           {goalsListLen === 0 ? (
             <>
               {user && user.firstName && (
                 <Heading
-                  mt={1}
-                  mb={3}
+                  mt={[4, 4, 6, 6, 2]}
+                  mb={1}
                   textAlign={['center', 'center', 'center', 'left', 'left']}
                 >
-                  {greeting}
-                  {user.firstName},{noGoalsIntro}
+                  {noGoalsIntro}
                 </Heading>
               )}
 
@@ -214,14 +259,11 @@ const Goals = ({ content = goalsScreen }) => {
               display="flex"
               flexDirection="column"
               alignItems="center"
-              mb={6}
-              mt={1}
+              mb={2}
+              mt={[4, 4, 4, 4, 2]}
             >
-              {user && user.firstName && (
-                <Heading>
-                  {user.firstName}'s {goalsIntro}
-                </Heading>
-              )}
+              <Heading mb={[1, 1, 2, 2, 2]}>{goalsIntro}</Heading>
+
               {errors.map((error, i) => (
                 <Banner
                   key={i}
@@ -235,30 +277,38 @@ const Goals = ({ content = goalsScreen }) => {
                   {error}
                 </Banner>
               ))}
-
-              {hasMaxGoalsNum && (
-                <Banner iconName="tips" mt={4}>
-                  {maxNumOfGoalsInfo}
-                </Banner>
-              )}
             </Div>
           )}
 
-          {goalsListLen > 0 &&
-            goalsList.map((goal, i) => {
-              const goalId = goal.id;
-              return (
-                <GoalCard
-                  key={i}
-                  goal={goal}
-                  goalCardText={goalCard}
-                  handleDelete={(e) => handleDeleteGoal(e, goalId)}
-                  handleEdit={(e) => handleEdit(e, goal)}
-                  handleHabitFormOverlay={() => handleHabitFormOverlay(goalId)}
-                  handleGetHabits={() => handleGetHabits(goalId)}
-                />
-              );
-            })}
+          {goalsListLen > 0 && (
+            <Div display="flex" flexDirection="column" width="100%">
+              {hasMaxGoalsNum && (
+                <Banner
+                  iconName="tips"
+                  mt={[0, 0, 2, 2, 2]}
+                  mb={[4, 4, 4, 6, 6]}
+                >
+                  {maxNumOfGoalsInfo}
+                </Banner>
+              )}
+              {goalsList.map((goal, i) => {
+                const goalId = goal.id;
+                return (
+                  <GoalCard
+                    key={i}
+                    goal={goal}
+                    goalCardText={goalCard}
+                    handleDelete={(e) => handleDeleteGoal(e, goalId)}
+                    handleEdit={(e) => handleEdit(e, goal)}
+                    handleHabitFormOverlay={() =>
+                      handleHabitFormOverlay(goalId)
+                    }
+                    handleGetHabits={() => handleGetHabits(goalId)}
+                  />
+                );
+              })}
+            </Div>
+          )}
 
           {showAddGoalBtn && (
             <IconButton

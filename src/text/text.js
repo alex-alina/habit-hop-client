@@ -54,8 +54,8 @@ const loginScreen = {
 const goalsScreen = {
   logoutBtn: 'Log out',
   greeting: 'Hi ',
-  noGoalsIntro: ' add your first goal.',
-  goalsIntro: ' goals overview',
+  noGoalsIntro: 'Add your first goal...',
+  goalsIntro: "Goals' overview",
   maxNumOfGoalsInfo:
     'You can add a maximum of three goals. Edit or replace your goals to fit your current needs.',
   loadingText: 'Loading...',
