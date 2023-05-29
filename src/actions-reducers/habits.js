@@ -16,6 +16,14 @@ export const updateHabits = (habits, habit) => {
   return updatedHabits;
 };
 
+export const removeHabit = (state, goalId, habitId) => {
+  const newGoalSpecificHabits = state.items[goalId].filter(
+    (habit) => habit.id !== habitId
+  );
+  const newHabits = { ...state.items, [goalId]: newGoalSpecificHabits };
+  return newHabits;
+};
+
 export const getHabits = createAsyncThunk(
   'habits',
   async ({ userId, userToken, goalId }) => {
@@ -53,6 +61,32 @@ export const addHabit = createAsyncThunk(
       const newHabit = response.body.data.habit;
 
       return newHabit;
+    } catch (err) {
+      if (err.response) {
+        const errorWrapper = JSON.parse(err.response.text);
+        throw `${errorWrapper.error.message}`;
+      }
+      if (err.message.match(/Request has been terminated/i)) {
+        throw new Error(
+          'There are issues with the server. Please try again later'
+        );
+      }
+      throw new Error(err);
+    }
+  }
+);
+
+export const deleteHabit = createAsyncThunk(
+  'habits/deleteHabit',
+  async ({ userId, userToken, goalId, habitId }) => {
+    try {
+      const response = await superagent
+        .delete(`${baseUrl}/users/${userId}/goals/${goalId}/habits/${habitId}`)
+        .set('Authorization', `Bearer ${userToken}`);
+
+      const resStatus = response.status;
+
+      return { resStatus, goalId, habitId };
     } catch (err) {
       if (err.response) {
         const errorWrapper = JSON.parse(err.response.text);
@@ -107,7 +141,22 @@ const habitsReducer = createReducer(initialState, (builder) => {
       const status = 'failed';
       return { ...state, status, error };
     })
+    .addCase(deleteHabit.pending, (state) => {
+      const status = 'loading';
+      return { status, ...state };
+    })
+    .addCase(deleteHabit.fulfilled, (state, action) => {
+      const status = 'success';
+      const { resStatus, goalId, habitId } = action.payload;
+      const newGoals = removeHabit(state, goalId, habitId);
 
+      return { ...state, items: newGoals, status, resStatus, error: {} };
+    })
+    .addCase(deleteHabit.rejected, (state, action) => {
+      const error = action.error;
+      const status = 'failed';
+      return { ...state, status, error };
+    })
     .addDefaultCase((state) => {
       state;
     });

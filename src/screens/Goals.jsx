@@ -10,14 +10,12 @@ import {
 import { addHabit, getHabits } from '../actions-reducers/habits';
 import { logout } from '../actions-reducers/logout';
 import { getCurrentUser } from '../actions-reducers/users';
-import { ReactComponent as PlantOne } from '../assets/illustrations/Humaaans - Plant 1.svg';
-import { ReactComponent as Plant } from '../assets/illustrations/Humaaans - Plant 2.svg';
-
-import { ReactComponent as Human } from '../assets/illustrations/standing-23.svg';
+import { ReactComponent as LoginHumanSVG } from '../assets/illustrations/login-humaaan.svg';
 import Banner from '../components/Banner';
 import FormsOverlay from '../components/FormOverlay';
 import GoalCard from '../components/GoalCard/GoalCard';
 import IconButton from '../components/IconButton';
+import SmallCard from '../components/SmallCard';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Heading from '../core-components/Heading';
@@ -130,9 +128,9 @@ const Goals = ({ content = goalsScreen }) => {
 
   return (
     <Div
-      width="100%"
       display="flex"
       flexDirection={['column', 'column', 'column', 'column', 'row']}
+      width="100%"
     >
       {goalFormIsVisible && (
         <FormsOverlay closeHandler={() => handleCloseOverlay('goal')}>
@@ -197,14 +195,15 @@ const Goals = ({ content = goalsScreen }) => {
           </Div>
         </Div>
 
+        <SmallCard mt={(2, 2, 4, 4, 6)} height={100}>
+          Filters placeholder
+        </SmallCard>
         <Div
           display={['none', 'none', 'none', 'none', 'flex']}
           justifyContent="center"
           alignItems="center"
         >
-          <PlantOne width={100} height={150} />
-          <Human width={200} height={300} />
-          <Plant width={100} height={150} />
+          <LoginHumanSVG width={350} height={250} />
         </Div>
       </Div>
 

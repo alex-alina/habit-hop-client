@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { addHabit, deleteHabit } from '../actions-reducers/habits';
 import { logout } from '../actions-reducers/logout';
 import { ReactComponent as DataIllustration } from '../assets/illustrations/Data.svg';
 import { ReactComponent as Plant } from '../assets/illustrations/Humaaans - Plant 2.svg';
+import FormsOverlay from '../components/FormOverlay';
 import HabitCard from '../components/HabitCard/HabitCard';
 import IconButton from '../components/IconButton';
 import SmallCard from '../components/SmallCard';
@@ -11,18 +13,33 @@ import SvgIcon from '../components/SvgIcon';
 import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import Heading from '../core-components/Heading';
-import { habitsScreen } from '../text/text';
+import HabitForm from '../forms/HabitForm';
+import { goalsScreen, habitsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
-import { isExpired } from '../utils/jwt';
+import { extractUserId, isExpired } from '../utils/jwt';
+
+const habitFormContent = goalsScreen.habitForm;
 
 const Habits = ({ content = habitsScreen }) => {
+  const { logoutBtn, intro, noHabitsIntro, addHabitBtn, habitCard } = content;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let params = useParams();
-  const goalId = params.goalId;
+
   const userToken = localStorage.getItem(localStorageJwtKey);
-  // const userId = userToken && extractUserId(userToken);
-  const { logoutBtn, intro, noHabitsIntro, addHabitBtn, habitCard } = content;
+  const userId = userToken && extractUserId(userToken);
+  const goalId = params.goalId;
+
+  const goals = useSelector((state) => state.goals.items) || [];
+  const goal = goals.filter((goal) => {
+    if (goal.id === goalId) return goal;
+  })[0];
+  const goalDefinition = goal && goal.goalDefinition;
+
+  const habits = useSelector((state) => state.habits.items[goalId]);
+  const habitsLen = habits && habits.length;
+  const showAddHabitBtn = habitsLen > 0 && habitsLen < 4;
 
   useEffect(() => {
     // if (userId && userToken) {
@@ -36,27 +53,43 @@ const Habits = ({ content = habitsScreen }) => {
     }
   }, [userToken]);
 
-  const goals = useSelector((state) => state.goals.items) || [];
-  const goal = goals.filter((goal) => {
-    if (goal.id === goalId) return goal;
-  })[0];
+  const [habitFormIsVisible, setHabitFormVisibility] = useState(false);
 
-  const goalDefinition = goal && goal.goalDefinition;
-  const habits = useSelector((state) => state.habits.items);
-  const ownHabits = habits && habits[goalId];
+  const handleCloseOverlay = () => {
+    setHabitFormVisibility(false);
+  };
+
+  const handleAddHabit = (habit, goalId) => {
+    dispatch(addHabit({ userId, userToken, goalId, habit }));
+  };
+
+  const handleDeleteHabit = (e, habitId) => {
+    e.preventDefault();
+    dispatch(deleteHabit({ userId, userToken, goalId, habitId }));
+  };
 
   return (
     <Div
       display="flex"
       flexDirection={['column', 'column', 'column', 'column', 'row']}
+      width="100%"
     >
+      {habitFormIsVisible && (
+        <FormsOverlay closeHandler={() => handleCloseOverlay()}>
+          <HabitForm
+            content={habitFormContent}
+            handleCloseOverlay={() => handleCloseOverlay()}
+            handleSubmit={handleAddHabit}
+            goalId={goalId}
+          />
+        </FormsOverlay>
+      )}
       <Div
         bg="primary"
         minHeight={['auto', 'auto', 'auto', 'auto', '100vh']}
-        mr={4}
-        px={[6, 6, 6, 6, 8]}
+        px={[6, 6, 6, 8, 8]}
         py={3}
-        width={['100%', '100%', '100%', '100%', '25%']}
+        width={['auto', 'auto', 'auto', 'auto', '25%']}
       >
         <Div
           display="flex"
@@ -109,7 +142,7 @@ const Habits = ({ content = habitsScreen }) => {
         </Div>
       </Div>
 
-      <Div p={4} width={['100%', '100%', '100%', '100%', '75%']}>
+      <Div p={4} width={['auto', 'auto', 'auto', 'auto', '75%']}>
         <Div
           display={['none', 'none', 'none', 'none', 'flex']}
           justifyContent="flex-end"
@@ -139,7 +172,7 @@ const Habits = ({ content = habitsScreen }) => {
           <Heading mb={4} mt={3}>
             {intro}
           </Heading>
-          {ownHabits && ownHabits.length === 0 && (
+          {habits && habits.length === 0 && (
             <SmallCard
               display="flex"
               flexDirection="column"
@@ -155,7 +188,7 @@ const Habits = ({ content = habitsScreen }) => {
                 variant="primarySm"
                 iconName="add-one"
                 iconColor="#fff"
-                // clickHandler={handleHabitFormOverlay}
+                clickHandler={() => setHabitFormVisibility(true)}
                 maxWidth={150}
                 mt={6}
               >
@@ -164,12 +197,35 @@ const Habits = ({ content = habitsScreen }) => {
             </SmallCard>
           )}
 
-          {ownHabits &&
-            ownHabits.length > 0 &&
-            ownHabits.map((habit, i) => {
-              return <HabitCard content={habitCard} habit={habit} key={i} />;
+          {habits &&
+            habits.length > 0 &&
+            habits.map((habit, i) => {
+              return (
+                <HabitCard
+                  content={habitCard}
+                  habit={habit}
+                  handleDelete={handleDeleteHabit}
+                  key={i}
+                />
+              );
             })}
         </Div>
+        {showAddHabitBtn && (
+          <IconButton
+            mx="auto"
+            clickHandler={() => {
+              // setIsEditMode(false);
+              setHabitFormVisibility(true);
+            }}
+            iconName="add-one"
+            iconColor="#fff"
+            variant="primarySm"
+            mt={[2, 2, 2, 4, 4]}
+            mb={6}
+          >
+            {addHabitBtn}
+          </IconButton>
+        )}
       </Div>
     </Div>
   );

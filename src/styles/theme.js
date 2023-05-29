@@ -8,7 +8,7 @@ const colors = {
   lightText: baseColors.grey[5],
   label: baseColors.grey[7],
   divider: baseColors.blue[1],
-  cardBorder: baseColors.blue[1],
+  cardBorder: baseColors.blue[2],
   placeholder: baseColors.grey[3],
   disabled: baseColors.grey[2],
   primary: baseColors.blue[9],

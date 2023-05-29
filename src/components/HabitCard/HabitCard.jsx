@@ -29,7 +29,7 @@ const HabitDescription = ({ iconColor, iconName, textColor, children }) => {
   );
 };
 
-const HabitCard = ({ content, habit, ...props }) => {
+const HabitCard = ({ content, habit, handleDelete, ...props }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showEntries, setShowEntries] = useState(false);
   const {
@@ -43,7 +43,7 @@ const HabitCard = ({ content, habit, ...props }) => {
     breakIcon,
   } = content;
 
-  const { habitDescription, habitType } = habit;
+  const { habitDescription, habitType, id } = habit;
   const iconName = habitType === 'develop' ? developIcon : breakIcon;
   const iconColour = habitType === 'develop' ? '#1D8348' : '#922B21';
 
@@ -106,7 +106,7 @@ const HabitCard = ({ content, habit, ...props }) => {
           </IconButton>
 
           <IconButton
-            // clickHandler={handleDelete}
+            clickHandler={(e) => handleDelete(e, id)}
             iconName="delete"
             iconColor="#922B21"
             variant="secondaryDangerSm"
