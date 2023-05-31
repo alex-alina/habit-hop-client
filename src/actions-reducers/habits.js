@@ -106,7 +106,6 @@ const initialState = {};
 
 const habitsReducer = createReducer(initialState, (builder) => {
   builder
-
     .addCase(getHabits.pending, (state) => {
       const status = 'loading';
       return { status, ...state };
@@ -131,7 +130,6 @@ const habitsReducer = createReducer(initialState, (builder) => {
       const status = 'success';
       const currentHabits = state.items;
       const newHabit = action.payload;
-
       const newHabits = updateHabits(currentHabits, newHabit);
 
       return { ...state, items: newHabits, status, error: {} };

@@ -17,7 +17,12 @@ export const renderWithTheme = (ui, options) =>
 
 export function renderWithProvidersAndRouter(
   ui,
-  { store = setupStore(), route = '/', ...renderOptions } = {}
+  {
+    preloadedState = {},
+    store = setupStore(preloadedState),
+    route = '/',
+    ...renderOptions
+  } = {}
 ) {
   window.history.pushState({}, 'Test page', route);
 

@@ -13,9 +13,10 @@ const reducer = {
   habits: habitsReducer,
 };
 
-export const setupStore = () => {
+export const setupStore = (preloadedState) => {
   return configureStore({
     reducer,
+    preloadedState,
   });
 };
 

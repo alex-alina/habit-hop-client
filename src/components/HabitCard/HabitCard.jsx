@@ -106,7 +106,10 @@ const HabitCard = ({ content, habit, handleDelete, ...props }) => {
           </IconButton>
 
           <IconButton
-            clickHandler={(e) => handleDelete(e, id)}
+            clickHandler={(e) => {
+              handleDelete(e, id);
+              setShowSettings(false);
+            }}
             iconName="delete"
             iconColor="#922B21"
             variant="secondaryDangerSm"

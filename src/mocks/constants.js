@@ -12,7 +12,7 @@ export const mockUserData = {
 
 export const mockGoalFormData = {
   goalDefinition:
-    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+    'Improve sleep quality by exercising and drinking less coffee',
   priority: 'main',
   startDate: '2023-03-23',
   endDate: '2023-06-16',
@@ -21,7 +21,7 @@ export const mockGoalFormData = {
 export const mockGoalData1 = {
   endDate: '2023-05-06',
   goalDefinition:
-    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+    'Improve sleep quality by exercising and drinking less coffee',
   id: 'bec49b7a-7819-453b-9895-347e3982acc5',
   priority: 'main',
   startDate: '2023-04-08',
@@ -68,8 +68,7 @@ export const mockHabitData = {
   goal: {
     id: 'bec49b7a-7819-453b-9895-347e3982acc5',
     goalDefinition:
-      'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
-    priority: 'main',
+      'Improve sleep quality by exercising and drinking less coffee',
     startDate: '2023-04-08',
     endDate: '2023-05-06',
   },
@@ -77,31 +76,88 @@ export const mockHabitData = {
 
 export const mockHabitsData = [
   {
-    id: 'aa750fa3-2643-4d84-b4b5-090162ae08b6',
-    habitDescription: 'Stop using screens after 20.30',
-    habitType: 'break',
-    progressMetric: 'is-completed',
+    id: 'a4e95781-9f45-4c38-8d67-21355fd5e228',
+    habitDescription: 'Run 2 km every evening',
+    habitType: 'develop',
+    progressMetric: 'km',
     goal: {
       id: 'bec49b7a-7819-453b-9895-347e3982acc5',
       goalDefinition:
-        'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+        'Improve sleep quality by exercising and drinking less coffee',
       priority: 'secondary',
       startDate: '2023-05-07',
       endDate: '2023-07-15',
     },
   },
   {
-    id: 'cf826e63-c332-48d8-bd50-41d16329fc37',
-    habitDescription: 'Do 10 min yoga practice every evening',
+    id: 'b5e95781-9f45-4c38-8d67-21355fd5e449',
+    habitDescription: 'Drink only one coffee per day',
+    habitType: 'break',
+    progressMetric: 'count',
+    goal: {
+      id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+      goalDefinition:
+        'Improve sleep quality by exercising and drinking less coffee',
+      priority: 'secondary',
+      startDate: '2023-05-07',
+      endDate: '2023-07-15',
+    },
+  },
+];
+
+export const fourHabitsMockData = [
+  {
+    id: 'a4e95781-9f45-4c38-8d67-21355fd5e228',
+    habitDescription: 'Run 2 km every evening',
+    habitType: 'develop',
+    progressMetric: 'km',
+    goal: {
+      id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+      goalDefinition:
+        'Improve sleep quality by exercising and drinking less coffee',
+      priority: 'secondary',
+      startDate: '2023-05-07',
+      endDate: '2023-07-15',
+    },
+  },
+  {
+    id: 'b5e95781-9f45-4c38-8d67-21355fd5e449',
+    habitDescription: 'Drink only one coffee per day',
+    habitType: 'break',
+    progressMetric: 'count',
+    goal: {
+      id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+      goalDefinition:
+        'Improve sleep quality by exercising and drinking less coffee',
+      priority: 'secondary',
+      startDate: '2023-05-07',
+      endDate: '2023-07-15',
+    },
+  },
+  {
+    id: '66c8b782-6238-42a2-ab77-2c03d19b1d0f',
+    habitDescription: 'Exercise daily',
     habitType: 'develop',
     progressMetric: 'minutes',
     goal: {
       id: 'bec49b7a-7819-453b-9895-347e3982acc5',
       goalDefinition:
-        'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
-      priority: 'secondary',
-      startDate: '2023-05-07',
-      endDate: '2023-07-15',
+        'Improve sleep quality by exercising and drinking less coffee',
+      startDate: '2023-04-08',
+      endDate: '2023-05-06',
+    },
+  },
+  {
+    id: '87c8b782-6238-42a2-ab77-2c03d19b1d05n',
+    habitDescription: 'Do 15 minutes of yoga in the evening',
+    habitType: 'develop',
+    progressMetric: 'minutes',
+    goal: {
+      id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+      goalDefinition:
+        'Improve sleep quality by exercising and drinking less coffee',
+      startDate: '2023-04-08',
+      endDate: '2023-05-06',
     },
   },
 ];

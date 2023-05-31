@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { addHabit, deleteHabit } from '../actions-reducers/habits';
+import { addHabit, getHabits, deleteHabit } from '../actions-reducers/habits';
 import { logout } from '../actions-reducers/logout';
 import { ReactComponent as DataIllustration } from '../assets/illustrations/Data.svg';
 import { ReactComponent as Plant } from '../assets/illustrations/Humaaans - Plant 2.svg';
@@ -17,11 +17,21 @@ import HabitForm from '../forms/HabitForm';
 import { goalsScreen, habitsScreen } from '../text/text';
 import { localStorageJwtKey } from '../utils/constants';
 import { extractUserId, isExpired } from '../utils/jwt';
+import { getGoal } from '../actions-reducers/goals';
+import { getCurrentUser } from '../actions-reducers/users';
+import Banner from '../components/Banner';
 
 const habitFormContent = goalsScreen.habitForm;
 
 const Habits = ({ content = habitsScreen }) => {
-  const { logoutBtn, intro, noHabitsIntro, addHabitBtn, habitCard } = content;
+  const {
+    logoutBtn,
+    intro,
+    noHabitsIntro,
+    addHabitBtn,
+    habitCard,
+    maxNumOfHabitsInfo,
+  } = content;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,27 +41,38 @@ const Habits = ({ content = habitsScreen }) => {
   const userId = userToken && extractUserId(userToken);
   const goalId = params.goalId;
 
-  const goals = useSelector((state) => state.goals.items) || [];
-  const goal = goals.filter((goal) => {
-    if (goal.id === goalId) return goal;
-  })[0];
-  const goalDefinition = goal && goal.goalDefinition;
-
-  const habits = useSelector((state) => state.habits.items[goalId]);
-  const habitsLen = habits && habits.length;
-  const showAddHabitBtn = habitsLen > 0 && habitsLen < 4;
-
   useEffect(() => {
-    // if (userId && userToken) {
-    //   dispatch(getHabits({ userId, userToken, goalId }));
-    //   // dispatch(getCurrentUser({ userId, userToken }));
-    //   // dispatch(getGoals({ userId, userToken }));
-    // }
+    if (userId && userToken) {
+      dispatch(getCurrentUser({ userId, userToken }));
+      dispatch(getGoal({ userId, userToken, goalId }));
+      dispatch(getHabits({ userId, userToken, goalId }));
+    }
     if (!userToken || isExpired(userToken)) {
       dispatch(logout());
       navigate('/login');
     }
   }, [userToken]);
+
+  const goal = useSelector((state) => state.goals.currentGoal);
+  const goalDefinition = goal && goal.goalDefinition;
+  const habits = useSelector((state) => state.habits.items);
+  const ownHabits = habits && habits[goalId];
+  const ownHabitsLen = ownHabits && ownHabits.length;
+  const showAddHabitBtn = ownHabitsLen > 0 && ownHabitsLen < 4;
+  const hasMaxHabitsNum = ownHabitsLen === 4;
+
+  const fullState = useSelector((state) => state);
+  const stateEntities = Object.keys(fullState);
+  const errors = stateEntities
+    .map((entity) => {
+      const error = fullState[entity].error;
+      let message = '';
+      if (error && error.message) {
+        message = error.message;
+      }
+      return message;
+    })
+    .filter((error) => error !== '');
 
   const [habitFormIsVisible, setHabitFormVisibility] = useState(false);
 
@@ -172,7 +193,20 @@ const Habits = ({ content = habitsScreen }) => {
           <Heading mb={4} mt={3}>
             {intro}
           </Heading>
-          {habits && habits.length === 0 && (
+          {errors.map((error, i) => (
+            <Banner
+              key={i}
+              color="error"
+              bg="white"
+              fontSize={3}
+              iconName="caution"
+              iconStroke="#922B21"
+              mt={4}
+            >
+              {error}
+            </Banner>
+          ))}
+          {ownHabits && ownHabitsLen === 0 && (
             <SmallCard
               display="flex"
               flexDirection="column"
@@ -196,10 +230,14 @@ const Habits = ({ content = habitsScreen }) => {
               </IconButton>
             </SmallCard>
           )}
-
-          {habits &&
-            habits.length > 0 &&
-            habits.map((habit, i) => {
+          {hasMaxHabitsNum && (
+            <Banner iconName="tips" mt={[0, 0, 2, 2, 2]} mb={[4, 4, 4, 6, 6]}>
+              {maxNumOfHabitsInfo}
+            </Banner>
+          )}
+          {ownHabits &&
+            ownHabitsLen > 0 &&
+            ownHabits.map((habit, i) => {
               return (
                 <HabitCard
                   content={habitCard}

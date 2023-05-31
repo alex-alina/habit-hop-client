@@ -271,7 +271,8 @@ const Goals = ({ content = goalsScreen }) => {
                   fontSize={3}
                   iconName="caution"
                   iconStroke="#922B21"
-                  mt={4}
+                  mt={1}
+                  mb={3}
                 >
                   {error}
                 </Banner>

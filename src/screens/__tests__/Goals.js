@@ -683,10 +683,8 @@ describe('In a Goal Card, a user', () => {
     const showHabitButtons = screen.getAllByText(/show habits/i);
     const showHabitBtn = showHabitButtons[0];
     await user.click(showHabitBtn);
-    const habitText = screen.getByText(/stop using screens after 20.30/i);
-    const secondHabitText = screen.getByText(
-      /do 10 min yoga practice every evening/i
-    );
+    const habitText = screen.getByText(/run 2 km every evening/i);
+    const secondHabitText = screen.getByText(/drink only one coffee per day/i);
     expect(habitText).toBeInTheDocument();
     expect(secondHabitText).toBeInTheDocument();
   });

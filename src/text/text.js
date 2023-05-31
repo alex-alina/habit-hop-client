@@ -164,6 +164,7 @@ const habitsScreen = {
     developIcon: 'check-one',
     breakIcon: 'close-one',
   },
+  maxNumOfHabitsInfo: 'You can add a maximum of four habits per goal',
 };
 
 export { homeScreen, signupScreen, loginScreen, goalsScreen, habitsScreen };
