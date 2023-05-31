@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Div from '../../core-components/Div';
 import Heading from '../../core-components/Heading';
 import Paragraph from '../../core-components/Paragraph';
 import Span from '../../core-components/Span';
 import { capitalizeFirstChar } from '../../utils/format';
 import IconButton from '../IconButton';
+import IconButtonLink from '../IconButtonLink';
 import HabitsSection from './HabitsSection';
 
 const GoalCard = ({
@@ -21,6 +23,7 @@ const GoalCard = ({
     editBtn,
     deleteBtn,
     timeSection,
+    habitsOverviewLink,
     addHabitBtn,
     showHabitsBtn,
     hideHabitsBtn,
@@ -40,7 +43,6 @@ const GoalCard = ({
 
   return (
     <Div
-      width={['90%', '90%', '90%', '90%', '70%']}
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
@@ -63,6 +65,7 @@ const GoalCard = ({
         >
           {editBtn}
         </IconButton>
+
         <IconButton
           clickHandler={handleDelete}
           iconName="delete"
@@ -73,51 +76,72 @@ const GoalCard = ({
           {deleteBtn}
         </IconButton>
       </Div>
-
       <Div
         display="flex"
-        flexDirection={['column', 'column', 'column', 'row', 'row']}
-        justifyContent="space-between"
-        borderTop={borderStyle}
-        borderTopColor="divider"
+        flexDirection="column"
         borderBottom={borderStyle}
         borderBottomColor="divider"
-        py={[3, 3, 3, 4, 4]}
+        pb={[3, 3, 3, 4, 4]}
       >
         <Div
           display="flex"
-          flexDirection="column"
-          width={['90%', '90%', '90%', '40%', '40%']}
+          flexDirection={['column', 'column', 'column', 'row', 'row']}
+          justifyContent="space-between"
+          borderTop={borderStyle}
+          borderTopColor="divider"
+          py={[3, 3, 3, 4, 4]}
         >
-          <Heading as="h3" fontSize={4}>
-            {goalPriority} goal
-          </Heading>
-          <Paragraph mt={2} mr={6}>
-            {goal.goalDefinition}
-          </Paragraph>
-        </Div>
+          <Div
+            display="flex"
+            flexDirection="column"
+            width={['90%', '90%', '90%', '40%', '40%']}
+          >
+            <Heading as="h3" fontSize={4}>
+              {goalPriority} goal
+            </Heading>
+            <Paragraph mt={2} mr={6}>
+              {goal.goalDefinition}
+            </Paragraph>
+          </Div>
 
-        <Div
-          display="flex"
-          flexDirection="column"
-          mt={[4, 4, 4, 0, 0]}
-          width={['90%', '90%', '90%', '40%', '40%']}
-        >
-          <Heading as="h3" fontSize={4} mb={1}>
-            {timeSection.title}
-          </Heading>
-          <Paragraph mb={1}>
-            <Span color="heading">{timeSection.startLabel}</Span>
-            {goal.startDate}
-          </Paragraph>
-          <Paragraph>
-            <Span color="heading">{timeSection.endLabel}</Span>
-            {goal.endDate}
-          </Paragraph>
+          <Div
+            display="flex"
+            flexDirection="column"
+            mt={[4, 4, 4, 0, 0]}
+            width={['90%', '90%', '90%', '40%', '40%']}
+          >
+            <Heading as="h3" fontSize={4} mb={1}>
+              {timeSection.title}
+            </Heading>
+            <Paragraph mb={1}>
+              <Span color="heading">{timeSection.startLabel}</Span>
+              {goal.startDate}
+            </Paragraph>
+            <Paragraph>
+              <Span color="heading">{timeSection.endLabel}</Span>
+              {goal.endDate}
+            </Paragraph>
+          </Div>
+        </Div>
+        <Div alignSelf="center">
+          <Link
+            to={`/habits/${goalId}`}
+            style={{
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            <IconButtonLink
+              aria-label="Go to habits overview"
+              iconName="arrow-right"
+            >
+              {habitsOverviewLink}
+            </IconButtonLink>
+          </Link>
         </Div>
       </Div>
 
-      <Div display="flex" justifyContent="space-between" py={3}>
+      <Div display="flex" justifyContent="space-between" pt={[3, 3, 3, 4, 4]}>
         <IconButton
           variant="primarySm"
           iconName="add-one"
@@ -127,6 +151,7 @@ const GoalCard = ({
         >
           {addHabitBtn}
         </IconButton>
+
         <IconButton
           variant="primarySm"
           iconName={areHabitsVisible ? 'up-c' : 'down-c'}
@@ -140,7 +165,11 @@ const GoalCard = ({
       </Div>
 
       {areHabitsVisible && (
-        <HabitsSection content={habitsContainer} habits={ownHabits} mt={2} />
+        <HabitsSection
+          content={habitsContainer}
+          habits={ownHabits}
+          mt={[3, 3, 3, 4, 4]}
+        />
       )}
     </Div>
   );

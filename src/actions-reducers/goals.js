@@ -16,6 +16,32 @@ const formatGoal = (goal) => {
   return formattedGoal;
 };
 
+export const getGoal = createAsyncThunk(
+  'goals/currentGoal',
+  async ({ userId, userToken, goalId }) => {
+    try {
+      const response = await superagent
+        .get(`${baseUrl}/users/${userId}/goals/${goalId}`)
+        .set('Authorization', `Bearer ${userToken}`);
+
+      const goal = response.body.data.goal;
+      const formattedGoal = formatGoal(goal);
+      return { currentGoal: formattedGoal };
+    } catch (err) {
+      if (err.response) {
+        const errorWrapper = JSON.parse(err.response.text);
+        throw `${errorWrapper.error.message}`;
+      }
+      if (err.message.match(/Request has been terminated/i)) {
+        throw new Error(
+          'There are issues with the server. Please try again later'
+        );
+      }
+      throw new Error(err);
+    }
+  }
+);
+
 export const getGoals = createAsyncThunk(
   'goals',
   async ({ userId, userToken }) => {
@@ -128,7 +154,19 @@ const initialState = {};
 
 const goalsReducer = createReducer(initialState, (builder) => {
   builder
-
+    .addCase(getGoal.pending, (state) => {
+      const status = 'loading';
+      return { status, ...state };
+    })
+    .addCase(getGoal.fulfilled, (state, action) => {
+      const status = 'success';
+      return { ...state, ...action.payload, status, error: {} };
+    })
+    .addCase(getGoal.rejected, (state, action) => {
+      const error = action.error;
+      const status = 'failed';
+      return { ...state, status, error };
+    })
     .addCase(getGoals.pending, (state) => {
       const status = 'loading';
       return { status, ...state };

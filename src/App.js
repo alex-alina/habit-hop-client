@@ -4,6 +4,7 @@ import Home from './screens/Home';
 import SignUp from './screens/SignUp';
 import Goals from './screens/Goals';
 import LogIn from './screens/Login';
+import Habits from './screens/Habits';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/signup" element={<SignUp />} />
         <Route exact path="/login" element={<LogIn />} />
         <Route exact path="/goals" element={<Goals />} />
+        <Route path="/habits/:goalId" element={<Habits />} />
       </Routes>
     </>
   );

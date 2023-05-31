@@ -54,8 +54,8 @@ const loginScreen = {
 const goalsScreen = {
   logoutBtn: 'Log out',
   greeting: 'Hi ',
-  noGoalsIntro: ' add your first goal.',
-  goalsIntro: ' goals overview',
+  noGoalsIntro: 'Add your first goal...',
+  goalsIntro: "Goals' overview",
   maxNumOfGoalsInfo:
     'You can add a maximum of three goals. Edit or replace your goals to fit your current needs.',
   loadingText: 'Loading...',
@@ -68,6 +68,7 @@ const goalsScreen = {
       startLabel: 'Starts on: ',
       endLabel: 'Ends on: ',
     },
+    habitsOverviewLink: "Habit's overview",
     addHabitBtn: 'Add habit',
     showHabitsBtn: 'Show Habits',
     hideHabitsBtn: 'Hide Habits',
@@ -148,4 +149,22 @@ const goalsScreen = {
   },
 };
 
-export { homeScreen, signupScreen, loginScreen, goalsScreen };
+const habitsScreen = {
+  logoutBtn: 'Log out',
+  intro: "Habits' Overview",
+  noHabitsIntro: 'Oops, you have no habits for this goal...',
+  addHabitBtn: 'Add habit',
+  habitCard: {
+    settingsBtn: 'Settings',
+    editBtn: 'Edit',
+    deleteBtn: 'Delete',
+    newEntryBtn: 'New Entry',
+    showEntriesBtn: 'Show entries',
+    hideEntriesBtn: 'Hide entries',
+    developIcon: 'check-one',
+    breakIcon: 'close-one',
+  },
+  maxNumOfHabitsInfo: 'You can add a maximum of four habits per goal',
+};
+
+export { homeScreen, signupScreen, loginScreen, goalsScreen, habitsScreen };

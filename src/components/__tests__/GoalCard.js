@@ -23,6 +23,7 @@ const mockGoalText = {
     startLabel: 'Starts on:',
     endLabel: 'Ends on:',
   },
+  habitsOverviewLink: "Habit's overview",
   showHabitsBtn: 'Show Habits',
   hideHabitsBtn: 'Hide Habits',
   habitsContainer: {

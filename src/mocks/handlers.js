@@ -3,6 +3,7 @@ import { rest } from 'msw';
 import { baseUrl } from '../utils/constants';
 import {
   editGoalData,
+  fourHabitsMockData,
   mockGoalData1,
   mockGoalData2,
   mockGoalData3,
@@ -122,6 +123,46 @@ export const getUserNetworkError = rest.get(
 );
 
 //Goals handlers
+const getGoalHandler = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId`,
+  (req, res, ctx) => {
+    return res(
+      ctx.json({
+        data: {
+          goal: mockGoalData1,
+        },
+      }),
+      ctx.status(200)
+    );
+  }
+);
+
+export const getGoalException = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId`,
+  (req, res, ctx) => {
+    return res(
+      ctx.status(404),
+      ctx.json({
+        error: { message: 'Test Error: Goal not found' },
+      })
+    );
+  }
+);
+
+export const getGoalServerDownError = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId`,
+  (req, res) => {
+    return res.networkError('Request has been terminated');
+  }
+);
+
+export const getGoalNetworkError = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId`,
+  (req, res) => {
+    return res.networkError('Test: some other network error');
+  }
+);
+
 const getGoalsHandler = rest.get(
   `${baseUrl}/users/:userId/goals`,
   (req, res, ctx) => {
@@ -313,6 +354,34 @@ const getHabitsHandler = rest.get(
   }
 );
 
+export const getZeroHabitsHandler = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res, ctx) => {
+    return res(
+      ctx.json({
+        data: {
+          habits: [],
+        },
+      }),
+      ctx.status(201)
+    );
+  }
+);
+
+export const getFourHabitsHandler = rest.get(
+  `${baseUrl}/users/:userId/goals/:goalId/habits`,
+  (req, res, ctx) => {
+    return res(
+      ctx.json({
+        data: {
+          habits: fourHabitsMockData,
+        },
+      }),
+      ctx.status(201)
+    );
+  }
+);
+
 export const getHabitsException = rest.get(
   `${baseUrl}/users/:userId/goals/:goalId/habits`,
   (req, res, ctx) => {
@@ -379,14 +448,48 @@ export const addHabitServerDownError = rest.post(
   }
 );
 
+const deleteHabitHandler = rest.delete(
+  `${baseUrl}/users/:userId/goals/:goalId/habits/:habitId`,
+  (req, res, ctx) => {
+    return res(ctx.status(204));
+  }
+);
+
+export const deleteHabitException = rest.delete(
+  `${baseUrl}/users/:userId/goals/:goalId/habits/:habitId`,
+  (req, res, ctx) => {
+    return res(
+      ctx.status(404),
+      ctx.json({
+        error: { message: 'Test Error: Habit was not deleted' },
+      })
+    );
+  }
+);
+
+export const deleteHabitNetworkError = rest.delete(
+  `${baseUrl}/users/:userId/goals/:goalId/habits/:habitId`,
+  (req, res) => {
+    return res.networkError('Test: some other network error');
+  }
+);
+export const deleteHabitServerDownError = rest.delete(
+  `${baseUrl}/users/:userId/goals/:goalId/habits/:habitId`,
+  (req, res) => {
+    return res.networkError('Request has been terminated');
+  }
+);
+
 export const handlers = [
   loginHandler,
   signupHandler,
   getUserHandler,
+  getGoalHandler,
   getGoalsHandler,
   addGoalHandler,
   deleteGoalHandler,
   editGoalHandler,
   getHabitsHandler,
   addHabitHandler,
+  deleteHabitHandler,
 ];
