@@ -5,6 +5,7 @@ import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import { validateHabitForm } from '../utils/validation';
 import { RadioGroup, TextArea } from './Fields';
+import Paragraph from '../core-components/Paragraph';
 
 const HabitForm = ({
   content,
@@ -25,6 +26,7 @@ const HabitForm = ({
     progressMetricSection,
     button,
     editButton,
+    editInfo,
   } = content;
 
   return (
@@ -55,6 +57,11 @@ const HabitForm = ({
               borderRadius: 10,
             }}
           >
+            {habit && (
+              <Paragraph color="info" pb={3}>
+                {editInfo}
+              </Paragraph>
+            )}
             <TextArea
               name="habitDescription"
               label={habitDescription.label}

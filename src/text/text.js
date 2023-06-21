@@ -128,6 +128,7 @@ const goalsScreen = {
     },
     button: 'Add new habit',
     editButton: 'Update habit',
+    editInfo: 'Only the habit description cand be edited.',
   },
   goalsForm: {
     goalDescription: {
