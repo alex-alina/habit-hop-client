@@ -127,6 +127,7 @@ const goalsScreen = {
       ],
     },
     button: 'Add new habit',
+    editButton: 'Update habit',
   },
   goalsForm: {
     goalDescription: {

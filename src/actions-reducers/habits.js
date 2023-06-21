@@ -24,6 +24,25 @@ export const removeHabit = (state, goalId, habitId) => {
   return newHabits;
 };
 
+export const updateEditedInHabits = (habits, editedHabit) => {
+  const currentGoalId = editedHabit.goal.id;
+  const currentGoalHabits = habits[currentGoalId];
+  const filteredHabits = currentGoalHabits.filter(
+    (habit) => habit.id !== editedHabit.id
+  );
+
+  const updatedHabits = { ...habits };
+  const hasGoalId = Object.prototype.hasOwnProperty.call(habits, currentGoalId);
+
+  if (hasGoalId) {
+    updatedHabits[currentGoalId] = [...filteredHabits, editedHabit];
+  } else {
+    throw new Error('There are no goals connected with this habit');
+  }
+
+  return updatedHabits;
+};
+
 export const getHabits = createAsyncThunk(
   'habits',
   async ({ userId, userToken, goalId }) => {
@@ -102,6 +121,33 @@ export const deleteHabit = createAsyncThunk(
   }
 );
 
+export const editHabit = createAsyncThunk(
+  'habits/editHabit',
+  async ({ userId, userToken, goalId, habitId, updatedHabit }) => {
+    try {
+      const response = await superagent
+        .patch(`${baseUrl}/users/${userId}/goals/${goalId}/habits/${habitId}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send(updatedHabit);
+
+      const editedHabit = response.body.data.habit;
+
+      return editedHabit;
+    } catch (err) {
+      if (err.response) {
+        const errorWrapper = JSON.parse(err.response.text);
+        throw `${errorWrapper.error.message}`;
+      }
+      if (err.message.match(/Request has been terminated/i)) {
+        throw new Error(
+          'There are issues with the server. Please try again later'
+        );
+      }
+      throw new Error(err);
+    }
+  }
+);
+
 const initialState = {};
 
 const habitsReducer = createReducer(initialState, (builder) => {
@@ -151,6 +197,22 @@ const habitsReducer = createReducer(initialState, (builder) => {
       return { ...state, items: newGoals, status, resStatus, error: {} };
     })
     .addCase(deleteHabit.rejected, (state, action) => {
+      const error = action.error;
+      const status = 'failed';
+      return { ...state, status, error };
+    })
+    .addCase(editHabit.pending, (state) => {
+      const status = 'loading';
+      return { status, ...state };
+    })
+    .addCase(editHabit.fulfilled, (state, action) => {
+      const status = 'success';
+      const currentHabits = state.items;
+      const editedHabit = action.payload;
+      const updatedHabits = updateEditedInHabits(currentHabits, editedHabit);
+      return { ...state, items: updatedHabits, status, error: {} };
+    })
+    .addCase(editHabit.rejected, (state, action) => {
       const error = action.error;
       const status = 'failed';
       return { ...state, status, error };
