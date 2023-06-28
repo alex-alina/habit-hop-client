@@ -34,8 +34,16 @@ describe('HabitCard', () => {
   });
 
   it('renders with content and develop habit', async () => {
+    const handleDelete = jest.fn();
+    const handleEdit = jest.fn();
+
     renderWithProvidersAndRouter(
-      <HabitCard content={mockContent} habit={mockDevelopHabit} />
+      <HabitCard
+        content={mockContent}
+        habit={mockDevelopHabit}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
     );
 
     expect(screen.getByText(/new entry/i)).toBeInTheDocument();
@@ -52,8 +60,16 @@ describe('HabitCard', () => {
   });
 
   it('renders with content and break habit', async () => {
+    const handleDelete = jest.fn();
+    const handleEdit = jest.fn();
+
     renderWithProvidersAndRouter(
-      <HabitCard content={mockContent} habit={mockBreakHabit} />
+      <HabitCard
+        content={mockContent}
+        habit={mockBreakHabit}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
     );
 
     expect(screen.getByText(/new entry/i)).toBeInTheDocument();
@@ -63,5 +79,45 @@ describe('HabitCard', () => {
 
     await userEvent.click(screen.getByText(/settings/i));
     expect(screen.getByText(/edit/i)).toBeInTheDocument();
+  });
+
+  it('calls edit handler when the edit button is clicked', async () => {
+    const handleDelete = jest.fn();
+    const handleEdit = jest.fn();
+
+    renderWithProvidersAndRouter(
+      <HabitCard
+        content={mockContent}
+        habit={mockDevelopHabit}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
+    );
+
+    expect(screen.queryByText(/edit/i)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByText(/settings/i));
+    expect(screen.getByText(/edit/i)).toBeInTheDocument();
+    await userEvent.click(screen.getByText(/edit/i));
+    expect(handleEdit).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls delete handler when the delete button is clicked', async () => {
+    const handleDelete = jest.fn();
+    const handleEdit = jest.fn();
+
+    renderWithProvidersAndRouter(
+      <HabitCard
+        content={mockContent}
+        habit={mockDevelopHabit}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
+    );
+
+    expect(screen.queryByText(/delete/i)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByText(/settings/i));
+    expect(screen.getByText(/delete/i)).toBeInTheDocument();
+    await userEvent.click(screen.getByText(/delete/i));
+    expect(handleDelete).toHaveBeenCalledTimes(1);
   });
 });
