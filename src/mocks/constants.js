@@ -162,8 +162,24 @@ const fourHabitsMockData = [
   },
 ];
 
+const editHabitData = {
+  id: 'a4e95781-9f45-4c38-8d67-21355fd5e228',
+  habitDescription: 'Run 20km every week',
+  habitType: 'develop',
+  progressMetric: 'km',
+  goal: {
+    id: 'bec49b7a-7819-453b-9895-347e3982acc5',
+    goalDefinition:
+      'Improve sleep quality by exercising and drinking less coffee',
+    priority: 'secondary',
+    startDate: '2023-05-07',
+    endDate: '2023-07-15',
+  },
+};
+
 export {
   editGoalData,
+  editHabitData,
   fourHabitsMockData,
   storageJwtKey,
   mockJwt,

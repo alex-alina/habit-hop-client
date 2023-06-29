@@ -2,11 +2,19 @@ import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import Router from 'react-router';
-import { mockHabitFormData, mockJwt } from '../../mocks/constants';
+import {
+  editHabitData,
+  mockHabitFormData,
+  mockJwt,
+} from '../../mocks/constants';
 import {
   deleteHabitException,
   deleteHabitNetworkError,
   deleteHabitServerDownError,
+  editHabitException,
+  editHabitNetworkError,
+  editHabitServerDownError,
+  getFourHabitsHandler,
   getGoalException,
   getGoalNetworkError,
   getGoalServerDownError,
@@ -17,7 +25,6 @@ import {
   getUserNetworkError,
   getUserServerDownError,
   getZeroHabitsHandler,
-  getFourHabitsHandler,
 } from '../../mocks/handlers';
 import { server } from '../../mocks/server';
 import * as jwtModule from '../../utils/jwt';
@@ -136,6 +143,39 @@ describe('Habits component', () => {
     });
 
     expect(formTextInput).not.toBeInTheDocument();
+  });
+
+  it('allows the user to edit a habit', async () => {
+    jest.spyOn(Router, 'useParams').mockReturnValue({ goalId });
+    let reRender;
+
+    await act(async () => {
+      const { rerender } = renderWithProvidersAndRouter(<Habits />, {
+        route: `/habits/${goalId}`,
+      });
+      reRender = rerender;
+    });
+
+    const user = userEvent.setup();
+    const settingsBtns = screen.getAllByText(/settings/i);
+    await user.click(settingsBtns[0]);
+    await user.click(screen.getByText(/edit/i));
+    await user.clear(screen.getByLabelText('Habit description'));
+    await user.type(
+      screen.getByLabelText('Habit description'),
+      editHabitData.habitDescription
+    );
+    await user.click(screen.getByText(/update habit/i));
+
+    await act(async () => {
+      reRender(<Habits />, {
+        route: `/habits/${goalId}`,
+      });
+    });
+    const habitOneText = screen.getByText(/run 20km every week/i);
+    const habitTwoText = screen.getByText(/drink only one coffee per day/i);
+    expect(habitOneText).toBeInTheDocument();
+    expect(habitTwoText).toBeInTheDocument();
   });
 
   it('allows the user to add a new habit if they have less than four habits', async () => {
@@ -426,6 +466,99 @@ describe('Habits component (errors)', () => {
     const firstSettingsBtn = habitCards[0];
     await user.click(firstSettingsBtn);
     await user.click(screen.getByText(/delete/i));
+    expect(screen.getAllByText(/settings/i)).toHaveLength(2);
+    expect(screen.getByText(error)).toBeInTheDocument();
+  });
+
+  it('renders server error when habit could not be edited', async () => {
+    server.use(editHabitException);
+    jest.spyOn(Router, 'useParams').mockReturnValue({ goalId });
+    let reRender;
+    await act(async () => {
+      const { rerender } = renderWithProvidersAndRouter(<Habits />, {
+        route: `/habits/${goalId}`,
+      });
+      reRender = rerender;
+    });
+
+    const user = userEvent.setup();
+    const error = /test Error: Habit was not updated/i;
+    const settingsBtns = screen.getAllByText(/settings/i);
+    await user.click(settingsBtns[0]);
+    await user.click(screen.getByText(/edit/i));
+    const habitDescription = screen.getByLabelText('Habit description');
+    await user.clear(habitDescription);
+    await user.type(habitDescription, editHabitData.habitDescription);
+    await user.click(screen.getByText(/update habit/i));
+
+    await act(async () => {
+      reRender(<Habits />, {
+        route: `/habits/${goalId}`,
+      });
+    });
+
+    expect(screen.getAllByText(/settings/i)).toHaveLength(2);
+    expect(screen.getByText(error)).toBeInTheDocument();
+  });
+
+  it('renders server down error message when user tries to edit habit', async () => {
+    server.use(editHabitServerDownError);
+    jest.spyOn(Router, 'useParams').mockReturnValue({ goalId });
+    let reRender;
+    await act(async () => {
+      const { rerender } = renderWithProvidersAndRouter(<Habits />, {
+        route: `/habits/${goalId}`,
+      });
+      reRender = rerender;
+    });
+
+    const user = userEvent.setup();
+    const error = /There are issues with the server. Please try again later/i;
+    const settingsBtns = screen.getAllByText(/settings/i);
+    await user.click(settingsBtns[0]);
+    await user.click(screen.getByText(/edit/i));
+    const habitDescription = screen.getByLabelText('Habit description');
+    await user.clear(habitDescription);
+    await user.type(habitDescription, editHabitData.habitDescription);
+    await user.click(screen.getByText(/update habit/i));
+
+    await act(async () => {
+      reRender(<Habits />, {
+        route: `/habits/${goalId}`,
+      });
+    });
+
+    expect(screen.getAllByText(/settings/i)).toHaveLength(2);
+    expect(screen.getByText(error)).toBeInTheDocument();
+  });
+
+  it('renders network error message when user tries to edit habit', async () => {
+    server.use(editHabitNetworkError);
+    jest.spyOn(Router, 'useParams').mockReturnValue({ goalId });
+    let reRender;
+    await act(async () => {
+      const { rerender } = renderWithProvidersAndRouter(<Habits />, {
+        route: `/habits/${goalId}`,
+      });
+      reRender = rerender;
+    });
+
+    const user = userEvent.setup();
+    const error = /Test: some other network error/i;
+    const settingsBtns = screen.getAllByText(/settings/i);
+    await user.click(settingsBtns[0]);
+    await user.click(screen.getByText(/edit/i));
+    const habitDescription = screen.getByLabelText('Habit description');
+    await user.clear(habitDescription);
+    await user.type(habitDescription, editHabitData.habitDescription);
+    await user.click(screen.getByText(/update habit/i));
+
+    await act(async () => {
+      reRender(<Habits />, {
+        route: `/habits/${goalId}`,
+      });
+    });
+
     expect(screen.getAllByText(/settings/i)).toHaveLength(2);
     expect(screen.getByText(error)).toBeInTheDocument();
   });

@@ -257,12 +257,14 @@ it('adds new habit to the list corresponding to the matching goal', () => {
 });
 
 it('throws error if habits is an empty object', () => {
+  expect(() => updateHabits({}, mockHabit)).toThrow(Error);
   expect(() => updateHabits({}, mockHabit)).toThrow(
     'There are no goals connected with this habit'
   );
 });
 
 it('throws error if there is no matching goal', () => {
+  expect(() => updateHabits(habitsWithInvalidGoalId, mockHabit)).toThrow(Error);
   expect(() => updateHabits(habitsWithInvalidGoalId, mockHabit)).toThrow(
     'There are no goals connected with this habit'
   );

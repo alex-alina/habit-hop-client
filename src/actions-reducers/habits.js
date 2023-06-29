@@ -33,7 +33,6 @@ export const updateEditedInHabits = (habits, editedHabit) => {
 
   const updatedHabits = { ...habits };
   const hasGoalId = Object.prototype.hasOwnProperty.call(habits, currentGoalId);
-
   if (hasGoalId) {
     updatedHabits[currentGoalId] = [...filteredHabits, editedHabit];
   } else {
