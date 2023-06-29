@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { addHabit, getHabits, deleteHabit } from '../actions-reducers/habits';
+import {
+  addHabit,
+  editHabit,
+  getHabits,
+  deleteHabit,
+} from '../actions-reducers/habits';
 import { logout } from '../actions-reducers/logout';
 import { ReactComponent as DataIllustration } from '../assets/illustrations/Data.svg';
 import { ReactComponent as Plant } from '../assets/illustrations/Humaaans - Plant 2.svg';
@@ -75,6 +80,8 @@ const Habits = ({ content = habitsScreen }) => {
     .filter((error) => error !== '');
 
   const [habitFormIsVisible, setHabitFormVisibility] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedHabit, setEditedHabit] = useState(null);
 
   const handleCloseOverlay = () => {
     setHabitFormVisibility(false);
@@ -89,6 +96,17 @@ const Habits = ({ content = habitsScreen }) => {
     dispatch(deleteHabit({ userId, userToken, goalId, habitId }));
   };
 
+  const handleEditedHabit = (updatedHabit, habitId, goalId) => {
+    dispatch(editHabit({ userId, userToken, goalId, habitId, updatedHabit }));
+  };
+
+  const handleEdit = (e, habit) => {
+    e.preventDefault();
+    setIsEditMode(true);
+    setEditedHabit(habit);
+    setHabitFormVisibility(true);
+  };
+
   return (
     <Div
       display="flex"
@@ -100,8 +118,9 @@ const Habits = ({ content = habitsScreen }) => {
           <HabitForm
             content={habitFormContent}
             handleCloseOverlay={() => handleCloseOverlay()}
-            handleSubmit={handleAddHabit}
+            handleSubmit={isEditMode ? handleEditedHabit : handleAddHabit}
             goalId={goalId}
+            habit={isEditMode ? editedHabit : null}
           />
         </FormsOverlay>
       )}
@@ -222,7 +241,10 @@ const Habits = ({ content = habitsScreen }) => {
                 variant="primarySm"
                 iconName="add-one"
                 iconColor="#fff"
-                clickHandler={() => setHabitFormVisibility(true)}
+                clickHandler={() => {
+                  setIsEditMode(false);
+                  setHabitFormVisibility(true);
+                }}
                 maxWidth={150}
                 mt={6}
               >
@@ -243,6 +265,7 @@ const Habits = ({ content = habitsScreen }) => {
                   content={habitCard}
                   habit={habit}
                   handleDelete={handleDeleteHabit}
+                  handleEdit={(e) => handleEdit(e, habit)}
                   key={i}
                 />
               );
@@ -252,7 +275,7 @@ const Habits = ({ content = habitsScreen }) => {
           <IconButton
             mx="auto"
             clickHandler={() => {
-              // setIsEditMode(false);
+              setIsEditMode(false);
               setHabitFormVisibility(true);
             }}
             iconName="add-one"

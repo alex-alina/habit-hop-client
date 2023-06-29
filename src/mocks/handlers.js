@@ -3,6 +3,7 @@ import { rest } from 'msw';
 import { baseUrl } from '../utils/constants';
 import {
   editGoalData,
+  editHabitData,
   fourHabitsMockData,
   mockGoalData1,
   mockGoalData2,
@@ -480,6 +481,45 @@ export const deleteHabitServerDownError = rest.delete(
   }
 );
 
+const editHabitHandler = rest.patch(
+  `${baseUrl}/users/:userId/goals/:goalId/habits/:habitId`,
+  (req, res, ctx) => {
+    return res(
+      ctx.json({
+        data: {
+          habit: editHabitData,
+        },
+      }),
+      ctx.status(201)
+    );
+  }
+);
+
+export const editHabitException = rest.patch(
+  `${baseUrl}/users/:userId/goals/:goalId/habits/:habitId`,
+  (req, res, ctx) => {
+    return res(
+      ctx.status(404),
+      ctx.json({
+        error: { message: 'Test Error: Habit was not updated' },
+      })
+    );
+  }
+);
+
+export const editHabitNetworkError = rest.patch(
+  `${baseUrl}/users/:userId/goals/:goalId/habits/:habitId`,
+  (req, res) => {
+    return res.networkError('Test: some other network error');
+  }
+);
+export const editHabitServerDownError = rest.patch(
+  `${baseUrl}/users/:userId/goals/:goalId/habits/:habitId`,
+  (req, res) => {
+    return res.networkError('Request has been terminated');
+  }
+);
+
 export const handlers = [
   loginHandler,
   signupHandler,
@@ -492,4 +532,5 @@ export const handlers = [
   getHabitsHandler,
   addHabitHandler,
   deleteHabitHandler,
+  editHabitHandler,
 ];

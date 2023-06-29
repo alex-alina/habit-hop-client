@@ -29,7 +29,7 @@ const HabitDescription = ({ iconColor, iconName, textColor, children }) => {
   );
 };
 
-const HabitCard = ({ content, habit, handleDelete, ...props }) => {
+const HabitCard = ({ content, habit, handleDelete, handleEdit, ...props }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showEntries, setShowEntries] = useState(false);
   const {
@@ -77,7 +77,7 @@ const HabitCard = ({ content, habit, handleDelete, ...props }) => {
         </IconButton>
 
         <IconButton
-          // clickHandler={handleDelete}
+          // clickHandler={handleAddEntry}
           iconName="add-one"
           iconColor="#fff"
           variant="primarySm"
@@ -90,13 +90,14 @@ const HabitCard = ({ content, habit, handleDelete, ...props }) => {
         <SmallCard
           display="flex"
           justifyContent="flex-start"
-          // borderColor="primary"
-          // mb={2}
           py={4}
           mt={[3, 3, 3, 4, 4]}
         >
           <IconButton
-            // clickHandler={handleEdit}
+            clickHandler={(e) => {
+              handleEdit(e, habit);
+              setShowSettings(false);
+            }}
             iconName="write"
             mr={8}
             variant="secondarySm"

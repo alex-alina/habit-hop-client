@@ -5,6 +5,7 @@ import Button from '../core-components/Button';
 import Div from '../core-components/Div';
 import { validateHabitForm } from '../utils/validation';
 import { RadioGroup, TextArea } from './Fields';
+import Paragraph from '../core-components/Paragraph';
 
 const HabitForm = ({
   content,
@@ -19,8 +20,14 @@ const HabitForm = ({
     progressMetric: habit ? habit.progressMetric : '',
   };
 
-  const { habitDescription, habitTypeInput, progressMetricSection, button } =
-    content;
+  const {
+    habitDescription,
+    habitTypeInput,
+    progressMetricSection,
+    button,
+    editButton,
+    editInfo,
+  } = content;
 
   return (
     <Formik
@@ -50,6 +57,11 @@ const HabitForm = ({
               borderRadius: 10,
             }}
           >
+            {habit && (
+              <Paragraph color="info" pb={3}>
+                {editInfo}
+              </Paragraph>
+            )}
             <TextArea
               name="habitDescription"
               label={habitDescription.label}
@@ -63,6 +75,7 @@ const HabitForm = ({
               name="habitType"
               legend={habitTypeInput.legend}
               radios={habitTypeInput.radios}
+              disabled={habit ? true : false}
             />
             <ErrorMessage name="habitType" component={FieldError} />
 
@@ -77,6 +90,7 @@ const HabitForm = ({
                 legendProps={{ fontSize: 3, ml: 3 }}
                 radios={radioGroup.radios}
                 radiosDirection="row"
+                disabled={habit ? true : false}
               />
             ))}
             <ErrorMessage name="progressMetric" component={FieldError} />
@@ -92,7 +106,7 @@ const HabitForm = ({
                 submitForm();
               }}
             >
-              {button}
+              {habit ? editButton : button}
             </Button>
           </Form>
         );
