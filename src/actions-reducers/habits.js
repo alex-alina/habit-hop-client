@@ -5,14 +5,8 @@ import { baseUrl } from '../utils/constants';
 export const updateHabits = (habits, habit) => {
   const habitGoalId = habit.goal.id;
   const updatedHabits = { ...habits };
-  const hasGoalId = Object.prototype.hasOwnProperty.call(habits, habitGoalId);
 
-  if (hasGoalId) {
-    updatedHabits[habitGoalId] = [...updatedHabits[habitGoalId], habit];
-  } else {
-    throw new Error('There are no goals connected with this habit');
-  }
-
+  updatedHabits[habitGoalId] = [...updatedHabits[habitGoalId], habit];
   return updatedHabits;
 };
 
@@ -32,13 +26,7 @@ export const updateEditedInHabits = (habits, editedHabit) => {
   );
 
   const updatedHabits = { ...habits };
-  const hasGoalId = Object.prototype.hasOwnProperty.call(habits, currentGoalId);
-  if (hasGoalId) {
-    updatedHabits[currentGoalId] = [...filteredHabits, editedHabit];
-  } else {
-    throw new Error('There are no goals connected with this habit');
-  }
-
+  updatedHabits[currentGoalId] = [...filteredHabits, editedHabit];
   return updatedHabits;
 };
 
